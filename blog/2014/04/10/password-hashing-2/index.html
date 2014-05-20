@@ -111,10 +111,14 @@
 
 <p>示例：</p>
 
-<pre><code>&lt;?php
-    echo password_hash('123', PASSWORD_BCRYPT);
-?&gt;
-</code></pre>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>  <span class="k">echo</span> <span class="nx">password_hash</span><span class="p">(</span><span class="s1">&#39;123&#39;</span><span class="p">,</span> <span class="nx">PASSWORD_BCRYPT</span><span class="p">);</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>虽然在password_hash函数的可选参数中可以设置盐值与递归层级，但是在不了解算法内容的情况下，不建议设置。函数返回一个包含60个字符的字符串。</p>
 
@@ -205,10 +209,6 @@
     
       <li class="post">
         <a href="/blog/2014/04/04/gor-blog/">Wordpress没搞头，写博还是静态的好</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/12/first-post/">第一篇文章</a>
       </li>
     
   </ul>

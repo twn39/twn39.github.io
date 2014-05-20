@@ -4,7 +4,7 @@
   <title><![CDATA[Category: PHP | 唐微的博客]]></title>
   <link href="http://libre.me/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://libre.me/"/>
-  <updated>2014-05-20T22:21:01+08:00</updated>
+  <updated>2014-05-20T22:26:07+08:00</updated>
   <id>http://libre.me/</id>
   <author>
     <name><![CDATA[唐微南]]></name>
@@ -38,10 +38,14 @@
 
 <p>示例：</p>
 
+<p>```php</p>
+
 <pre><code>&lt;?php
     echo password_hash('123', PASSWORD_BCRYPT);
 ?&gt;
 </code></pre>
+
+<p>```</p>
 
 <p>虽然在password_hash函数的可选参数中可以设置盐值与递归层级，但是在不了解算法内容的情况下，不建议设置。函数返回一个包含60个字符的字符串。</p>
 
@@ -86,9 +90,13 @@
 
 <p>它的输入为长度，单位是（位），返回一个字符串。有了盐值就可以对密码进行加密了。</p>
 
+<p>```php</p>
+
 <pre><code>$salt = openssl_random_pseudo_bytes(160);
 $shell = sha1($salt.$password);
 </code></pre>
+
+<p>```</p>
 
 <p>将盐值存入数据库中的用户表中，校验的时候提取盐值，就可以与原密码进行比对。
 如果需要进一步加强安全性，可以将盐值放到配置文件中，作为一个公有的盐值，采用：</p>

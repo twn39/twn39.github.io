@@ -100,11 +100,16 @@
 
 <p>数据导入函数: <strong>read_csv()</strong></p>
 
-<pre><code>%pylab inline 
-import pandas as pd
-data = pd.read_csv("https://dl.dropboxusercontent.com/u/88478120/datasets/iris.csv", header=0)
-print data
-</code></pre>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">%</span><span class="n">pylab</span> <span class="n">inline</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+</span><span class='line'><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">&quot;https://dl.dropboxusercontent.com/u/88478120/datasets/iris.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'><span class="k">print</span> <span class="n">data</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>如图所示：</p>
 
@@ -165,9 +170,12 @@ print b
 <p><strong>时间序列处理</strong>
 导入数据：</p>
 
-<pre><code>data = read_csv("https://dl.dropboxusercontent.com/u/88478120/datasets/D0301.csv", header=0, index_col=0)
-print data
-</code></pre>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">data</span> <span class="o">=</span> <span class="n">read_csv</span><span class="p">(</span><span class="s">&quot;https://dl.dropboxusercontent.com/u/88478120/datasets/D0301.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'><span class="k">print</span> <span class="n">data</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>如图所示：</p>
 
@@ -257,10 +265,14 @@ col.plot()
 
 <p>示例：</p>
 
-<pre><code>&lt;?php
-    echo password_hash('123', PASSWORD_BCRYPT);
-?&gt;
-</code></pre>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>  <span class="k">echo</span> <span class="nx">password_hash</span><span class="p">(</span><span class="s1">&#39;123&#39;</span><span class="p">,</span> <span class="nx">PASSWORD_BCRYPT</span><span class="p">);</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>虽然在password_hash函数的可选参数中可以设置盐值与递归层级，但是在不了解算法内容的情况下，不建议设置。函数返回一个包含60个字符的字符串。</p>
 
@@ -332,9 +344,12 @@ col.plot()
 
 <p>它的输入为长度，单位是（位），返回一个字符串。有了盐值就可以对密码进行加密了。</p>
 
-<pre><code>$salt = openssl_random_pseudo_bytes(160);
-$shell = sha1($salt.$password);
-</code></pre>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$salt</span> <span class="o">=</span> <span class="nb">openssl_random_pseudo_bytes</span><span class="p">(</span><span class="mi">160</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$shell</span> <span class="o">=</span> <span class="nb">sha1</span><span class="p">(</span><span class="nv">$salt</span><span class="o">.</span><span class="nv">$password</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>将盐值存入数据库中的用户表中，校验的时候提取盐值，就可以与原密码进行比对。
 如果需要进一步加强安全性，可以将盐值放到配置文件中，作为一个公有的盐值，采用：</p>
@@ -399,47 +414,6 @@ $shell = sha1($salt.$password);
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/03/12/first-post/">第一篇文章</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-12T15:59:00+08:00" pubdate data-updated="true">Mar 12<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>代码测试</p>
-
-<figure class='code'><figcaption><span>php test</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">echo</span> <span class="nb">phpinfo</span><span class="p">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
     <a href="/blog/archives">Blog Archives</a>
@@ -466,10 +440,6 @@ $shell = sha1($salt.$password);
     
       <li class="post">
         <a href="/blog/2014/04/04/gor-blog/">Wordpress没搞头，写博还是静态的好</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/12/first-post/">第一篇文章</a>
       </li>
     
   </ul>

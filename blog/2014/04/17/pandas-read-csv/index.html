@@ -97,11 +97,16 @@
 
 <p>数据导入函数: <strong>read_csv()</strong></p>
 
-<pre><code>%pylab inline 
-import pandas as pd
-data = pd.read_csv("https://dl.dropboxusercontent.com/u/88478120/datasets/iris.csv", header=0)
-print data
-</code></pre>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="o">%</span><span class="n">pylab</span> <span class="n">inline</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+</span><span class='line'><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">&quot;https://dl.dropboxusercontent.com/u/88478120/datasets/iris.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'><span class="k">print</span> <span class="n">data</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>如图所示：</p>
 
@@ -162,9 +167,12 @@ print b
 <p><strong>时间序列处理</strong>
 导入数据：</p>
 
-<pre><code>data = read_csv("https://dl.dropboxusercontent.com/u/88478120/datasets/D0301.csv", header=0, index_col=0)
-print data
-</code></pre>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">data</span> <span class="o">=</span> <span class="n">read_csv</span><span class="p">(</span><span class="s">&quot;https://dl.dropboxusercontent.com/u/88478120/datasets/D0301.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'><span class="k">print</span> <span class="n">data</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>如图所示：</p>
 
@@ -271,10 +279,6 @@ col.plot()
     
       <li class="post">
         <a href="/blog/2014/04/04/gor-blog/">Wordpress没搞头，写博还是静态的好</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/12/first-post/">第一篇文章</a>
       </li>
     
   </ul>

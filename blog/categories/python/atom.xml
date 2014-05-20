@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Python | 唐微的博客]]></title>
   <link href="http://libre.me/blog/categories/python/atom.xml" rel="self"/>
   <link href="http://libre.me/"/>
-  <updated>2014-05-20T22:21:01+08:00</updated>
+  <updated>2014-05-20T22:26:07+08:00</updated>
   <id>http://libre.me/</id>
   <author>
     <name><![CDATA[唐微南]]></name>
@@ -24,11 +24,12 @@
 
 <p>数据导入函数: <strong>read_csv()</strong></p>
 
-<pre><code>%pylab inline 
+<p><code>python
+%pylab inline
 import pandas as pd
 data = pd.read_csv("https://dl.dropboxusercontent.com/u/88478120/datasets/iris.csv", header=0)
 print data
-</code></pre>
+</code></p>
 
 <p>如图所示：</p>
 
@@ -89,9 +90,10 @@ print b
 <p><strong>时间序列处理</strong>
 导入数据：</p>
 
-<pre><code>data = read_csv("https://dl.dropboxusercontent.com/u/88478120/datasets/D0301.csv", header=0, index_col=0)
+<p><code>python
+data = read_csv("https://dl.dropboxusercontent.com/u/88478120/datasets/D0301.csv", header=0, index_col=0)
 print data
-</code></pre>
+</code></p>
 
 <p>如图所示：</p>
 

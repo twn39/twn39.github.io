@@ -112,9 +112,12 @@
 
 <p>它的输入为长度，单位是（位），返回一个字符串。有了盐值就可以对密码进行加密了。</p>
 
-<pre><code>$salt = openssl_random_pseudo_bytes(160);
-$shell = sha1($salt.$password);
-</code></pre>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$salt</span> <span class="o">=</span> <span class="nb">openssl_random_pseudo_bytes</span><span class="p">(</span><span class="mi">160</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$shell</span> <span class="o">=</span> <span class="nb">sha1</span><span class="p">(</span><span class="nv">$salt</span><span class="o">.</span><span class="nv">$password</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>将盐值存入数据库中的用户表中，校验的时候提取盐值，就可以与原密码进行比对。
 如果需要进一步加强安全性，可以将盐值放到配置文件中，作为一个公有的盐值，采用：</p>
@@ -202,10 +205,6 @@ $shell = sha1($salt.$password);
     
       <li class="post">
         <a href="/blog/2014/04/04/gor-blog/">Wordpress没搞头，写博还是静态的好</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/12/first-post/">第一篇文章</a>
       </li>
     
   </ul>
