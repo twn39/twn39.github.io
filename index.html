@@ -1,1 +1,506 @@
-My Octopress Page is coming soon &hellip;
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>唐微的博客</title>
+  <meta name="author" content="唐微南">
+
+  
+  <meta name="description" content="Python 现在越来越多地被用于处理数据与科学计算，其中比较有名的有Numpy和Scipy。但是随着技术的发展，越来越多的优秀的扩展被开发出来，像IPython，Pandas，Seaborn等等。 使用Pandas包可以非常轻松地对数据进行导入与清洗。以下使用Ipython QT处理数据： &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://libre.me">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="唐微的博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">唐微的博客</a></h1>
+  
+    <h2>真理，科学，自由与艺术</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:libre.me" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">归档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/04/17/pandas-read-csv/">使用pandas处理数据</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-17T08:20:00+08:00" pubdate data-updated="true">Apr 17<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Python 现在越来越多地被用于处理数据与科学计算，其中比较有名的有Numpy和Scipy。但是随着技术的发展，越来越多的优秀的扩展被开发出来，像IPython，Pandas，Seaborn等等。</p>
+
+<p>使用Pandas包可以非常轻松地对数据进行导入与清洗。以下使用Ipython QT处理数据：</p>
+
+<p>数据导入函数: <strong>read_csv()</strong></p>
+
+<pre><code>%pylab inline 
+import pandas as pd
+data = pd.read_csv("https://dl.dropboxusercontent.com/u/88478120/datasets/iris.csv", header=0)
+print data
+</code></pre>
+
+<p>如图所示：</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/88478120/blog/20140402/read_csv.png" alt="read_csv" /></p>
+
+<p>获取一列数据：</p>
+
+<pre><code>col = data["sepal length"]
+print col
+</code></pre>
+
+<p>或者：</p>
+
+<pre><code>col = data[[2]]
+print col
+</code></pre>
+
+<p>获取多列数据：</p>
+
+<pre><code>cols = data[["sepal length", "sepal width"]]
+print cols
+</code></pre>
+
+<p>或者：</p>
+
+<pre><code>cols = data[[2,4]]
+print cols
+</code></pre>
+
+<p>获取一行</p>
+
+<pre><code>row = data[3:4]
+print row
+</code></pre>
+
+<p>获取多行数据：</p>
+
+<pre><code>rows = data[3:9]
+print rows
+</code></pre>
+
+<p>组合：</p>
+
+<p>取出单个数据：</p>
+
+<pre><code>a = data[2:3]
+b = a[[3]]
+print b
+</code></pre>
+
+<p>取出矩形数据</p>
+
+<pre><code>a = data[[1,3,4]]
+b = a[4:8]
+print b
+</code></pre>
+
+<p><strong>时间序列处理</strong>
+导入数据：</p>
+
+<pre><code>data = read_csv("https://dl.dropboxusercontent.com/u/88478120/datasets/D0301.csv", header=0, index_col=0)
+print data
+</code></pre>
+
+<p>如图所示：</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/88478120/blog/20140402/read_csv2.png" alt="read_csv2" /></p>
+
+<p>此时时间索引列为字符串格式，需要将其转换成时间格式</p>
+
+<pre><code>print data.index
+data.index = pd.to_datetime(data.index)
+print data.index
+</code></pre>
+
+<p>获取统计信息：</p>
+
+<pre><code>data.head()
+data.tail()
+data.describe()
+data.count()
+data.mean()
+data.sum()
+data.std()
+data.max()
+data.min()
+</code></pre>
+
+<p>简单绘图：</p>
+
+<pre><code>col = data[[0]]
+col.plot()
+</code></pre>
+
+<p>图形如下所示：</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/88478120/blog/20140402/timeserise.png" alt="plot" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/04/10/password-hashing-2/">PHP Password_hash 函数的使用</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-10T09:17:00+08:00" pubdate data-updated="true">Apr 10<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在上一篇文章中，我使用sha1函数混合盐值进行加密，后来发现其实根本没有必要，因为我对这种加密方式的安全性一无所知，也不知道如何进行测试，因为我并不是个密码学家，这种方式仅仅是看起来比较安全而已。然而加密的重要的一条规则就是：<strong>不要使用未经过安全测试的加密函数！</strong></p>
+
+<p>然而我也提到了在PHP5.5中引入了比较好的加密函数<strong>password_hash()</strong>，而且在PHP5.3.8版本有一个相兼容的库。现在主流的空间都基本支持PHP5.3以上，因此password_hash()可以放心使用。</p>
+
+<p>在password_hash库中有4个函数，常用的主要有3个：</p>
+
+<ul>
+<li>password_hash</li>
+<li>password_verify</li>
+<li>password_get_info</li>
+</ul>
+
+
+<p>加密函数password_hash语法：</p>
+
+<pre><code>string password_hash ( string $password , integer $algo [, array $options ] )
+</code></pre>
+
+<p>示例：</p>
+
+<pre><code>&lt;?php
+    echo password_hash('123', PASSWORD_BCRYPT);
+?&gt;
+</code></pre>
+
+<p>虽然在password_hash函数的可选参数中可以设置盐值与递归层级，但是在不了解算法内容的情况下，不建议设置。函数返回一个包含60个字符的字符串。</p>
+
+<p>比对函数password_verify语法：</p>
+
+<pre><code>boolean password_verify ( string $password , string $hash )
+</code></pre>
+
+<p>函数加密后返回的哈希值包含了加密信息，可以通过password_verify验证：</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/88478120/blog/20140411/password_hash.png" alt="password_hash" /></p>
+
+<p>获取加密信息函数password_get_info,语法为：</p>
+
+<pre><code>array password_get_info ( string $hash )
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/04/05/password-hashing/">PHP通过盐值加密</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-05T12:30:00+08:00" pubdate data-updated="true">Apr 5<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近看了一篇PHP加密的文章，获益良多，因为无论用PHP构建任何系统，都需要对敏感的数据进行加密。而且这几年，时不时地爆出某某网站泄露用户数据什么的，足见构建一个安全的系统也不是这么容易的。</p>
+
+<p>在文章中有几个重要的注意事项：</p>
+
+<ul>
+<li>不要自己写加密函数</li>
+<li>不要单纯使用低端的哈希函数，如（MD5，SHA1）</li>
+<li>不要两次哈希或者组合哈希函数</li>
+</ul>
+
+
+<p>通常目前流行的方式是对密码加盐(salt)，而且盐值不能过短，必须由伪随机数生成，一个好的盐值必须与哈希函数的输出的长度相当。</p>
+
+<p>那么在PHP中如何采用盐值加密？首先必须生成盐值，在PHP中有一个函数为：openssl_random_pseudo_bytes。它是由openssl扩展提供的随机数生成器，因此在PHP环境中启用openssl扩展，因为基本绝大多数的空间都有这个扩展，所以不用担心无法使用。它的语法为：</p>
+
+<pre><code>string openssl_random_pseudo_bytes ( int $length [, bool &amp;$crypto_strong ] )
+</code></pre>
+
+<p>它的输入为长度，单位是（位），返回一个字符串。有了盐值就可以对密码进行加密了。</p>
+
+<pre><code>$salt = openssl_random_pseudo_bytes(160);
+$shell = sha1($salt.$password);
+</code></pre>
+
+<p>将盐值存入数据库中的用户表中，校验的时候提取盐值，就可以与原密码进行比对。
+如果需要进一步加强安全性，可以将盐值放到配置文件中，作为一个公有的盐值，采用：</p>
+
+<p>sha1（sha1（公有盐值+密码）+私有盐值）</p>
+
+<p>据我所知WordPress就是将盐值放在配置文件中的。</p>
+
+<p>在PHP5.5中，openssl扩展引入了新的函数叫做openssl_pbkdf2，使用起来相对简单，但是安全性更高，不过考虑到目前基本使用PHP5.3版本，也就不做介绍了。</p>
+
+<p><strong>更新</strong></p>
+
+<p>在PHP5中引入了新的加密函数：password_hash(),虽然在官方的5.3版本中还没实现，但他推荐了一个与5.3兼容的库，用法与php5.5手册中的相同，github地址：<a href="https://github.com/ircmaxell/password_compat">password_compat</a>。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/04/04/gor-blog/">Wordpress没搞头，写博还是静态的好</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-04T10:20:00+08:00" pubdate data-updated="true">Apr 4<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>为何需要写博客</h2>
+
+<p>对于学编程的人来说，我觉得写博客还是有必要的，写博客可以记录一些自己的想法，创意以及自己学习到的经验。像我这种过目就忘的人，尤其重要。</p>
+
+<h2>如何选择博客工具</h2>
+
+<p>其实一开始我就是个WordPress的粉丝，也是因为WordPress才开始接触PHP的。像当年（也就一两年吧）我在狗爹（godaddy）斥巨资买了3个月的空间，就是为了搭建一个WordPress个人博客，那时候找各种主题，各种插件，花了几天总算搭建了一个比较满意的博客，后来也就写了几篇博客就搁在那里，再也没去动过它。</p>
+
+<p>再后来我发现了一个叫Markdown的东东，我心里咒骂道：以前我怎么没发现这个东西呢。Markdown跟Wordpress就好比Tex跟Word，只要专注于内容而非板式与页面。后来就基本没碰过WordPress了，就只使用StackEdit+Dropbox了。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/03/12/first-post/">第一篇文章</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-12T15:59:00+08:00" pubdate data-updated="true">Mar 12<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>代码测试</p>
+
+<figure class='code'><figcaption><span>php test</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">echo</span> <span class="nb">phpinfo</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>近期文章</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/17/pandas-read-csv/">使用pandas处理数据</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/10/password-hashing-2/">PHP Password_hash 函数的使用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/05/password-hashing/">PHP通过盐值加密</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/gor-blog/">Wordpress没搞头，写博还是静态的好</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/12/first-post/">第一篇文章</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - 唐微南 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

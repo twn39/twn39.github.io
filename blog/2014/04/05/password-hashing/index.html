@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>PHP通过盐值加密 - 唐微的博客</title>
+  <meta name="author" content="唐微南">
+
+  
+  <meta name="description" content="最近看了一篇PHP加密的文章，获益良多，因为无论用PHP构建任何系统，都需要对敏感的数据进行加密。而且这几年，时不时地爆出某某网站泄露用户数据什么的，足见构建一个安全的系统也不是这么容易的。 在文章中有几个重要的注意事项： 不要自己写加密函数
+不要单纯使用低端的哈希函数，如（MD5，SHA1） &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://libre.me/blog/2014/04/05/password-hashing">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="唐微的博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">唐微的博客</a></h1>
+  
+    <h2>真理，科学，自由与艺术</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:libre.me" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">归档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">PHP通过盐值加密</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-05T12:30:00+08:00" pubdate data-updated="true">Apr 5<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>最近看了一篇PHP加密的文章，获益良多，因为无论用PHP构建任何系统，都需要对敏感的数据进行加密。而且这几年，时不时地爆出某某网站泄露用户数据什么的，足见构建一个安全的系统也不是这么容易的。</p>
+
+<p>在文章中有几个重要的注意事项：</p>
+
+<ul>
+<li>不要自己写加密函数</li>
+<li>不要单纯使用低端的哈希函数，如（MD5，SHA1）</li>
+<li>不要两次哈希或者组合哈希函数</li>
+</ul>
+
+
+<p>通常目前流行的方式是对密码加盐(salt)，而且盐值不能过短，必须由伪随机数生成，一个好的盐值必须与哈希函数的输出的长度相当。</p>
+
+<p>那么在PHP中如何采用盐值加密？首先必须生成盐值，在PHP中有一个函数为：openssl_random_pseudo_bytes。它是由openssl扩展提供的随机数生成器，因此在PHP环境中启用openssl扩展，因为基本绝大多数的空间都有这个扩展，所以不用担心无法使用。它的语法为：</p>
+
+<pre><code>string openssl_random_pseudo_bytes ( int $length [, bool &amp;$crypto_strong ] )
+</code></pre>
+
+<p>它的输入为长度，单位是（位），返回一个字符串。有了盐值就可以对密码进行加密了。</p>
+
+<pre><code>$salt = openssl_random_pseudo_bytes(160);
+$shell = sha1($salt.$password);
+</code></pre>
+
+<p>将盐值存入数据库中的用户表中，校验的时候提取盐值，就可以与原密码进行比对。
+如果需要进一步加强安全性，可以将盐值放到配置文件中，作为一个公有的盐值，采用：</p>
+
+<p>sha1（sha1（公有盐值+密码）+私有盐值）</p>
+
+<p>据我所知WordPress就是将盐值放在配置文件中的。</p>
+
+<p>在PHP5.5中，openssl扩展引入了新的函数叫做openssl_pbkdf2，使用起来相对简单，但是安全性更高，不过考虑到目前基本使用PHP5.3版本，也就不做介绍了。</p>
+
+<p><strong>更新</strong></p>
+
+<p>在PHP5中引入了新的加密函数：password_hash(),虽然在官方的5.3版本中还没实现，但他推荐了一个与5.3兼容的库，用法与php5.5手册中的相同，github地址：<a href="https://github.com/ircmaxell/password_compat">password_compat</a>。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">作者： <span class="fn">唐微南</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-05T12:30:00+08:00" pubdate data-updated="true">Apr 5<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/php/'>PHP</a>, <a class='category' href='/blog/categories/sha/'>sha</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/04/04/gor-blog/" title="Previous Post: Wordpress没搞头，写博还是静态的好">&laquo; Wordpress没搞头，写博还是静态的好</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/04/10/password-hashing-2/" title="Next Post: PHP password_hash 函数的使用">PHP password_hash 函数的使用 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>近期文章</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/17/pandas-read-csv/">使用pandas处理数据</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/10/password-hashing-2/">PHP Password_hash 函数的使用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/05/password-hashing/">PHP通过盐值加密</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/gor-blog/">Wordpress没搞头，写博还是静态的好</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/12/first-post/">第一篇文章</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - 唐微南 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

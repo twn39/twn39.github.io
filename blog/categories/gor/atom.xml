@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Gor | 唐微的博客]]></title>
+  <link href="http://libre.me/blog/categories/gor/atom.xml" rel="self"/>
+  <link href="http://libre.me/"/>
+  <updated>2014-05-20T22:12:40+08:00</updated>
+  <id>http://libre.me/</id>
+  <author>
+    <name><![CDATA[唐微南]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Wordpress没搞头，写博还是静态的好]]></title>
+    <link href="http://libre.me/blog/2014/04/04/gor-blog/"/>
+    <updated>2014-04-04T10:20:00+08:00</updated>
+    <id>http://libre.me/blog/2014/04/04/gor-blog</id>
+    <content type="html"><![CDATA[<h2>为何需要写博客</h2>
+
+<p>对于学编程的人来说，我觉得写博客还是有必要的，写博客可以记录一些自己的想法，创意以及自己学习到的经验。像我这种过目就忘的人，尤其重要。</p>
+
+<h2>如何选择博客工具</h2>
+
+<p>其实一开始我就是个WordPress的粉丝，也是因为WordPress才开始接触PHP的。像当年（也就一两年吧）我在狗爹（godaddy）斥巨资买了3个月的空间，就是为了搭建一个WordPress个人博客，那时候找各种主题，各种插件，花了几天总算搭建了一个比较满意的博客，后来也就写了几篇博客就搁在那里，再也没去动过它。</p>
+
+<p>再后来我发现了一个叫Markdown的东东，我心里咒骂道：以前我怎么没发现这个东西呢。Markdown跟Wordpress就好比Tex跟Word，只要专注于内容而非板式与页面。后来就基本没碰过WordPress了，就只使用StackEdit+Dropbox了。</p>
+]]></content>
+  </entry>
+  
+</feed>
