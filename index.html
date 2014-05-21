@@ -9,7 +9,24 @@
   <meta name="author" content="唐微南">
 
   
-  <meta name="description" content="什么的是apt-get 高级包装工具（英语：Advanced Packaging Tools,简称：APT）是Debian及其衍生发行版（如：ubuntu）的软件包管理器。APT可以自动下载，配置，安装二进制或者源代码格式的软 件包，因此简化了 Unix系统上管理软件的过程,apt- &hellip;">
+  <meta name="description" content="在Ubuntu系统中，有许多命令可用于查询主机的硬件信息。一些命令只针对特定的硬件组件，比如CPU、内存，一些命令可以查询多个硬件信息。 在ubuntu下执行一下命令可以得到相应的硬件信息： 一. lscpu 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +95,100 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/05/21/lscpu-info/">Ubuntu检测硬件信息</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-21T20:20:00+08:00" pubdate data-updated="true">May 21<span>st</span>, 2014</time>
+        
+           | <a href="/blog/2014/05/21/lscpu-info/#disqus_thread"
+             data-disqus-identifier="http://libre.me/blog/2014/05/21/lscpu-info/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在Ubuntu系统中，有许多命令可用于查询主机的硬件信息。一些命令只针对特定的硬件组件，比如CPU、内存，一些命令可以查询多个硬件信息。</p>
+
+<p>在ubuntu下执行一下命令可以得到相应的硬件信息：</p>
+
+<p>一. lscpu</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Architecture:          x86_64
+</span><span class='line'>CPU op-mode(s):        32-bit, 64-bit
+</span><span class='line'>Byte Order:            Little Endian
+</span><span class='line'>CPU(s):                4
+</span><span class='line'>On-line CPU(s) list:   0-3
+</span><span class='line'>Thread(s) per core:    2
+</span><span class='line'>Core(s) per socket:    2
+</span><span class='line'>Socket(s):             1
+</span><span class='line'>NUMA 节点：         1
+</span><span class='line'>厂商 ID：           GenuineIntel
+</span><span class='line'>CPU 系列：          6
+</span><span class='line'>型号：              42
+</span><span class='line'>步进：              7
+</span><span class='line'>CPU MHz：             800.000
+</span><span class='line'>BogoMIPS:              4390.02
+</span><span class='line'>虚拟化：           VT-x
+</span><span class='line'>L1d 缓存：          32K
+</span><span class='line'>L1i 缓存：          32K
+</span><span class='line'>L2 缓存：           256K
+</span><span class='line'>L3 缓存：           3072K
+</span><span class='line'>NUMA node0 CPU(s):     0-3</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/05/21/lscpu-info/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -527,6 +638,10 @@ print col
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/05/21/lscpu-info/">Ubuntu检测硬件信息</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/05/21/apt-get/">Apt-get的常用用法</a>
       </li>
     
@@ -540,10 +655,6 @@ print col
     
       <li class="post">
         <a href="/blog/2014/04/05/password-hashing/">PHP通过盐值加密</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/04/04/gor-blog/">Wordpress没搞头，写博还是静态的好</a>
       </li>
     
   </ul>

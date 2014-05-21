@@ -4,7 +4,7 @@
   <title><![CDATA[唐微南的博客]]></title>
   <link href="http://libre.me/atom.xml" rel="self"/>
   <link href="http://libre.me/"/>
-  <updated>2014-05-21T21:42:42+08:00</updated>
+  <updated>2014-05-21T22:00:27+08:00</updated>
   <id>http://libre.me/</id>
   <author>
     <name><![CDATA[唐微南]]></name>
@@ -12,6 +12,174 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ubuntu检测硬件信息]]></title>
+    <link href="http://libre.me/blog/2014/05/21/lscpu-info/"/>
+    <updated>2014-05-21T20:20:00+08:00</updated>
+    <id>http://libre.me/blog/2014/05/21/lscpu-info</id>
+    <content type="html"><![CDATA[<p>在Ubuntu系统中，有许多命令可用于查询主机的硬件信息。一些命令只针对特定的硬件组件，比如CPU、内存，一些命令可以查询多个硬件信息。</p>
+
+<p>在ubuntu下执行一下命令可以得到相应的硬件信息：</p>
+
+<p>一. lscpu</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Architecture:          x86_64
+</span><span class='line'>CPU op-mode(s):        32-bit, 64-bit
+</span><span class='line'>Byte Order:            Little Endian
+</span><span class='line'>CPU(s):                4
+</span><span class='line'>On-line CPU(s) list:   0-3
+</span><span class='line'>Thread(s) per core:    2
+</span><span class='line'>Core(s) per socket:    2
+</span><span class='line'>Socket(s):             1
+</span><span class='line'>NUMA 节点：         1
+</span><span class='line'>厂商 ID：           GenuineIntel
+</span><span class='line'>CPU 系列：          6
+</span><span class='line'>型号：              42
+</span><span class='line'>步进：              7
+</span><span class='line'>CPU MHz：             800.000
+</span><span class='line'>BogoMIPS:              4390.02
+</span><span class='line'>虚拟化：           VT-x
+</span><span class='line'>L1d 缓存：          32K
+</span><span class='line'>L1i 缓存：          32K
+</span><span class='line'>L2 缓存：           256K
+</span><span class='line'>L3 缓存：           3072K
+</span><span class='line'>NUMA node0 CPU(s):     0-3</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- more -->
+
+
+<p>二. sudo lshw</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rainmonster-nv57h
+</span><span class='line'>    description: Notebook
+</span><span class='line'>    product: NV57H ()
+</span><span class='line'>    vendor: Gateway
+</span><span class='line'>    version: V1.14
+</span><span class='line'>    serial: LXWZN0C0021383BECD1601
+</span><span class='line'>    width: 64 bits
+</span><span class='line'>    capabilities: smbios-2.7 dmi-2.7 vsyscall32
+</span><span class='line'>    configuration: boot=normal chassis=notebook uuid=FA223F2F-DB7E-11E0-A844-B870F4F3661C
+</span><span class='line'>  *-core
+</span><span class='line'>       description: Motherboard
+</span><span class='line'>       product: SJV50_HR
+</span><span class='line'>       vendor: Gateway
+</span><span class='line'>       physical id: 0
+</span><span class='line'>       version: Base Board Version
+</span><span class='line'>       serial: Base Board Serial Number
+</span><span class='line'>       slot: Base Board Chassis Location
+</span><span class='line'>     *-firmware
+</span><span class='line'>          description: BIOS</span></code></pre></td></tr></table></div></figure>
+
+
+<p>三. lspci</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>00:00.0 Host bridge: Intel Corporation 2nd Generation Core Processor Family DRAM Controller (rev 09)
+</span><span class='line'>00:01.0 PCI bridge: Intel Corporation Xeon E3-1200/2nd Generation Core Processor Family PCI Express Root Port (rev 09)
+</span><span class='line'>00:02.0 VGA compatible controller: Intel Corporation 2nd Generation Core Processor Family Integrated Graphics Controller (rev 09)
+</span><span class='line'>00:16.0 Communication controller: Intel Corporation 6 Series/C200 Series Chipset Family MEI Controller #1 (rev 04)
+</span><span class='line'>00:1a.0 USB controller: Intel Corporation 6 Series/C200 Series Chipset Family USB Enhanced Host Controller #2 (rev 04)
+</span><span class='line'>00:1b.0 Audio device: Intel Corporation 6 Series/C200 Series Chipset Family High Definition Audio Controller (rev 04)
+</span><span class='line'>00:1c.0 PCI bridge: Intel Corporation 6 Series/C200 Series Chipset Family PCI Express Root Port 1 (rev b4)
+</span><span class='line'>00:1c.1 PCI bridge: Intel Corporation 6 Series/C200 Series Chipset Family PCI Express Root Port 2 (rev b4)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>四. lsblk</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+</span><span class='line'>sda      8:0    0 465.8G  0 disk 
+</span><span class='line'>├─sda1   8:1    0  78.2G  0 part 
+</span><span class='line'>├─sda2   8:2    0     1K  0 part 
+</span><span class='line'>├─sda5   8:5    0  90.6G  0 part 
+</span><span class='line'>├─sda6   8:6    0   120G  0 part 
+</span><span class='line'>├─sda7   8:7    0 102.8G  0 part 
+</span><span class='line'>├─sda8   8:8    0     2G  0 part [SWAP]
+</span><span class='line'>└─sda9   8:9    0  72.2G  0 part /
+</span><span class='line'>sr0     11:0    1  1024M  0 rom</span></code></pre></td></tr></table></div></figure>
+
+
+<p>五. lsusb</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Bus 002 Device 003: ID 046d:c05a Logitech, Inc. M90/M100 Optical Mouse
+</span><span class='line'>Bus 002 Device 002: ID 8087:0024 Intel Corp. Integrated Rate Matching Hub
+</span><span class='line'>Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+</span><span class='line'>Bus 001 Device 004: ID 0489:e010 Foxconn / Hon Hai 
+</span><span class='line'>Bus 001 Device 003: ID 064e:d250 Suyin Corp. 
+</span><span class='line'>Bus 001 Device 002: ID 8087:0024 Intel Corp. Integrated Rate Matching Hub
+</span><span class='line'>Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Apt-get的常用用法]]></title>
