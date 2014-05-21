@@ -1,0 +1,364 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Apt-get的常用用法 - 唐微南的博客</title>
+  <meta name="author" content="唐微南">
+
+  
+  <meta name="description" content="什么的是apt-get 高级包装工具（英语：Advanced Packaging Tools,简称：APT）是Debian及其衍生发行版（如：ubuntu）的软件包管理器。APT可以自动下载，配置，安装二进制或者源代码格式的软 件包，因此简化了 Unix系统上管理软件的过程,apt- &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://libre.me/blog/2014/05/21/apt-get">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="唐微南的博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-51200046-1', 'libre.me');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">唐微南的博客</a></h1>
+  
+    <h2>真理，科学，自由与艺术</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:libre.me" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">归档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Apt-get的常用用法</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-21T18:20:00+08:00" pubdate data-updated="true">May 21<span>st</span>, 2014</time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://libre.me">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><ol>
+<li>什么的是apt-get</li>
+</ol>
+
+
+<p>高级包装工具（英语：Advanced Packaging Tools,简称：APT）是Debian及其衍生发行版（如：ubuntu）的软件包管理器。APT可以自动下载，配置，安装二进制或者源代码格式的软 件包，因此简化了 Unix系统上管理软件的过程,apt-get命令一般需要root权限执行，所以一般跟着sudo命令。</p>
+
+<ol>
+<li>apt-get中文参数</li>
+</ol>
+
+
+<p>用法：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>apt-get [选项] 命令 apt-get [选项] install|remove pkg1 [pkg2 ...]
+</span><span class='line'>apt-get [选项] source pkg1 [pkg2 ...]</span></code></pre></td></tr></table></div></figure>
+
+
+<p>apt-get 是一个下载安装软件包的简单命令行接口。 最常用的命令是update(更新) 和install(安装)。</p>
+
+<p>命令：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>update - 重新获取软件包列表 
+</span><span class='line'>upgrade - 进行更新 
+</span><span class='line'>install - 安装新的软件包 
+</span><span class='line'>remove - 移除软件包 
+</span><span class='line'>autoremove - 自动移除全部不使用的软件包 
+</span><span class='line'>purge - 移除软件包和配置文件 
+</span><span class='line'>source - 下载源码档案 
+</span><span class='line'>build-dep - 为源码包配置编译依赖 
+</span><span class='line'>dist-upgrade - 发行版升级
+</span><span class='line'>dselect-upgrade - 依照 dselect 的选择更新 
+</span><span class='line'>clean - 清除下载的归档文件 
+</span><span class='line'>autoclean - 清除旧的的已下载的归档文件 
+</span><span class='line'>check - 检验是否有损坏的依赖 </span></code></pre></td></tr></table></div></figure>
+
+
+<p>选项：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-h 本帮助文件。 
+</span><span class='line'>-q 输出到日志 - 无进展指示 
+</span><span class='line'>-qq 不输出信息，错误除外 
+</span><span class='line'>-d 仅下载 - 不安装或解压归档文件 
+</span><span class='line'>-s 不实际安装。模拟执行命令
+</span><span class='line'>-y 假定对所有的询问选是，不提示 
+</span><span class='line'>-f 尝试修正系统依赖损坏处 
+</span><span class='line'>-m 如果归档无法定位，尝试继续
+</span><span class='line'>-u 同时显示更新软件包的列表 
+</span><span class='line'>-b 获取源码包后编译 -V 显示详细的版本号
+</span><span class='line'>-c=? 阅读此配置文件
+</span><span class='line'>-o=? 设置自定的配置选项，如 -o dir::cache=/tmp</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>apt-get 常用实例</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>apt-cache search packagename 搜索包
+</span><span class='line'>apt-cache show packagename 获取包的相关信息，如说明、大小、版本等
+</span><span class='line'>apt-get install packagename 安装包
+</span><span class='line'>apt-get install packagename --reinstall 重新安装包
+</span><span class='line'>apt-get -f install 修复安装”-f = –fix-missing”
+</span><span class='line'>apt-get remove packagename 删除包
+</span><span class='line'>apt-get remove packagename --purge 删除包，包括删除配置文件等
+</span><span class='line'>apt-get update 更新源
+</span><span class='line'>apt-get upgrade 更新已安装的包
+</span><span class='line'>apt-get dist-upgrade 升级系统
+</span><span class='line'>apt-get dselect-upgrade 使用 dselect 升级
+</span><span class='line'>apt-cache depends packagename 了解使用依赖
+</span><span class='line'>apt-cache rdepends packagename 是查看该包被哪些包依赖
+</span><span class='line'>apt-get build-dep packagename 安装相关的编译环境
+</span><span class='line'>apt-get source packagename 下载该包的源代码
+</span><span class='line'>apt-get clean 清理无用的包
+</span><span class='line'>apt-get autoclean 清理无用的包
+</span><span class='line'>apt-get check 检查是否有损坏的依赖</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">作者： <span class="fn">唐微南</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-21T18:20:00+08:00" pubdate data-updated="true">May 21<span>st</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linux/'>linux</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/04/17/pandas-read-csv/" title="Previous Post: 使用pandas处理数据">&laquo; 使用pandas处理数据</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>近期文章</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/05/21/apt-get/">Apt-get的常用用法</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/17/pandas-read-csv/">使用pandas处理数据</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/10/password-hashing-2/">PHP Password_hash 函数的使用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/05/password-hashing/">PHP通过盐值加密</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/gor-blog/">Wordpress没搞头，写博还是静态的好</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - 唐微南 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'yunduan';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://libre.me/blog/2014/05/21/apt-get/';
+        var disqus_url = 'http://libre.me/blog/2014/05/21/apt-get/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
