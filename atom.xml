@@ -4,11 +4,11 @@
   <title><![CDATA[唐微南的博客]]></title>
   <link href="http://libre.me/atom.xml" rel="self"/>
   <link href="http://libre.me/"/>
-  <updated>2014-05-21T22:00:27+08:00</updated>
+  <updated>2014-05-21T22:05:47+08:00</updated>
   <id>http://libre.me/</id>
   <author>
     <name><![CDATA[唐微南]]></name>
-    
+    <email><![CDATA[twn39@163.com]]></email>
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
