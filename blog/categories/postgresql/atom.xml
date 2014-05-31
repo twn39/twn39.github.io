@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Postgresql | 唐微南的博客]]></title>
+  <link href="http://libre.me/blog/categories/postgresql/atom.xml" rel="self"/>
+  <link href="http://libre.me/"/>
+  <updated>2014-05-31T10:05:41+08:00</updated>
+  <id>http://libre.me/</id>
+  <author>
+    <name><![CDATA[唐微南]]></name>
+    <email><![CDATA[twn39@163.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[在Ubuntu上安装Postgresql数据库]]></title>
+    <link href="http://libre.me/blog/2014/05/30/install-postgresql-on-ubuntu/"/>
+    <updated>2014-05-30T09:20:00+08:00</updated>
+    <id>http://libre.me/blog/2014/05/30/install-postgresql-on-ubuntu</id>
+    <content type="html"><![CDATA[<p>Postgresql是一个类似于mysql的关系型数据库，在ubuntu中安装postgresql相对来说比其他的linux发行版来得容易。</p>
+
+<p>首先可以用<code>apt-cache show</code>来看一下在ubuntu14.04中postgresql的版本信息：</p>
+
+<p><code>
+Package: postgresql
+Priority: optional
+Section: database
+Installed-Size: 71
+Maintainer: Ubuntu Developers &lt;ubuntu-devel-discuss@lists.ubuntu.com&gt;
+Original-Maintainer: Debian PostgreSQL Maintainers &lt;pkg-postgresql-public@lists.alioth.debian.org&gt;
+Architecture: all
+Source: postgresql-common (154)
+Version: 9.3+154
+Depends: postgresql-9.3
+Filename: pool/main/p/postgresql-common/postgresql_9.3+154_all.deb
+Size: 5088
+MD5sum: 029b8a2af293670f1fa7ce10443b6f37
+SHA1: cfe4345b4c1babf8f892bba02311520586f13fad
+SHA256: 6186663b8118cb3ada88a421654091f8c5813317545005e2066068b9eb98806c
+Description-en: object-relational SQL database (supported version)
+ This metapackage always depends on the currently supported PostgreSQL
+ database server version.
+ .
+ PostgreSQL is a fully featured object-relational database management
+ system.  It supports a large part of the SQL standard and is designed
+ to be extensible by users in many aspects.  Some of the features are:
+ ACID transactions, foreign keys, views, sequences, subqueries,
+ triggers, user-defined types and functions, outer joins, multiversion
+ concurrency control.  Graphical user interfaces and bindings for many
+ programming languages are available as well.
+Description-md5: bdff2d6e5b2a1dd00e72b3ed8729d9ac
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Origin: Ubuntu
+Supported: 5y
+Task: postgresql-server
+</code></p>
+
+<p>接下来通过<code>apt-get install</code>安装postgresql：
+<code>
+sudo apt-get install postgresql postgresql-client pgadmin3
+</code>
+一条命令就将postgresql安装完成了，上次我在archlinux上安装postgresql，连服务都启动不了，还一直报错，需要自己手动配置，因为ubuntu本身提供ubuntu server，因此他对一些服务器软件进行过配置优化，因此果断还是从archlinux切换回ubuntu。</p>
+
+<p>打开pgadmin3，就可以通过图形化的方式来管理和操作postgresql数据库了，但是我发现用pgadmin3默认的设置登陆不上去，难道默认的用户名和密码不对，从网上搜索了一下，都无法连接postgresql数据库。算了，还是直接改密码吧。</p>
+
+<p><code>
+sudo -u postgres psql
+</code>
+输入这条命令的时候我才意识到，有可能是pgadmin设置了密码框不能为空吧。</p>
+
+<p>连接数据库后输入以下命令就可以修改密码：
+<code>
+postgres=# ALTER USER postgres WITH PASSWORD 'postgres';
+</code>
+修改之后就可以通过pgadmin来操作数据库了。</p>
+]]></content>
+  </entry>
+  
+</feed>
