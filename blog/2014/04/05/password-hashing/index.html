@@ -9,8 +9,7 @@
   <meta name="author" content="唐微南">
 
   
-  <meta name="description" content="最近看了一篇PHP加密的文章，获益良多，因为无论用PHP构建任何系统，都需要对敏感的数据进行加密。而且这几年，时不时地爆出某某网站泄露用户数据什么的，足见构建一个安全的系统也不是这么容易的。 在文章中有几个重要的注意事项： 不要自己写加密函数
-不要单纯使用低端的哈希函数，如（MD5，SHA1） &hellip;">
+  <meta name="description" content="PHP通过盐值加密 Apr 5th, 2014 | <a href="#disqus_thread" data-disqus-identifier="http://libre.me">Comments 最近看了一篇PHP加密的文章，获益良多，因为无论用PHP构建任何系统， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -105,6 +104,7 @@
   </header>
 
 
+
 <div class="entry-content"><p>最近看了一篇PHP加密的文章，获益良多，因为无论用PHP构建任何系统，都需要对敏感的数据进行加密。而且这几年，时不时地爆出某某网站泄露用户数据什么的，足见构建一个安全的系统也不是这么容易的。</p>
 
 <p>在文章中有几个重要的注意事项：</p>
@@ -145,6 +145,23 @@
 
 <p>在PHP5中引入了新的加密函数：password_hash(),虽然在官方的5.3版本中还没实现，但他推荐了一个与5.3兼容的库，用法与php5.5手册中的相同，github地址：<a href="https://github.com/ircmaxell/password_compat">password_compat</a>。</p>
 </div>
+
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<span class="jiathis_txt">分享到：</span>
+	<a class="jiathis_button_qzone">QQ空间</a>
+	<a class="jiathis_button_tsina">新浪微博</a>
+	<a class="jiathis_button_tqq">腾讯微博</a>
+	<a class="jiathis_button_weixin">微信</a>
+	<a href="http://www.jiathis.com/share?uid=1693401" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1345856667717505" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
 
 
   <footer>
@@ -197,7 +214,7 @@
 </article>
 
   <section>
-    <h1>Comments</h1>
+    <h1>评论</h1>
     <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
   </section>
