@@ -37,15 +37,19 @@
         <lastmod>2014-05-31T10:09:18+08:00</lastmod>
     </url>
     <url>
-        <loc>http://libre.me/blog/archives/</loc>
-        <lastmod>2014-05-31T10:09:18+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://libre.me/</loc>
-        <lastmod>2014-05-31T10:09:18+08:00</lastmod>
+        <loc>http://libre.me/blog/2014/06/12/php-pdo-tutorial/</loc>
+        <lastmod>2014-06-12T13:09:14+08:00</lastmod>
     </url>
     <url>
         <loc>http://libre.me/robots.txt</loc>
         <lastmod>2014-05-19T20:52:38+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://libre.me/blog/archives/</loc>
+        <lastmod>2014-06-12T13:09:14+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://libre.me/</loc>
+        <lastmod>2014-06-12T13:09:14+08:00</lastmod>
     </url>
 </urlset>

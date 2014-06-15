@@ -4,7 +4,7 @@
   <title><![CDATA[唐微南的博客]]></title>
   <link href="http://libre.me/atom.xml" rel="self"/>
   <link href="http://libre.me/"/>
-  <updated>2014-06-10T12:40:45+08:00</updated>
+  <updated>2014-06-15T13:33:02+08:00</updated>
   <id>http://libre.me/</id>
   <author>
     <name><![CDATA[唐微南]]></name>
@@ -12,6 +12,15 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[PHP PDO 简单实践]]></title>
+    <link href="http://libre.me/blog/2014/06/12/php-pdo-tutorial/"/>
+    <updated>2014-06-12T13:07:14+08:00</updated>
+    <id>http://libre.me/blog/2014/06/12/php-pdo-tutorial</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[在Ubuntu上安装Postgresql数据库]]></title>
