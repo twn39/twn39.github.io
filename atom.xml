@@ -4,7 +4,7 @@
   <title><![CDATA[唐微南的博客]]></title>
   <link href="http://libre.me/atom.xml" rel="self"/>
   <link href="http://libre.me/"/>
-  <updated>2014-06-15T15:02:44+08:00</updated>
+  <updated>2014-06-16T23:11:42+08:00</updated>
   <id>http://libre.me/</id>
   <author>
     <name><![CDATA[唐微南]]></name>
@@ -14,11 +14,63 @@
 
   
   <entry>
-    <title type="html"><![CDATA[PHP PDO 简单实践]]></title>
-    <link href="http://libre.me/blog/2014/06/12/php-pdo-tutorial/"/>
-    <updated>2014-06-12T13:07:14+08:00</updated>
-    <id>http://libre.me/blog/2014/06/12/php-pdo-tutorial</id>
-    <content type="html"><![CDATA[
+    <title type="html"><![CDATA[Apache配置虚拟主机与域名访问]]></title>
+    <link href="http://libre.me/blog/2014/06/16/apache-virtualhost-configure/"/>
+    <updated>2014-06-16T23:07:54+08:00</updated>
+    <id>http://libre.me/blog/2014/06/16/apache-virtualhost-configure</id>
+    <content type="html"><![CDATA[<p>如果想要在地址栏输入域名来访问本地搭建的虚拟主机，需要配置apache配置文件和修改
+hosts文件。</p>
+
+<p>本示例基于xubuntu 14.04 LTS，可能在不同的系统与版本会略有不同。</p>
+
+<p>一. 将目录切换到<code>/etc/apache2/sites-available</code>,新建一个以
+域名为文件名的配置文件，这里以<code>info.com.conf</code>为例：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;VirtualHost *:80&gt;
+</span><span class='line'>  ServerAdmin webmaster@localhost
+</span><span class='line'>  DocumentRoot /var/www/html/info
+</span><span class='line'>  ServerName info.com
+</span><span class='line'>
+</span><span class='line'>  ErrorLog ${APACHE_LOG_DIR}/error.log
+</span><span class='line'>  CustomLog ${APACHE_LOG_DIR}/access.log combined
+</span><span class='line'>&lt;/VirtualHost&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其中<code>DocumentRoot</code>为指向本地的文件目录，这里为<code>info</code>，可根据
+具体需求更改。然后启用<code>virtualhost</code>：<code>sudo a2ensite info.com</code>,如果需要停用服务
+，使用：<code>sudo a2dissite info.com</code>。</p>
+
+<p>二. 切换目录到<code>/var/www/html</code>,新建一个<code>info</code>目录，即<code>DocumentRoot</code>指定的
+目录，然后新建一个示例文件<code>index.php</code>,输入如下内容：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="nb">phpinfo</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>三. 修改<code>hosts</code>文件，打开<code>sudo vim /etc/hosts</code>,添加域名：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span>  <span class="nx">localhost</span>
+</span><span class='line'><span class="mf">127.0</span><span class="o">.</span><span class="mf">1.1</span>  <span class="nx">twn39</span><span class="o">-</span><span class="nx">NV57H</span>
+</span><span class='line'><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span>  <span class="nx">info</span><span class="o">.</span><span class="nx">com</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>四. 重启apache，<code>sudo service apache2 restart</code>,
+访问域名<code>info.com</code>。</p>
 ]]></content>
   </entry>
   
