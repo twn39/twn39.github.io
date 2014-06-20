@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Elixir | 唐微南的博客]]></title>
+  <link href="http://libre.me/blog/categories/elixir/atom.xml" rel="self"/>
+  <link href="http://libre.me/"/>
+  <updated>2014-06-20T22:57:17+08:00</updated>
+  <id>http://libre.me/</id>
+  <author>
+    <name><![CDATA[唐微南]]></name>
+    <email><![CDATA[twn39@163.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[安装 Elixir]]></title>
+    <link href="http://libre.me/blog/2014/06/20/elixir-install/"/>
+    <updated>2014-06-20T22:55:16+08:00</updated>
+    <id>http://libre.me/blog/2014/06/20/elixir-install</id>
+    <content type="html"><![CDATA[<p>Elixir是一种运行于ErlangVM上具有元编程特性的动态语言。它拥有灵活的语法和强大的宏系统，
+还具备模式匹配、通过协议（类似Clojure的方式）支持多态等功能：继承了Erlang的优点，尤其适合开发并行、分布式，以及高容错应用。</p>
+
+<p>下面就来介绍如何在ubuntu上使用elixirb 编程，示例运行的环境为：
+Xubuntu 14.04 LTS。</p>
+
+<p>因为 elixir 是基于 erlang 的，而且需要 erlang 17 以上，
+因此 ubuntu 官方软件源中的 erlang 并不适合安装 elixir ，将 erlang 官方源添加到软件源列表中：</p>
+
+<p><code>
+deb http://packages.erlang-solutions.com/ubuntu trusty contrib
+</code></p>
+
+<p>其他 linux 系统 erlang 官方也有支持，具体可以参考：
+<a href="https://www.erlang-solutions.com/downloads/download-erlang-otp">https://www.erlang-solutions.com/downloads/download-erlang-otp</a></p>
+
+<p>添加认证密钥：</p>
+
+<p><code>
+wget http://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc
+sudo apt-key add erlang_solutions.asc
+</code></p>
+
+<p>然后更新软件源：</p>
+
+<p><code>
+sudo apt-get update
+sudo apt-get install erlang elixir
+</code></p>
+
+<p>这样 elixir 就已经安装完成了，在终端输入：<code>iex</code>,就可以进入 shell 环境了。</p>
+]]></content>
+  </entry>
+  
+</feed>
