@@ -4,7 +4,7 @@
   <title><![CDATA[唐微南的博客]]></title>
   <link href="http://libre.me/atom.xml" rel="self"/>
   <link href="http://libre.me/"/>
-  <updated>2014-06-20T22:57:17+08:00</updated>
+  <updated>2014-06-24T22:03:09+08:00</updated>
   <id>http://libre.me/</id>
   <author>
     <name><![CDATA[唐微南]]></name>
@@ -12,6 +12,79 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[在 Ubuntu 中安装 Memcached]]></title>
+    <link href="http://libre.me/blog/2014/06/24/memcache-install-and-test/"/>
+    <updated>2014-06-24T21:58:58+08:00</updated>
+    <id>http://libre.me/blog/2014/06/24/memcache-install-and-test</id>
+    <content type="html"><![CDATA[<p>Memcached是一个流行的高性能分布式的内存对象缓存系统，
+通常被用于降低数据库加载压力以提高动态web应用的响应速度。
+目前许多的大型企业都有使用 memcache 来作为缓存数据库。</p>
+
+<p>以下讲解如何在 ubuntu 上安装 memcached 。</p>
+
+<h3>安装</h3>
+
+<p>一. 安装 memcached 服务</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install memcached</span></code></pre></td></tr></table></div></figure>
+
+
+<p>默认的配置为 localhost：11211</p>
+
+<p>二. 安装 php 插件</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install php5-memcached</span></code></pre></td></tr></table></div></figure>
+
+
+<p>memcache 的 php 插件有两个，一个是<code>php5-memcache</code>,
+另一个为<code>php5-memcached</code>。好像前一个要出现得早一些，
+但是后者能够提供更多的功能，因此这里安装后者。</p>
+
+<p><strong>重启 apache2</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo service apache2 restart</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>测试</h3>
+
+<p>新建两个页面，一个添加缓存数据，另一个获取缓存数据。</p>
+
+<figure class='code'><figcaption><span>add.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="nv">$m</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Memcached</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$m</span><span class="o">-&gt;</span><span class="na">addServer</span><span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">11211</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$m</span><span class="o">-&gt;</span><span class="na">set</span><span class="p">(</span><span class="s1">&#39;website&#39;</span><span class="p">,</span> <span class="s1">&#39;http://libre.me&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">);</span>
+</span><span class='line'><span class="k">echo</span> <span class="s1">&#39;memcache has set.&#39;</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>get.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="nv">$m</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Memcached</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$m</span><span class="o">-&gt;</span><span class="na">addServer</span><span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">11211</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$var</span> <span class="o">=</span> <span class="nv">$m</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;website&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$var</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>可以发现两个页面都可以正常执行，说明 memcache 安装成功。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[安装 Elixir]]></title>

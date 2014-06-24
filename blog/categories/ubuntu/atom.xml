@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ubuntu | 唐微南的博客]]></title>
   <link href="http://libre.me/blog/categories/ubuntu/atom.xml" rel="self"/>
   <link href="http://libre.me/"/>
-  <updated>2014-06-20T22:57:17+08:00</updated>
+  <updated>2014-06-24T22:03:09+08:00</updated>
   <id>http://libre.me/</id>
   <author>
     <name><![CDATA[唐微南]]></name>
@@ -12,6 +12,66 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[在 Ubuntu 中安装 Memcached]]></title>
+    <link href="http://libre.me/blog/2014/06/24/memcache-install-and-test/"/>
+    <updated>2014-06-24T21:58:58+08:00</updated>
+    <id>http://libre.me/blog/2014/06/24/memcache-install-and-test</id>
+    <content type="html"><![CDATA[<p>Memcached是一个流行的高性能分布式的内存对象缓存系统，
+通常被用于降低数据库加载压力以提高动态web应用的响应速度。
+目前许多的大型企业都有使用 memcache 来作为缓存数据库。</p>
+
+<p>以下讲解如何在 ubuntu 上安装 memcached 。</p>
+
+<h3>安装</h3>
+
+<p>一. 安装 memcached 服务
+<code>
+sudo apt-get install memcached
+</code></p>
+
+<p>默认的配置为 localhost：11211</p>
+
+<p>二. 安装 php 插件</p>
+
+<p><code>
+sudo apt-get install php5-memcached
+</code></p>
+
+<p>memcache 的 php 插件有两个，一个是<code>php5-memcache</code>,
+另一个为<code>php5-memcached</code>。好像前一个要出现得早一些，
+但是后者能够提供更多的功能，因此这里安装后者。</p>
+
+<p><strong>重启 apache2</strong></p>
+
+<p><code>
+sudo service apache2 restart
+</code></p>
+
+<h3>测试</h3>
+
+<p>新建两个页面，一个添加缓存数据，另一个获取缓存数据。</p>
+
+<p><code>php add.php
+&lt;?php
+$m = new Memcached();
+$m-&gt;addServer('localhost', 11211);
+$m-&gt;set('website', 'http://libre.me', 30);
+echo 'memcache has set.';
+</code></p>
+
+<p><code>php get.php
+&lt;?php
+$m = new Memcached();
+$m-&gt;addServer('localhost', 11211);
+$var = $m-&gt;get('website');
+var_dump($var);
+</code></p>
+
+<p>可以发现两个页面都可以正常执行，说明 memcache 安装成功。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[安装 Elixir]]></title>

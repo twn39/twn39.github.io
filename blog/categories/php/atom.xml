@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Php | 唐微南的博客]]></title>
   <link href="http://libre.me/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://libre.me/"/>
-  <updated>2014-06-20T22:57:17+08:00</updated>
+  <updated>2014-06-24T22:03:09+08:00</updated>
   <id>http://libre.me/</id>
   <author>
     <name><![CDATA[唐微南]]></name>
@@ -12,6 +12,66 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[在 Ubuntu 中安装 Memcached]]></title>
+    <link href="http://libre.me/blog/2014/06/24/memcache-install-and-test/"/>
+    <updated>2014-06-24T21:58:58+08:00</updated>
+    <id>http://libre.me/blog/2014/06/24/memcache-install-and-test</id>
+    <content type="html"><![CDATA[<p>Memcached是一个流行的高性能分布式的内存对象缓存系统，
+通常被用于降低数据库加载压力以提高动态web应用的响应速度。
+目前许多的大型企业都有使用 memcache 来作为缓存数据库。</p>
+
+<p>以下讲解如何在 ubuntu 上安装 memcached 。</p>
+
+<h3>安装</h3>
+
+<p>一. 安装 memcached 服务
+<code>
+sudo apt-get install memcached
+</code></p>
+
+<p>默认的配置为 localhost：11211</p>
+
+<p>二. 安装 php 插件</p>
+
+<p><code>
+sudo apt-get install php5-memcached
+</code></p>
+
+<p>memcache 的 php 插件有两个，一个是<code>php5-memcache</code>,
+另一个为<code>php5-memcached</code>。好像前一个要出现得早一些，
+但是后者能够提供更多的功能，因此这里安装后者。</p>
+
+<p><strong>重启 apache2</strong></p>
+
+<p><code>
+sudo service apache2 restart
+</code></p>
+
+<h3>测试</h3>
+
+<p>新建两个页面，一个添加缓存数据，另一个获取缓存数据。</p>
+
+<p><code>php add.php
+&lt;?php
+$m = new Memcached();
+$m-&gt;addServer('localhost', 11211);
+$m-&gt;set('website', 'http://libre.me', 30);
+echo 'memcache has set.';
+</code></p>
+
+<p><code>php get.php
+&lt;?php
+$m = new Memcached();
+$m-&gt;addServer('localhost', 11211);
+$var = $m-&gt;get('website');
+var_dump($var);
+</code></p>
+
+<p>可以发现两个页面都可以正常执行，说明 memcache 安装成功。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Phpmail 的使用]]></title>
@@ -64,10 +124,10 @@ User &lt;user@example.com&gt;, Another User &lt;anotheruser@example.com&gt;
 
 <p>```php
 &lt;?php
-$to      = &lsquo;<a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#x74;&#119;&#x6e;&#x33;&#x39;&#x40;&#x31;&#54;&#51;&#46;&#99;&#x6f;&#109;">&#x74;&#x77;&#110;&#51;&#57;&#64;&#49;&#54;&#51;&#46;&#x63;&#111;&#109;</a>&rsquo;;
+$to      = &lsquo;<a href="&#109;&#x61;&#x69;&#108;&#x74;&#x6f;&#x3a;&#116;&#119;&#x6e;&#x33;&#57;&#x40;&#49;&#54;&#x33;&#46;&#x63;&#x6f;&#x6d;">&#x74;&#x77;&#110;&#x33;&#x39;&#64;&#49;&#54;&#x33;&#46;&#99;&#x6f;&#x6d;</a>&rsquo;;
 $subject = &lsquo;the subject&rsquo;;
 $message = &lsquo;hello&rsquo;;
-$headers = &lsquo;From: <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#116;&#x77;&#110;&#x33;&#57;&#64;&#49;&#54;&#51;&#x2e;&#99;&#111;&#109;">&#x74;&#119;&#x6e;&#x33;&#57;&#x40;&#x31;&#54;&#x33;&#x2e;&#99;&#x6f;&#x6d;</a>&rsquo; . &ldquo;\r\n&rdquo; .</p>
+$headers = &lsquo;From: <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#x6f;&#58;&#116;&#119;&#110;&#x33;&#57;&#64;&#49;&#54;&#51;&#46;&#99;&#x6f;&#x6d;">&#116;&#119;&#110;&#51;&#57;&#64;&#x31;&#54;&#51;&#x2e;&#x63;&#111;&#x6d;</a>&rsquo; . &ldquo;\r\n&rdquo; .</p>
 
 <pre><code>    'Reply-To: webmaster@example.com' . "\r\n" .
     'X-Mailer: PHP/' . phpversion();
@@ -85,8 +145,8 @@ $headers = &lsquo;From: <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#116
 <pre><code>// multiple recipients
 </code></pre>
 
-<p>$to  = &lsquo;<a href="&#109;&#97;&#105;&#108;&#x74;&#111;&#x3a;&#97;&#x69;&#x64;&#97;&#x6e;&#64;&#x65;&#120;&#97;&#x6d;&#x70;&#x6c;&#x65;&#46;&#99;&#x6f;&#x6d;">&#97;&#x69;&#100;&#x61;&#x6e;&#x40;&#101;&#120;&#x61;&#109;&#112;&#x6c;&#101;&#x2e;&#x63;&#111;&#109;</a>&rsquo; . &lsquo;, &rsquo;; // note the comma
-$to .= &lsquo;<a href="&#x6d;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#x77;&#101;&#122;&#x40;&#x65;&#x78;&#97;&#x6d;&#112;&#x6c;&#101;&#46;&#99;&#x6f;&#109;">&#119;&#x65;&#122;&#x40;&#101;&#x78;&#97;&#109;&#x70;&#x6c;&#x65;&#46;&#99;&#x6f;&#x6d;</a>&rsquo;;</p>
+<p>$to  = &lsquo;<a href="&#109;&#97;&#105;&#x6c;&#x74;&#111;&#x3a;&#x61;&#x69;&#100;&#97;&#x6e;&#64;&#101;&#x78;&#97;&#x6d;&#112;&#108;&#x65;&#46;&#x63;&#x6f;&#109;">&#97;&#x69;&#x64;&#x61;&#110;&#x40;&#101;&#x78;&#x61;&#109;&#112;&#108;&#101;&#46;&#99;&#x6f;&#109;</a>&rsquo; . &lsquo;, &rsquo;; // note the comma
+$to .= &lsquo;<a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#x77;&#x65;&#122;&#x40;&#101;&#x78;&#97;&#x6d;&#112;&#x6c;&#101;&#46;&#99;&#x6f;&#x6d;">&#x77;&#x65;&#122;&#64;&#101;&#120;&#97;&#x6d;&#112;&#108;&#101;&#46;&#99;&#x6f;&#x6d;</a>&rsquo;;</p>
 
 <pre><code>// subject
 </code></pre>
@@ -126,9 +186,9 @@ $to .= &lsquo;<a href="&#x6d;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#x77;&#101;&#1
 <p>$headers   = array();
 $headers[] = &ldquo;MIME-Version: 1.0&rdquo;;
 $headers[] = &ldquo;Content-type: text/plain; charset=iso-8859-1&rdquo;;
-$headers[] = &ldquo;From: Sender Name <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#111;&#x3a;&#115;&#x65;&#110;&#x64;&#101;&#114;&#x40;&#x64;&#111;&#x6d;&#97;&#105;&#110;&#46;&#x63;&#111;&#109;">&#115;&#101;&#110;&#100;&#101;&#x72;&#x40;&#x64;&#111;&#x6d;&#x61;&#x69;&#x6e;&#x2e;&#x63;&#x6f;&#x6d;</a>&rdquo;;
-$headers[] = &ldquo;Bcc: JJ Chong <a href="&#109;&#x61;&#x69;&#108;&#116;&#x6f;&#x3a;&#98;&#x63;&#99;&#x40;&#100;&#111;&#x6d;&#97;&#105;&#x6e;&#x32;&#46;&#x63;&#111;&#109;">&#x62;&#x63;&#x63;&#64;&#x64;&#111;&#109;&#97;&#x69;&#110;&#x32;&#46;&#99;&#x6f;&#x6d;</a>&rdquo;;
-$headers[] = &ldquo;Reply-To: Recipient Name <a href="&#109;&#x61;&#105;&#108;&#116;&#111;&#58;&#114;&#x65;&#x63;&#x65;&#105;&#x76;&#101;&#114;&#x40;&#x64;&#111;&#x6d;&#97;&#x69;&#x6e;&#51;&#x2e;&#x63;&#111;&#109;">&#x72;&#x65;&#x63;&#x65;&#x69;&#118;&#x65;&#x72;&#x40;&#100;&#x6f;&#x6d;&#x61;&#105;&#110;&#x33;&#46;&#x63;&#x6f;&#x6d;</a>&rdquo;;
+$headers[] = &ldquo;From: Sender Name <a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#x6f;&#58;&#x73;&#101;&#110;&#100;&#x65;&#114;&#64;&#100;&#111;&#109;&#x61;&#105;&#110;&#x2e;&#99;&#111;&#x6d;">&#115;&#101;&#x6e;&#100;&#101;&#114;&#64;&#x64;&#111;&#x6d;&#97;&#105;&#110;&#46;&#x63;&#x6f;&#109;</a>&rdquo;;
+$headers[] = &ldquo;Bcc: JJ Chong <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#x62;&#99;&#99;&#x40;&#100;&#111;&#109;&#97;&#105;&#x6e;&#x32;&#46;&#99;&#x6f;&#x6d;">&#98;&#99;&#x63;&#64;&#100;&#x6f;&#109;&#x61;&#x69;&#110;&#x32;&#46;&#99;&#x6f;&#109;</a>&rdquo;;
+$headers[] = &ldquo;Reply-To: Recipient Name <a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#x6f;&#58;&#114;&#101;&#99;&#x65;&#x69;&#x76;&#x65;&#114;&#64;&#100;&#111;&#109;&#97;&#105;&#x6e;&#51;&#46;&#x63;&#111;&#x6d;">&#x72;&#x65;&#x63;&#x65;&#105;&#118;&#101;&#x72;&#64;&#100;&#x6f;&#109;&#97;&#105;&#x6e;&#x33;&#x2e;&#x63;&#x6f;&#x6d;</a>&rdquo;;
 $headers[] = &ldquo;Subject: {$subject}&rdquo;;
 $headers[] = &ldquo;X-Mailer: PHP/&rdquo;.phpversion();</p>
 
