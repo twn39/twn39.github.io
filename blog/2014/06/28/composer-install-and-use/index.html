@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="zh_CN"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Apt-get的常用用法 - 唐微南的博客</title>
+  <title>PHP Composer 的安装与使用 - 唐微南的博客</title>
   <meta name="author" content="唐微南">
 
   
-  <meta name="description" content="Apt-get的常用用法 May 21st, 2014 | <a href="#disqus_thread" data-disqus-identifier="http://libre.me">Comments 什么的是apt-get 高级包装工具（英语：Advanced Packaging &hellip;">
+  <meta name="description" content="PHP Composer 的安装与使用 Jun 28th, 2014 | <a href="#disqus_thread" data-disqus-identifier="http://libre.me">Comments composer 是目前非常流行的管理 php 依赖包工具， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://libre.me/blog/2014/05/21/apt-get">
+  <link rel="canonical" href="http://libre.me/blog/2014/06/28/composer-install-and-use">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="唐微南的博客" type="application/atom+xml">
@@ -67,7 +67,7 @@
   
   <header>
     
-      <h2 class="entry-title">Apt-get的常用用法</h2>
+      <h2 class="entry-title">PHP Composer 的安装与使用</h2>
     
     
       <p class="meta">
@@ -83,7 +83,7 @@
   
 
 
-<time datetime="2014-05-21T18:20:00+08:00" pubdate data-updated="true">May 21<span>st</span>, 2014</time>
+<time datetime="2014-06-28T15:29:09+08:00" pubdate data-updated="true">Jun 28<span>th</span>, 2014</time>
         
            | <a href="#disqus_thread"
              data-disqus-identifier="http://libre.me">Comments</a>
@@ -94,29 +94,24 @@
 
 
 
-<div class="entry-content"><ol>
-<li>什么的是apt-get</li>
-</ol>
+<div class="entry-content"><p>composer 是目前非常流行的管理 php 依赖包工具，目测现在啥都得有个包管理工具
+才行，像 web 开发都有 bower 了。不过使用 composer 确实方便了不少，如果像是个人
+或者小项目直接用 composer 装几个模块就可以开发了，而且近年来风头正劲的
+php 框架 Laravel 也使用 composer 来处理依赖了。所以学习 composer 是非常有用的。</p>
 
+<p>那么如何来使用 composer 来管理依赖，这里举个实例：我现在需要一个有效
+的加密函数来加密用户的密码，而 composer 刚好提供了实现这种功能的软件包<code>password-compat</code>
+（软件包可以通过 <a href="https://packagist.org">https://packagist.org</a> 查找）。</p>
 
-<p>高级包装工具（英语：Advanced Packaging Tools,简称：APT）是Debian及其衍生发行版（如：ubuntu）的软件包管理器。APT可以自动下载，配置，安装二进制或者源代码格式的软 件包，因此简化了 Unix系统上管理软件的过程,apt-get命令一般需要root权限执行，所以一般跟着sudo命令。</p>
+<h3>一. 下载 composer 脚本</h3>
 
-<ol>
-<li>apt-get中文参数</li>
-</ol>
-
-
-<p>用法：</p>
+<p>新建一个项目，例如：<code>myapp</code>，切换到目录下，打开终端输入：</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>apt-get [选项] 命令 apt-get [选项] install|remove pkg1 [pkg2 ...]
-</span><span class='line'>apt-get [选项] source pkg1 [pkg2 ...]</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>curl -sS https://getcomposer.org/installer | php</span></code></pre></td></tr></table></div></figure>
 
 
-<p>apt-get 是一个下载安装软件包的简单命令行接口。 最常用的命令是update(更新) 和install(安装)。</p>
-
-<p>命令：</p>
+<p>如果安装成功它会提示：</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -124,29 +119,49 @@
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>update - 重新获取软件包列表 
-</span><span class='line'>upgrade - 进行更新 
-</span><span class='line'>install - 安装新的软件包 
-</span><span class='line'>remove - 移除软件包 
-</span><span class='line'>autoremove - 自动移除全部不使用的软件包 
-</span><span class='line'>purge - 移除软件包和配置文件 
-</span><span class='line'>source - 下载源码档案 
-</span><span class='line'>build-dep - 为源码包配置编译依赖 
-</span><span class='line'>dist-upgrade - 发行版升级
-</span><span class='line'>dselect-upgrade - 依照 dselect 的选择更新 
-</span><span class='line'>clean - 清除下载的归档文件 
-</span><span class='line'>autoclean - 清除旧的的已下载的归档文件 
-</span><span class='line'>check - 检验是否有损坏的依赖 </span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#!/usr/bin/env php
+</span><span class='line'>All settings correct for using Composer
+</span><span class='line'>Downloading...
+</span><span class='line'>
+</span><span class='line'>Composer successfully installed to: /var/www/html/myapp/composer.phar
+</span><span class='line'>Use it: php composer.phar</span></code></pre></td></tr></table></div></figure>
 
 
-<p>选项：</p>
+<p>现在可以使用 composer 了。</p>
+
+<!-- more -->
+
+
+<h3>二. 安装依赖包</h3>
+
+<p>有很多方式可以安装依赖包，可以在终端下直接输入：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>php composer.phar require "ircmaxell/password-compat"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后它会询问安装那个版本，这里输入<code>1.*</code>,可以指定具体版本，也可以
+使用通配符。</p>
+
+<p>它会自动从<code>github</code>下载文件，并自动生成<code>autoload</code>文件。</p>
+
+<p>可以发现目录下有一个<code>composer.json</code> 文件，打开文件可以发现如下信息：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>{
+</span><span class='line'>    "require": {
+</span><span class='line'>        "ircmaxell/password-compat": "1.*"
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>composer.json</code> 就是<code>json</code>格式的依赖管理文件，如果需要额外扩展包，也可以手动添加。</p>
+
+<p>添加一个扩展包：</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -154,68 +169,51 @@
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>-h 本帮助文件。 
-</span><span class='line'>-q 输出到日志 - 无进展指示 
-</span><span class='line'>-qq 不输出信息，错误除外 
-</span><span class='line'>-d 仅下载 - 不安装或解压归档文件 
-</span><span class='line'>-s 不实际安装。模拟执行命令
-</span><span class='line'>-y 假定对所有的询问选是，不提示 
-</span><span class='line'>-f 尝试修正系统依赖损坏处 
-</span><span class='line'>-m 如果归档无法定位，尝试继续
-</span><span class='line'>-u 同时显示更新软件包的列表 
-</span><span class='line'>-b 获取源码包后编译 -V 显示详细的版本号
-</span><span class='line'>-c=? 阅读此配置文件
-</span><span class='line'>-o=? 设置自定的配置选项，如 -o dir::cache=/tmp</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>{
+</span><span class='line'>    "require": {
+</span><span class='line'>        "ircmaxell/password-compat": "1.*",
+</span><span class='line'>        "monolog/monolog": "1.*"
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
 
-<ol>
-<li>apt-get 常用实例</li>
-</ol>
-
+<p>然后执行更新：</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>php composer.phar update</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装完之后，就可以直接使用了。</p>
+
+<h3>三. 使用</h3>
+
+<p>在 php 中调用 composer 扩展包是非常简单的，直接在头部文件<code>require</code>就行了</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>require 'vendor/autoload.php';</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后直接使用扩展包中的函数：</p>
+
+<figure class='code'><figcaption><span>composer.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>apt-cache search packagename 搜索包
-</span><span class='line'>apt-cache show packagename 获取包的相关信息，如说明、大小、版本等
-</span><span class='line'>apt-get install packagename 安装包
-</span><span class='line'>apt-get install packagename --reinstall 重新安装包
-</span><span class='line'>apt-get -f install 修复安装”-f = –fix-missing”
-</span><span class='line'>apt-get remove packagename 删除包
-</span><span class='line'>apt-get remove packagename --purge 删除包，包括删除配置文件等
-</span><span class='line'>apt-get update 更新源
-</span><span class='line'>apt-get upgrade 更新已安装的包
-</span><span class='line'>apt-get dist-upgrade 升级系统
-</span><span class='line'>apt-get dselect-upgrade 使用 dselect 升级
-</span><span class='line'>apt-cache depends packagename 了解使用依赖
-</span><span class='line'>apt-cache rdepends packagename 是查看该包被哪些包依赖
-</span><span class='line'>apt-get build-dep packagename 安装相关的编译环境
-</span><span class='line'>apt-get source packagename 下载该包的源代码
-</span><span class='line'>apt-get clean 清理无用的包
-</span><span class='line'>apt-get autoclean 清理无用的包
-</span><span class='line'>apt-get check 检查是否有损坏的依赖</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">require</span> <span class="s1">&#39;vendor/autoload.php&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$hash</span> <span class="o">=</span> <span class="nx">password_hash</span><span class="p">(</span><span class="s1">&#39;composer&#39;</span><span class="p">,</span> <span class="nx">PASSWORD_BCRYPT</span><span class="p">);</span>
+</span><span class='line'><span class="k">echo</span> <span class="nv">$hash</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
 
+
+<p>得到如下输出：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$2y$10$K1TVA1nHmjqiMiVrn6Hu0Opz3IILnCjpjjUXgwAU4TXlfyLJe73O</span>.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Composer 还有许多其他的功能，比如说直接创建项目，所以说学习 composer 还是得加把劲啊。</p>
 </div>
 
 <!-- JiaThis Button BEGIN -->
@@ -255,12 +253,12 @@ var jiathis_config = {data_track_clickback:'true'};
   
 
 
-<time datetime="2014-05-21T18:20:00+08:00" pubdate data-updated="true">May 21<span>st</span>, 2014</time>
+<time datetime="2014-06-28T15:29:09+08:00" pubdate data-updated="true">Jun 28<span>th</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/linux/'>linux</a>
+    <a class='category' href='/blog/categories/composer/'>composer</a>, <a class='category' href='/blog/categories/php/'>php</a>
   
 </span>
 
@@ -276,10 +274,8 @@ var jiathis_config = {data_track_clickback:'true'};
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/05/18/phpmail/" title="Previous Post: phpmail 的使用">&laquo; phpmail 的使用</a>
+        <a class="basic-alignment left" href="/blog/2014/06/24/memcache-install-and-test/" title="Previous Post: 在 ubuntu 中安装 memcached">&laquo; 在 ubuntu 中安装 memcached</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/05/21/lscpu-info/" title="Next Post: ubuntu检测硬件信息">ubuntu检测硬件信息 &raquo;</a>
       
     </p>
   </footer>
@@ -372,8 +368,8 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://libre.me/blog/2014/05/21/apt-get/';
-        var disqus_url = 'http://libre.me/blog/2014/05/21/apt-get/';
+        var disqus_identifier = 'http://libre.me/blog/2014/06/28/composer-install-and-use/';
+        var disqus_url = 'http://libre.me/blog/2014/06/28/composer-install-and-use/';
         var disqus_script = 'embed.js';
       
     (function () {

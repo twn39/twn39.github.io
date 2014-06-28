@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Composer | 唐微南的博客]]></title>
+  <link href="http://libre.me/blog/categories/composer/atom.xml" rel="self"/>
+  <link href="http://libre.me/"/>
+  <updated>2014-06-28T15:39:02+08:00</updated>
+  <id>http://libre.me/</id>
+  <author>
+    <name><![CDATA[唐微南]]></name>
+    <email><![CDATA[twn39@163.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[PHP Composer 的安装与使用]]></title>
+    <link href="http://libre.me/blog/2014/06/28/composer-install-and-use/"/>
+    <updated>2014-06-28T15:29:09+08:00</updated>
+    <id>http://libre.me/blog/2014/06/28/composer-install-and-use</id>
+    <content type="html"><![CDATA[<p>composer 是目前非常流行的管理 php 依赖包工具，目测现在啥都得有个包管理工具
+才行，像 web 开发都有 bower 了。不过使用 composer 确实方便了不少，如果像是个人
+或者小项目直接用 composer 装几个模块就可以开发了，而且近年来风头正劲的
+php 框架 Laravel 也使用 composer 来处理依赖了。所以学习 composer 是非常有用的。</p>
+
+<p>那么如何来使用 composer 来管理依赖，这里举个实例：我现在需要一个有效
+的加密函数来加密用户的密码，而 composer 刚好提供了实现这种功能的软件包<code>password-compat</code>
+（软件包可以通过 <a href="https://packagist.org">https://packagist.org</a> 查找）。</p>
+
+<h3>一. 下载 composer 脚本</h3>
+
+<p>新建一个项目，例如：<code>myapp</code>，切换到目录下，打开终端输入：</p>
+
+<p><code>
+curl -sS https://getcomposer.org/installer | php
+</code>
+如果安装成功它会提示：</p>
+
+<p>```</p>
+
+<h1>!/usr/bin/env php</h1>
+
+<p>All settings correct for using Composer
+Downloading&hellip;</p>
+
+<p>Composer successfully installed to: /var/www/html/myapp/composer.phar
+Use it: php composer.phar
+```
+现在可以使用 composer 了。</p>
+
+<!-- more -->
+
+
+<h3>二. 安装依赖包</h3>
+
+<p>有很多方式可以安装依赖包，可以在终端下直接输入：</p>
+
+<p><code>
+php composer.phar require "ircmaxell/password-compat"
+</code>
+然后它会询问安装那个版本，这里输入<code>1.*</code>,可以指定具体版本，也可以
+使用通配符。</p>
+
+<p>它会自动从<code>github</code>下载文件，并自动生成<code>autoload</code>文件。</p>
+
+<p>可以发现目录下有一个<code>composer.json</code> 文件，打开文件可以发现如下信息：</p>
+
+<p>```
+{</p>
+
+<pre><code>"require": {
+    "ircmaxell/password-compat": "1.*"
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p><code>composer.json</code> 就是<code>json</code>格式的依赖管理文件，如果需要额外扩展包，也可以手动添加。</p>
+
+<p>添加一个扩展包：</p>
+
+<p>```
+{</p>
+
+<pre><code>"require": {
+    "ircmaxell/password-compat": "1.*",
+    "monolog/monolog": "1.*"
+}
+</code></pre>
+
+<p>}
+<code>
+然后执行更新：
+</code>
+php composer.phar update
+```</p>
+
+<p>安装完之后，就可以直接使用了。</p>
+
+<h3>三. 使用</h3>
+
+<p>在 php 中调用 composer 扩展包是非常简单的，直接在头部文件<code>require</code>就行了</p>
+
+<p><code>
+require 'vendor/autoload.php';
+</code>
+然后直接使用扩展包中的函数：</p>
+
+<p><code>php composer.php
+&lt;?php
+require 'vendor/autoload.php';
+$hash = password_hash('composer', PASSWORD_BCRYPT);
+echo $hash;
+</code></p>
+
+<p>得到如下输出：</p>
+
+<p><code>bash
+$2y$10$K1TVA1nHmjqiMiVrn6Hu0Opz3IILnCjpjjUXgwAU4TXlfyLJe73O.
+</code></p>
+
+<p>Composer 还有许多其他的功能，比如说直接创建项目，所以说学习 composer 还是得加把劲啊。</p>
+]]></content>
+  </entry>
+  
+</feed>

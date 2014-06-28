@@ -9,8 +9,7 @@
   <meta name="author" content="唐微南">
 
   
-  <meta name="description" content="最近看了一篇PHP加密的文章，获益良多，因为无论用PHP构建任何系统，都需要对敏感的数据进行加密。而且这几年，时不时地爆出某某网站泄露用户数据什么的，足见构建一个安全的系统也不是这么容易的。 在文章中有几个重要的注意事项： 不要自己写加密函数
-不要单纯使用低端的哈希函数，如（MD5，SHA1） &hellip;">
+  <meta name="description" content="在上一篇文章中，我使用sha1函数混合盐值进行加密，后来发现其实根本没有必要，因为我对这种加密方式的安全性一无所知，也不知道如何进行测试，因为我并不是个密码学家，这种方式仅仅是看起来比较安全而已。然而加密的重要的一条规则就是：不要使用未经过安全测试的加密函数！ 然而我也提到了在PHP5. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +64,88 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h2 class="entry-title"><a href="/blog/2014/04/10/password-hashing-2/">PHP Password_hash 函数的使用</a></h2>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-10T09:17:00+08:00" pubdate data-updated="true">Apr 10<span>th</span>, 2014</time>
+        
+           | <a href="/blog/2014/04/10/password-hashing-2/#disqus_thread"
+             data-disqus-identifier="http://libre.me/blog/2014/04/10/password-hashing-2/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在上一篇文章中，我使用sha1函数混合盐值进行加密，后来发现其实根本没有必要，因为我对这种加密方式的安全性一无所知，也不知道如何进行测试，因为我并不是个密码学家，这种方式仅仅是看起来比较安全而已。然而加密的重要的一条规则就是：<strong>不要使用未经过安全测试的加密函数！</strong></p>
+
+<p>然而我也提到了在PHP5.5中引入了比较好的加密函数<strong>password_hash()</strong>，而且在PHP5.3.8版本有一个相兼容的库。现在主流的空间都基本支持PHP5.3以上，因此password_hash()可以放心使用。</p>
+
+<p>在password_hash库中有4个函数，常用的主要有3个：</p>
+
+<ul>
+<li>password_hash</li>
+<li>password_verify</li>
+<li>password_get_info</li>
+</ul>
+
+
+<p>加密函数password_hash语法：</p>
+
+<pre><code>string password_hash ( string $password , integer $algo [, array $options ] )
+</code></pre>
+
+<p>示例：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>  <span class="k">echo</span> <span class="nx">password_hash</span><span class="p">(</span><span class="s1">&#39;123&#39;</span><span class="p">,</span> <span class="nx">PASSWORD_BCRYPT</span><span class="p">);</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>虽然在password_hash函数的可选参数中可以设置盐值与递归层级，但是在不了解算法内容的情况下，不建议设置。函数返回一个包含60个字符的字符串。</p>
+
+<p>比对函数password_verify语法：</p>
+
+<pre><code>boolean password_verify ( string $password , string $hash )
+</code></pre>
+
+<p>函数加密后返回的哈希值包含了加密信息，可以通过password_verify验证：</p>
+
+<p><img src="http://libreimages.qiniudn.com/password_hash.png" alt="password_hash" /></p>
+
+<p>获取加密信息函数password_get_info,语法为：</p>
+
+<pre><code>array password_get_info ( string $hash )
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -205,6 +286,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/06/28/composer-install-and-use/">PHP Composer 的安装与使用</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/06/24/memcache-install-and-test/">在 Ubuntu 中安装 Memcached</a>
       </li>
     
@@ -238,10 +323,6 @@
     
       <li class="post">
         <a href="/blog/2014/04/13/tkinter-layout/">Python Tkinter 布局管理</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/04/10/password-hashing-2/">PHP Password_hash 函数的使用</a>
       </li>
     
   </ul>
