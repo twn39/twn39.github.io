@@ -4,7 +4,7 @@
   <title><![CDATA[唐微南的博客]]></title>
   <link href="http://libre.me/atom.xml" rel="self"/>
   <link href="http://libre.me/"/>
-  <updated>2014-06-28T15:53:36+08:00</updated>
+  <updated>2014-07-13T17:23:01+08:00</updated>
   <id>http://libre.me/</id>
   <author>
     <name><![CDATA[唐微南]]></name>
@@ -12,6 +12,98 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[javascript模板引擎:Handlebars.js]]></title>
+    <link href="http://libre.me/blog/2014/07/13/handlebars-dot-js-javascript-template/"/>
+    <updated>2014-07-13T17:15:50+08:00</updated>
+    <id>http://libre.me/blog/2014/07/13/handlebars-dot-js-javascript-template</id>
+    <content type="html"><![CDATA[<p>用过 PHP 框架的人应该基本都知道模板引擎，MVC 模式中的视图(view)。<code>视图</code>将逻辑与表现分离开来，
+这样做的好处就是使代码更易于协作与维护，而实现这种功能就需要模板引擎了。</p>
+
+<p>然而 PHP 框架中的模板引擎基本都是使用 PHP 实现的，即是服务端模板引擎，但是这里将介绍的是客户端模板引擎
+，即 JavaScript 模板引擎，它的优势就是减轻了服务端的压力，不过它也有一些缺点，就我所知，它对搜索引擎不太友好。</p>
+
+<p>目前有许多 javascript 模板引擎，不过我比较喜欢的是<a href="http://handlebarsjs.com/">handlebars.js</a></p>
+
+<p>以下是一个简单的示例：</p>
+
+<figure class='code'><figcaption><span>handlebars.html</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="cp">&lt;!DOCTYPE HTML&gt;</span>
+</span><span class='line'><span class="nt">&lt;html&gt;</span>
+</span><span class='line'><span class="nt">&lt;head&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;title&gt;</span>handlebars.js<span class="nt">&lt;/title&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;http://frameworks.qiniudn.com/jquery-2.1.1.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;http://frameworks.qiniudn.com/handlebars-v1.3.0.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/head&gt;</span>
+</span><span class='line'><span class="nt">&lt;body&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;script </span><span class="na">id=</span><span class="s">&quot;post&quot;</span> <span class="na">type=</span><span class="s">&quot;text/x-handlebars-template&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="nx">div</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;post&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="p">{</span> <span class="p">{</span> <span class="nx">title</span> <span class="p">}</span> <span class="p">}</span><span class="o">&lt;</span><span class="err">/h1&gt;</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="nx">article</span><span class="o">&gt;</span>
+</span><span class='line'>                <span class="p">{</span> <span class="p">{</span> <span class="nx">content</span> <span class="p">}</span> <span class="p">}</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="err">/article&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="err">/div&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/script&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;script&gt;</span>
+</span><span class='line'>        <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>            <span class="s2">&quot;title&quot;</span><span class="o">:</span> <span class="s2">&quot;This is title!&quot;</span><span class="p">,</span>
+</span><span class='line'>            <span class="s2">&quot;content&quot;</span><span class="o">:</span> <span class="s2">&quot;This is content.&quot;</span>
+</span><span class='line'>        <span class="p">};</span>
+</span><span class='line'>        <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#post&quot;</span><span class="p">).</span><span class="nx">html</span><span class="p">();</span>
+</span><span class='line'>        <span class="kd">var</span> <span class="nx">template</span> <span class="o">=</span> <span class="nx">Handlebars</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#container&quot;</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="nx">template</span><span class="p">(</span><span class="nx">data</span><span class="p">));</span>
+</span><span class='line'>    <span class="nt">&lt;/script&gt;</span>
+</span><span class='line'><span class="nt">&lt;/body&gt;</span>
+</span><span class='line'><span class="nt">&lt;/html&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>handlebars.js</code>不仅仅只有这些内容，不过目前我还处于学习阶段，
+在学习当中也遇到了不少问题，以后会将这些问题逐步记录下来，
+以备自己日后查阅。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[PHP Composer 的安装与使用]]></title>

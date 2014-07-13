@@ -9,9 +9,12 @@
   <meta name="author" content="唐微南">
 
   
-  <meta name="description" content="在上一篇文章中，我使用sha1函数混合盐值进行加密，后来发现其实根本没有必要，因为我对这种加密方式的安全性一无所知，也不知道如何进行测试，因为我并不是个密码学家，这种方式仅仅是看起来比较安全而已。然而加密的重要的一条规则就是：不要使用未经过安全测试的加密函数！
+  <meta name="description" content="在Tkinter中有三种方式可以对组件进行布局管理，它们分别是pack,grid,place。
 
-然而我也提到了在PHP5. &hellip;"/>
+pack:
+由简单的组件组成的应用程序可以用pack布局，而且通过设置参数可以实现随窗口缩放的组件。通常与frame搭配也可以实现复杂的布局管理，但是没有grid清晰与简洁。
+
+grid： &hellip;"/>
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +69,123 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h2 class="entry-title"><a href="/blog/2014/04/13/tkinter-layout/">Python Tkinter 布局管理</a></h2>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-13T20:20:00+08:00" pubdate data-updated="true">Apr 13<span>th</span>, 2014</time>
+        
+           | <a href="/blog/2014/04/13/tkinter-layout/#disqus_thread"
+             data-disqus-identifier="http://libre.me/blog/2014/04/13/tkinter-layout/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在Tkinter中有三种方式可以对组件进行布局管理，它们分别是pack,grid,place。</p>
+
+<p><strong>pack:</strong>
+由简单的组件组成的应用程序可以用pack布局，而且通过设置参数可以实现随窗口缩放的组件。通常与frame搭配也可以实现复杂的布局管理，但是没有grid清晰与简洁。</p>
+
+<p><strong>grid：</strong>
+对于由许多个组件组成的复杂的程序用grid布局，效率比较高。但是无法实现组件随窗口而缩放。</p>
+
+<p><strong>place：</strong>
+place用于对组件进行精确的布局，place由像素制定位置，应用不多。</p>
+
+<h2>pack</h2>
+
+<p>pack使用比较简单，基本在组件名称后加上pack()函数就实现打包。</p>
+
+<p><strong>语法：</strong></p>
+
+<pre><code>widget.pack( pack_options )
+</code></pre>
+
+<p><strong>参数：</strong></p>
+
+<ol>
+<li>expand   随窗体的缩放而缩放</li>
+<li>fill</li>
+<li>side     (TOP,BOTTOM,RIGHT,LEFT)</li>
+</ol>
+
+
+<p><strong>实例：</strong></p>
+
+<figure class='code'><figcaption><span>tkinter.py</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">Tkinter</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+</span><span class='line'><span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+</span><span class='line'><span class="n">frame</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">bottomframe</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+</span><span class='line'><span class="n">bottomframe</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span> <span class="n">side</span> <span class="o">=</span> <span class="n">BOTTOM</span> <span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">redbutton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">&quot;Red&quot;</span><span class="p">,</span> <span class="n">fg</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">redbutton</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span> <span class="n">side</span> <span class="o">=</span> <span class="n">LEFT</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">greenbutton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">&quot;Brown&quot;</span><span class="p">,</span> <span class="n">fg</span><span class="o">=</span><span class="s">&quot;brown&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">greenbutton</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span> <span class="n">side</span> <span class="o">=</span> <span class="n">LEFT</span> <span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">bluebutton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">&quot;Blue&quot;</span><span class="p">,</span> <span class="n">fg</span><span class="o">=</span><span class="s">&quot;blue&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">bluebutton</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span> <span class="n">side</span> <span class="o">=</span> <span class="n">LEFT</span> <span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">blackbutton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">bottomframe</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">&quot;Black&quot;</span><span class="p">,</span> <span class="n">fg</span><span class="o">=</span><span class="s">&quot;black&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">blackbutton</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span> <span class="n">side</span> <span class="o">=</span> <span class="n">BOTTOM</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -288,6 +408,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/07/13/handlebars-dot-js-javascript-template/">javascript模板引擎:Handlebars.js</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/06/28/composer-install-and-use/">PHP Composer 的安装与使用</a>
       </li>
     
@@ -325,6 +449,18 @@
     
       <li class="post">
         <a href="/blog/2014/04/13/tkinter-layout/">Python Tkinter 布局管理</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/10/password-hashing-2/">PHP Password_hash 函数的使用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/05/password-hashing/">PHP通过盐值加密</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/gor-blog/">Wordpress没搞头，写博还是静态的好</a>
       </li>
     
   </ul>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Javascript | 唐微南的博客]]></title>
+  <link href="http://libre.me/blog/categories/javascript/atom.xml" rel="self"/>
+  <link href="http://libre.me/"/>
+  <updated>2014-07-13T17:23:01+08:00</updated>
+  <id>http://libre.me/</id>
+  <author>
+    <name><![CDATA[唐微南]]></name>
+    <email><![CDATA[twn39@163.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[javascript模板引擎:Handlebars.js]]></title>
+    <link href="http://libre.me/blog/2014/07/13/handlebars-dot-js-javascript-template/"/>
+    <updated>2014-07-13T17:15:50+08:00</updated>
+    <id>http://libre.me/blog/2014/07/13/handlebars-dot-js-javascript-template</id>
+    <content type="html"><![CDATA[<p>用过 PHP 框架的人应该基本都知道模板引擎，MVC 模式中的视图(view)。<code>视图</code>将逻辑与表现分离开来，
+这样做的好处就是使代码更易于协作与维护，而实现这种功能就需要模板引擎了。</p>
+
+<p>然而 PHP 框架中的模板引擎基本都是使用 PHP 实现的，即是服务端模板引擎，但是这里将介绍的是客户端模板引擎
+，即 JavaScript 模板引擎，它的优势就是减轻了服务端的压力，不过它也有一些缺点，就我所知，它对搜索引擎不太友好。</p>
+
+<p>目前有许多 javascript 模板引擎，不过我比较喜欢的是<a href="http://handlebarsjs.com/">handlebars.js</a></p>
+
+<p>以下是一个简单的示例：</p>
+
+<p>```html handlebars.html
+&lt;!DOCTYPE HTML>
+<html>
+<head></p>
+
+<pre><code>&lt;meta charset="utf-8"&gt;
+&lt;title&gt;handlebars.js&lt;/title&gt;
+&lt;script src="http://frameworks.qiniudn.com/jquery-2.1.1.min.js"&gt;&lt;/script&gt;
+&lt;script src="http://frameworks.qiniudn.com/handlebars-v1.3.0.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p></head>
+<body></p>
+
+<pre><code>&lt;div id="container"&gt;
+
+&lt;/div&gt;
+
+&lt;script id="post" type="text/x-handlebars-template"&gt;
+    &lt;div class="post"&gt;
+        &lt;h1&gt;{ { title } }&lt;/h1&gt;
+        &lt;article&gt;
+            { { content } }
+        &lt;/article&gt;
+    &lt;/div&gt;
+&lt;/script&gt;
+&lt;script&gt;
+    var data = {
+        "title": "This is title!",
+        "content": "This is content."
+    };
+    var text = $("#post").html();
+    var template = Handlebars.compile(text);
+
+    $("#container").html(template(data));
+&lt;/script&gt;
+</code></pre>
+
+<p></body>
+</html>
+```</p>
+
+<p><code>handlebars.js</code>不仅仅只有这些内容，不过目前我还处于学习阶段，
+在学习当中也遇到了不少问题，以后会将这些问题逐步记录下来，
+以备自己日后查阅。</p>
+]]></content>
+  </entry>
+  
+</feed>

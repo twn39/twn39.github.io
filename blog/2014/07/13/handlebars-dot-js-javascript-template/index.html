@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="zh_CN"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>在Ubuntu上安装Postgresql数据库 - 唐微南的博客</title>
+  <title>javascript模板引擎:Handlebars.js - 唐微南的博客</title>
   <meta name="author" content="唐微南">
 
   
-  <meta name="description" content="在Ubuntu上安装Postgresql数据库
+  <meta name="description" content="javascript模板引擎:Handlebars.js
     
     
       
@@ -25,7 +25,7 @@
   
 
 
-May 30th, 2014
+Jul 13th, 2014
         
            | <a href="#disqus_thread &hellip;"/>
   
@@ -36,7 +36,7 @@ May 30th, 2014
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://libre.me/blog/2014/05/30/install-postgresql-on-ubuntu">
+  <link rel="canonical" href="http://libre.me/blog/2014/07/13/handlebars-dot-js-javascript-template">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="唐微南的博客" type="application/atom+xml">
@@ -85,7 +85,7 @@ May 30th, 2014
   
   <header>
     
-      <h2 class="entry-title">在Ubuntu上安装Postgresql数据库</h2>
+      <h2 class="entry-title">javascript模板引擎:Handlebars.js</h2>
     
     
       <p class="meta">
@@ -101,7 +101,7 @@ May 30th, 2014
   
 
 
-<time datetime="2014-05-30T09:20:00+08:00" pubdate data-updated="true">May 30<span>th</span>, 2014</time>
+<time datetime="2014-07-13T17:15:50+08:00" pubdate data-updated="true">Jul 13<span>th</span>, 2014</time>
         
            | <a href="#disqus_thread"
              data-disqus-identifier="http://libre.me">Comments</a>
@@ -112,11 +112,17 @@ May 30th, 2014
 
 
 
-<div class="entry-content"><p>Postgresql是一个类似于mysql的关系型数据库，在ubuntu中安装postgresql相对来说比其他的linux发行版来得容易。</p>
+<div class="entry-content"><p>用过 PHP 框架的人应该基本都知道模板引擎，MVC 模式中的视图(view)。<code>视图</code>将逻辑与表现分离开来，
+这样做的好处就是使代码更易于协作与维护，而实现这种功能就需要模板引擎了。</p>
 
-<p>首先可以用<code>apt-cache show</code>来看一下在ubuntu14.04中postgresql的版本信息：</p>
+<p>然而 PHP 框架中的模板引擎基本都是使用 PHP 实现的，即是服务端模板引擎，但是这里将介绍的是客户端模板引擎
+，即 JavaScript 模板引擎，它的优势就是减轻了服务端的压力，不过它也有一些缺点，就我所知，它对搜索引擎不太友好。</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p>目前有许多 javascript 模板引擎，不过我比较喜欢的是<a href="http://handlebarsjs.com/">handlebars.js</a></p>
+
+<p>以下是一个简单的示例：</p>
+
+<figure class='code'><figcaption><span>handlebars.html</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -147,62 +153,49 @@ May 30th, 2014
 <span class='line-number'>29</span>
 <span class='line-number'>30</span>
 <span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Package: postgresql
-</span><span class='line'>Priority: optional
-</span><span class='line'>Section: database
-</span><span class='line'>Installed-Size: 71
-</span><span class='line'>Maintainer: Ubuntu Developers &lt;ubuntu-devel-discuss@lists.ubuntu.com&gt;
-</span><span class='line'>Original-Maintainer: Debian PostgreSQL Maintainers &lt;pkg-postgresql-public@lists.alioth.debian.org&gt;
-</span><span class='line'>Architecture: all
-</span><span class='line'>Source: postgresql-common (154)
-</span><span class='line'>Version: 9.3+154
-</span><span class='line'>Depends: postgresql-9.3
-</span><span class='line'>Filename: pool/main/p/postgresql-common/postgresql_9.3+154_all.deb
-</span><span class='line'>Size: 5088
-</span><span class='line'>MD5sum: 029b8a2af293670f1fa7ce10443b6f37
-</span><span class='line'>SHA1: cfe4345b4c1babf8f892bba02311520586f13fad
-</span><span class='line'>SHA256: 6186663b8118cb3ada88a421654091f8c5813317545005e2066068b9eb98806c
-</span><span class='line'>Description-en: object-relational SQL database (supported version)
-</span><span class='line'> This metapackage always depends on the currently supported PostgreSQL
-</span><span class='line'> database server version.
-</span><span class='line'> .
-</span><span class='line'> PostgreSQL is a fully featured object-relational database management
-</span><span class='line'> system.  It supports a large part of the SQL standard and is designed
-</span><span class='line'> to be extensible by users in many aspects.  Some of the features are:
-</span><span class='line'> ACID transactions, foreign keys, views, sequences, subqueries,
-</span><span class='line'> triggers, user-defined types and functions, outer joins, multiversion
-</span><span class='line'> concurrency control.  Graphical user interfaces and bindings for many
-</span><span class='line'> programming languages are available as well.
-</span><span class='line'>Description-md5: bdff2d6e5b2a1dd00e72b3ed8729d9ac
-</span><span class='line'>Bugs: https://bugs.launchpad.net/ubuntu/+filebug
-</span><span class='line'>Origin: Ubuntu
-</span><span class='line'>Supported: 5y
-</span><span class='line'>Task: postgresql-server</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="cp">&lt;!DOCTYPE HTML&gt;</span>
+</span><span class='line'><span class="nt">&lt;html&gt;</span>
+</span><span class='line'><span class="nt">&lt;head&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;title&gt;</span>handlebars.js<span class="nt">&lt;/title&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;http://frameworks.qiniudn.com/jquery-2.1.1.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;http://frameworks.qiniudn.com/handlebars-v1.3.0.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/head&gt;</span>
+</span><span class='line'><span class="nt">&lt;body&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;script </span><span class="na">id=</span><span class="s">&quot;post&quot;</span> <span class="na">type=</span><span class="s">&quot;text/x-handlebars-template&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="nx">div</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;post&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="p">{</span> <span class="p">{</span> <span class="nx">title</span> <span class="p">}</span> <span class="p">}</span><span class="o">&lt;</span><span class="err">/h1&gt;</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="nx">article</span><span class="o">&gt;</span>
+</span><span class='line'>                <span class="p">{</span> <span class="p">{</span> <span class="nx">content</span> <span class="p">}</span> <span class="p">}</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="err">/article&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="err">/div&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/script&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;script&gt;</span>
+</span><span class='line'>        <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>            <span class="s2">&quot;title&quot;</span><span class="o">:</span> <span class="s2">&quot;This is title!&quot;</span><span class="p">,</span>
+</span><span class='line'>            <span class="s2">&quot;content&quot;</span><span class="o">:</span> <span class="s2">&quot;This is content.&quot;</span>
+</span><span class='line'>        <span class="p">};</span>
+</span><span class='line'>        <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#post&quot;</span><span class="p">).</span><span class="nx">html</span><span class="p">();</span>
+</span><span class='line'>        <span class="kd">var</span> <span class="nx">template</span> <span class="o">=</span> <span class="nx">Handlebars</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#container&quot;</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="nx">template</span><span class="p">(</span><span class="nx">data</span><span class="p">));</span>
+</span><span class='line'>    <span class="nt">&lt;/script&gt;</span>
+</span><span class='line'><span class="nt">&lt;/body&gt;</span>
+</span><span class='line'><span class="nt">&lt;/html&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
-<p>接下来通过<code>apt-get install</code>安装postgresql：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install postgresql postgresql-client pgadmin3</span></code></pre></td></tr></table></div></figure>
-
-
-<p>一条命令就将postgresql安装完成了，上次我在archlinux上安装postgresql，连服务都启动不了，还一直报错，需要自己手动配置，因为ubuntu本身提供ubuntu server，因此他对一些服务器软件进行过配置优化，因此果断还是从archlinux切换回ubuntu。</p>
-
-<p>打开pgadmin3，就可以通过图形化的方式来管理和操作postgresql数据库了，但是我发现用pgadmin3默认的设置登陆不上去，难道默认的用户名和密码不对，从网上搜索了一下，都无法连接postgresql数据库。算了，还是直接改密码吧。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo -u postgres psql</span></code></pre></td></tr></table></div></figure>
-
-
-<p>输入这条命令的时候我才意识到，有可能是pgadmin设置了密码框不能为空吧。</p>
-
-<p>连接数据库后输入以下命令就可以修改密码：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>postgres=# ALTER USER postgres WITH PASSWORD 'postgres';</span></code></pre></td></tr></table></div></figure>
-
-
-<p>修改之后就可以通过pgadmin来操作数据库了。</p>
+<p><code>handlebars.js</code>不仅仅只有这些内容，不过目前我还处于学习阶段，
+在学习当中也遇到了不少问题，以后会将这些问题逐步记录下来，
+以备自己日后查阅。</p>
 </div>
 
 <!-- JiaThis Button BEGIN -->
@@ -242,12 +235,12 @@ var jiathis_config = {data_track_clickback:'true'};
   
 
 
-<time datetime="2014-05-30T09:20:00+08:00" pubdate data-updated="true">May 30<span>th</span>, 2014</time>
+<time datetime="2014-07-13T17:15:50+08:00" pubdate data-updated="true">Jul 13<span>th</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/postgresql/'>postgresql</a>, <a class='category' href='/blog/categories/ubuntu/'>ubuntu</a>
+    <a class='category' href='/blog/categories/html5/'>html5</a>, <a class='category' href='/blog/categories/javascript/'>javascript</a>
   
 </span>
 
@@ -263,10 +256,8 @@ var jiathis_config = {data_track_clickback:'true'};
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/05/21/lscpu-info/" title="Previous Post: ubuntu检测硬件信息">&laquo; ubuntu检测硬件信息</a>
+        <a class="basic-alignment left" href="/blog/2014/06/28/composer-install-and-use/" title="Previous Post: PHP Composer 的安装与使用">&laquo; PHP Composer 的安装与使用</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/06/16/apache-virtualhost-configure/" title="Next Post: apache配置虚拟主机与域名访问">apache配置虚拟主机与域名访问 &raquo;</a>
       
     </p>
   </footer>
@@ -375,8 +366,8 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://libre.me/blog/2014/05/30/install-postgresql-on-ubuntu/';
-        var disqus_url = 'http://libre.me/blog/2014/05/30/install-postgresql-on-ubuntu/';
+        var disqus_identifier = 'http://libre.me/blog/2014/07/13/handlebars-dot-js-javascript-template/';
+        var disqus_url = 'http://libre.me/blog/2014/07/13/handlebars-dot-js-javascript-template/';
         var disqus_script = 'embed.js';
       
     (function () {
