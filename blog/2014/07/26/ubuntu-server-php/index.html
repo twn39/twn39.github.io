@@ -1,0 +1,571 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="zh_CN"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Ubuntu Server:PHP,Nginx,MySQL,NoSQL,Beanstalkd配置与安装 - 唐微南的博客</title>
+  <meta name="author" content="唐微南">
+
+  
+  <meta name="description" content="Ubuntu Server:PHP,Nginx,MySQL,NoSQL,Beanstalkd配置与安装
+    
+    
+      
+        
+
+
+
+
+
+
+
+
+  
+
+
+Jul 26th, 2014
+        
+           | <a &hellip;"/>
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://libre.me/blog/2014/07/26/ubuntu-server-php">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="唐微南的博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//libre.qiniudn.com/jquery-1.11.1.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+  
+
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">唐微南的博客</a></h1>
+  
+    <h2>真理，科学，自由与艺术</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:libre.me" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">归档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h2 class="entry-title">Ubuntu Server:PHP,Nginx,MySQL,NoSQL,Beanstalkd配置与安装</h2>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-26T23:08:17+08:00" pubdate data-updated="true">Jul 26<span>th</span>, 2014</time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://libre.me">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+
+<div class="entry-content"><p>搭建 LAMP 环境是一件非常繁琐的事情，尤其是随着系统的不同，相应的配置也会有所差异。
+以下是 LAMP 环境和一些其他服务的安装与配置，基于 Ubuntu 14.04 LTS。可用于开发环境，
+因为本身不是运维人员，也不知道能否用于生成环境。</p>
+
+<h3>PHP 与 Nginx</h3>
+
+<p><strong>安装： </strong></p>
+
+<pre><code>sudo apt-get install nginx php5 php5-fpm php5-cli
+</code></pre>
+
+<p>Nginx 在 Ubuntu 中的网页根目录为 /usr/share/nginx/html, 配置文件为 /etc/nginx/。</p>
+
+<p><strong>配置：</strong></p>
+
+<p>打开 /etc/nginx/sites-avluable/default 文件，取消注释：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>location ~ \.php$ {
+</span><span class='line'>        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+</span><span class='line'>        # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
+</span><span class='line'>
+</span><span class='line'>        # With php5-cgi alone:
+</span><span class='line'>        # ifastcgi_pass 127.0.0.1:9000;
+</span><span class='line'>        # With php5-fpm:
+</span><span class='line'>        fastcgi_pass unix:/var/run/php5-fpm.sock;
+</span><span class='line'>        fastcgi_index index.php;
+</span><span class='line'>        include fastcgi_params;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样的话就可以通过nginx来执行php了，如果需要自动索引 index.php 文件，更改如下位置：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>server {
+</span><span class='line'>        listen 80 default_server;
+</span><span class='line'>        listen [::]:80 default_server ipv6only=on;
+</span><span class='line'>
+</span><span class='line'>        root /usr/share/nginx/html;
+</span><span class='line'>        index index.php index.html index.htm;
+</span><span class='line'>
+</span><span class='line'>        # Make site accessible from http://localhost/
+</span><span class='line'>        server_name localhost;
+</span><span class='line'>
+</span><span class='line'>        location / {
+</span><span class='line'>                # First attempt to serve request as file, then
+</span><span class='line'>                # as directory, then fall back to displaying a 404.
+</span><span class='line'>                try_files $uri $uri/ =404;
+</span><span class='line'>                # Uncomment to enable naxsi on this location
+</span><span class='line'>                # include /etc/nginx/naxsi.rules
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>重启 Nginx：</p>
+
+<pre><code>sudo service nginx restart
+</code></pre>
+
+<p><strong>安装扩展：</strong></p>
+
+<p>搜索扩展：</p>
+
+<pre><code>apt-cache search php5-
+</code></pre>
+
+<p>安装扩展：</p>
+
+<pre><code>sudo apt-get install php5-curl php5-mcrypt php5-apcu php5-imagick php5-oauth
+</code></pre>
+
+<p>像 mcrypt 需要手动启用，启用扩展：</p>
+
+<pre><code>sudo php5enmod mcrypt
+</code></pre>
+
+<p>重启Nginx：</p>
+
+<pre><code>sudo service nginx restart
+</code></pre>
+
+<h3>MySQL</h3>
+
+<p><strong>命令安装： </strong></p>
+
+<pre><code>sudo apt-get install mysql-server mysql-client
+</code></pre>
+
+<p>在安装过程中会提示输入密码，输入密码就可以继续往下安装。</p>
+
+<p>查看进程：</p>
+
+<pre><code>ps -aux | grep mysql
+</code></pre>
+
+<p>默认端口为：<code>localhost:3306</code></p>
+
+<p>安装PHP扩展：</p>
+
+<pre><code>sudo apt-get install php5-mysql
+</code></pre>
+
+<p>启动/停止/重启</p>
+
+<pre><code>sudo service mysql start/stop/restart
+</code></pre>
+
+<p>进入shell环境：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>vagrant@vagrant-ubuntu-trusty-64:~$ mysql -u root -p
+</span><span class='line'>Enter password:
+</span><span class='line'>Welcome to the MySQL monitor.  Commands end with ; or \g.
+</span><span class='line'>Your MySQL connection id is 36
+</span><span class='line'>Server version: 5.5.38-0ubuntu0.14.04.1 (Ubuntu)
+</span><span class='line'>
+</span><span class='line'>Copyright (c) 2000, 2014, Oracle and/or its affiliates. All rights reserved.
+</span><span class='line'>
+</span><span class='line'>Oracle is a registered trademark of Oracle Corporation and/or its
+</span><span class='line'>affiliates. Other names may be trademarks of their respective
+</span><span class='line'>owners.
+</span><span class='line'>
+</span><span class='line'>Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+</span><span class='line'>
+</span><span class='line'>mysql&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Memcache</h3>
+
+<p>命令安装：</p>
+
+<pre><code>sudo apt-get install memcached
+</code></pre>
+
+<p>php扩展：</p>
+
+<pre><code>sudo apt-get install php5-memcached
+</code></pre>
+
+<p>查看进程：</p>
+
+<pre><code>ps -aux | grep memcached
+</code></pre>
+
+<p>默认端口：<code>localhost：11211</code></p>
+
+<h3>Redis</h3>
+
+<p><strong>命令安装:</strong></p>
+
+<pre><code>sudo apt-get install redis-server redis-tools
+</code></pre>
+
+<p><strong>PHP扩展：</strong></p>
+
+<pre><code>sudo apt-get install php5-redis
+</code></pre>
+
+<p>默认端口：<code>localhost:6379</code></p>
+
+<p>进入shell环境：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>vagrant@vagrant-ubuntu-trusty-64:/usr/share/nginx/html$ redis-cli
+</span><span class='line'>127.0.0.1:6379&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>MongoDB</h3>
+
+<p><strong>安装：</strong></p>
+
+<pre><code>sudo apt-get install mongodb mongodb-clients
+</code></pre>
+
+<p><strong>php扩展：</strong></p>
+
+<pre><code>sudo apt-get install php5-mongo
+</code></pre>
+
+<p><strong>启动/停止/重启：</strong></p>
+
+<pre><code>sudo service mongo start/stop/restart
+</code></pre>
+
+<p>默认端口：<code>localhost:27017</code></p>
+
+<p>使用shell环境：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>vagrant@vagrant-ubuntu-trusty-64:/usr/share/nginx/html$ mongo
+</span><span class='line'>MongoDB shell version: 2.4.9
+</span><span class='line'>connecting to: test
+</span><span class='line'>Welcome to the MongoDB shell.
+</span><span class='line'>For interactive help, type "help".
+</span><span class='line'>For more comprehensive documentation, see
+</span><span class='line'>  http://docs.mongodb.org/
+</span><span class='line'>Questions? Try the support group
+</span><span class='line'>  http://groups.google.com/group/mongodb-user
+</span><span class='line'>&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Beanstalkd</h3>
+
+<pre><code>sudo apt-get install beanstalkd
+</code></pre>
+
+<p>默认端口：<code>localhost：11300</code></p>
+
+<p>PHP 扩展：<a href="https://github.com/pda/pheanstalk">https://github.com/pda/pheanstalk</a></p>
+</div>
+
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<span class="jiathis_txt">分享到：</span>
+	<a class="jiathis_button_qzone">QQ空间</a>
+	<a class="jiathis_button_tsina">新浪微博</a>
+	<a class="jiathis_button_tqq">腾讯微博</a>
+	<a class="jiathis_button_weixin">微信</a>
+	<a href="http://www.jiathis.com/share?uid=1693401" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1345856667717505" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">作者： <span class="fn">唐微南</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-26T23:08:17+08:00" pubdate data-updated="true">Jul 26<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/beanstalkd/'>Beanstalkd</a>, <a class='category' href='/blog/categories/memcache/'>Memcache</a>, <a class='category' href='/blog/categories/mysql/'>MySQL</a>, <a class='category' href='/blog/categories/nginx/'>Nginx</a>, <a class='category' href='/blog/categories/php/'>PHP</a>, <a class='category' href='/blog/categories/redis/'>Redis</a>, <a class='category' href='/blog/categories/ubuntu/'>ubuntu</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/07/13/handlebars-dot-js-javascript-template/" title="Previous Post: javascript模板引擎:Handlebars.js">&laquo; javascript模板引擎:Handlebars.js</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>评论</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>近期文章</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/07/26/ubuntu-server-php/">Ubuntu Server:PHP,Nginx,MySQL,NoSQL,Beanstalkd配置与安装</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/13/handlebars-dot-js-javascript-template/">javascript模板引擎:Handlebars.js</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/28/composer-install-and-use/">PHP Composer 的安装与使用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/24/memcache-install-and-test/">在 Ubuntu 中安装 Memcached</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/20/elixir-install/">安装 Elixir</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/16/apache-virtualhost-configure/">Apache配置虚拟主机与域名访问</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/30/install-postgresql-on-ubuntu/">在Ubuntu上安装Postgresql数据库</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/21/lscpu-info/">Ubuntu检测硬件信息</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/21/apt-get/">Apt-get的常用用法</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/18/phpmail/">Phpmail 的使用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/17/pandas-read-csv/">使用pandas处理数据</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/13/tkinter-layout/">Python Tkinter 布局管理</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/10/password-hashing-2/">PHP Password_hash 函数的使用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/05/password-hashing/">PHP通过盐值加密</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/04/gor-blog/">Wordpress没搞头，写博还是静态的好</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - 唐微南 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fa0089c1e15c21c253210185bf0eb1ba0' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</p>
+
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'yunduan';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://libre.me/blog/2014/07/26/ubuntu-server-php/';
+        var disqus_url = 'http://libre.me/blog/2014/07/26/ubuntu-server-php/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

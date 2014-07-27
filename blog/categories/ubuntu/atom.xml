@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ubuntu | 唐微南的博客]]></title>
   <link href="http://libre.me/blog/categories/ubuntu/atom.xml" rel="self"/>
   <link href="http://libre.me/"/>
-  <updated>2014-07-13T17:23:01+08:00</updated>
+  <updated>2014-07-27T10:19:22+08:00</updated>
   <id>http://libre.me/</id>
   <author>
     <name><![CDATA[唐微南]]></name>
@@ -12,6 +12,232 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ubuntu Server:PHP,Nginx,MySQL,NoSQL,Beanstalkd配置与安装]]></title>
+    <link href="http://libre.me/blog/2014/07/26/ubuntu-server-php/"/>
+    <updated>2014-07-26T23:08:17+08:00</updated>
+    <id>http://libre.me/blog/2014/07/26/ubuntu-server-php</id>
+    <content type="html"><![CDATA[<p>搭建 LAMP 环境是一件非常繁琐的事情，尤其是随着系统的不同，相应的配置也会有所差异。
+以下是 LAMP 环境和一些其他服务的安装与配置，基于 Ubuntu 14.04 LTS。可用于开发环境，
+因为本身不是运维人员，也不知道能否用于生成环境。</p>
+
+<h3>PHP 与 Nginx</h3>
+
+<p><strong>安装： </strong></p>
+
+<pre><code>sudo apt-get install nginx php5 php5-fpm php5-cli
+</code></pre>
+
+<p>Nginx 在 Ubuntu 中的网页根目录为 /usr/share/nginx/html, 配置文件为 /etc/nginx/。</p>
+
+<p><strong>配置：</strong></p>
+
+<p>打开 /etc/nginx/sites-avluable/default 文件，取消注释：</p>
+
+<p>```
+location ~ .php$ {</p>
+
+<pre><code>    fastcgi_split_path_info ^(.+\.php)(/.+)$;
+    # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
+
+    # With php5-cgi alone:
+    # ifastcgi_pass 127.0.0.1:9000;
+    # With php5-fpm:
+    fastcgi_pass unix:/var/run/php5-fpm.sock;
+    fastcgi_index index.php;
+    include fastcgi_params;
+</code></pre>
+
+<p>}
+```</p>
+
+<p>这样的话就可以通过nginx来执行php了，如果需要自动索引 index.php 文件，更改如下位置：</p>
+
+<p>```
+server {</p>
+
+<pre><code>    listen 80 default_server;
+    listen [::]:80 default_server ipv6only=on;
+
+    root /usr/share/nginx/html;
+    index index.php index.html index.htm;
+
+    # Make site accessible from http://localhost/
+    server_name localhost;
+
+    location / {
+            # First attempt to serve request as file, then
+            # as directory, then fall back to displaying a 404.
+            try_files $uri $uri/ =404;
+            # Uncomment to enable naxsi on this location
+            # include /etc/nginx/naxsi.rules
+</code></pre>
+
+<p>}
+```</p>
+
+<p>重启 Nginx：</p>
+
+<pre><code>sudo service nginx restart
+</code></pre>
+
+<p><strong>安装扩展：</strong></p>
+
+<p>搜索扩展：</p>
+
+<pre><code>apt-cache search php5-
+</code></pre>
+
+<p>安装扩展：</p>
+
+<pre><code>sudo apt-get install php5-curl php5-mcrypt php5-apcu php5-imagick php5-oauth
+</code></pre>
+
+<p>像 mcrypt 需要手动启用，启用扩展：</p>
+
+<pre><code>sudo php5enmod mcrypt
+</code></pre>
+
+<p>重启Nginx：</p>
+
+<pre><code>sudo service nginx restart
+</code></pre>
+
+<h3>MySQL</h3>
+
+<p><strong>命令安装： </strong></p>
+
+<pre><code>sudo apt-get install mysql-server mysql-client
+</code></pre>
+
+<p>在安装过程中会提示输入密码，输入密码就可以继续往下安装。</p>
+
+<p>查看进程：</p>
+
+<pre><code>ps -aux | grep mysql
+</code></pre>
+
+<p>默认端口为：<code>localhost:3306</code></p>
+
+<p>安装PHP扩展：</p>
+
+<pre><code>sudo apt-get install php5-mysql
+</code></pre>
+
+<p>启动/停止/重启</p>
+
+<pre><code>sudo service mysql start/stop/restart
+</code></pre>
+
+<p>进入shell环境：</p>
+
+<p>```
+vagrant@vagrant-ubuntu-trusty-64:~$ mysql -u root -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 36
+Server version: 5.5.38-0ubuntu0.14.04.1 (Ubuntu)</p>
+
+<p>Copyright &copy; 2000, 2014, Oracle and/or its affiliates. All rights reserved.</p>
+
+<p>Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.</p>
+
+<p>Type &lsquo;help;&rsquo; or &lsquo;\h&rsquo; for help. Type &lsquo;\c&rsquo; to clear the current input statement.</p>
+
+<p>mysql>
+```</p>
+
+<h3>Memcache</h3>
+
+<p>命令安装：</p>
+
+<pre><code>sudo apt-get install memcached
+</code></pre>
+
+<p>php扩展：</p>
+
+<pre><code>sudo apt-get install php5-memcached
+</code></pre>
+
+<p>查看进程：</p>
+
+<pre><code>ps -aux | grep memcached
+</code></pre>
+
+<p>默认端口：<code>localhost：11211</code></p>
+
+<h3>Redis</h3>
+
+<p><strong>命令安装:</strong></p>
+
+<pre><code>sudo apt-get install redis-server redis-tools
+</code></pre>
+
+<p><strong>PHP扩展：</strong></p>
+
+<pre><code>sudo apt-get install php5-redis
+</code></pre>
+
+<p>默认端口：<code>localhost:6379</code></p>
+
+<p>进入shell环境：
+```
+vagrant@vagrant-ubuntu-trusty-64:/usr/share/nginx/html$ redis-cli
+127.0.0.1:6379></p>
+
+<p>```</p>
+
+<h3>MongoDB</h3>
+
+<p><strong>安装：</strong></p>
+
+<pre><code>sudo apt-get install mongodb mongodb-clients
+</code></pre>
+
+<p><strong>php扩展：</strong></p>
+
+<pre><code>sudo apt-get install php5-mongo
+</code></pre>
+
+<p><strong>启动/停止/重启：</strong></p>
+
+<pre><code>sudo service mongo start/stop/restart
+</code></pre>
+
+<p>默认端口：<code>localhost:27017</code></p>
+
+<p>使用shell环境：
+```
+vagrant@vagrant-ubuntu-trusty-64:/usr/share/nginx/html$ mongo
+MongoDB shell version: 2.4.9
+connecting to: test
+Welcome to the MongoDB shell.
+For interactive help, type &ldquo;help&rdquo;.
+For more comprehensive documentation, see</p>
+
+<pre><code>http://docs.mongodb.org/
+</code></pre>
+
+<p>Questions? Try the support group</p>
+
+<pre><code>http://groups.google.com/group/mongodb-user
+</code></pre>
+
+<blockquote><p>```</p>
+
+<h3>Beanstalkd</h3></blockquote>
+
+<pre><code>sudo apt-get install beanstalkd
+</code></pre>
+
+<p>默认端口：<code>localhost：11300</code></p>
+
+<p>PHP 扩展：<a href="https://github.com/pda/pheanstalk">https://github.com/pda/pheanstalk</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[在 Ubuntu 中安装 Memcached]]></title>
@@ -224,116 +450,6 @@ sudo -u postgres psql
 postgres=# ALTER USER postgres WITH PASSWORD 'postgres';
 </code>
 修改之后就可以通过pgadmin来操作数据库了。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ubuntu检测硬件信息]]></title>
-    <link href="http://libre.me/blog/2014/05/21/lscpu-info/"/>
-    <updated>2014-05-21T20:20:00+08:00</updated>
-    <id>http://libre.me/blog/2014/05/21/lscpu-info</id>
-    <content type="html"><![CDATA[<p>在Ubuntu系统中，有许多命令可用于查询主机的硬件信息。一些命令只针对特定的硬件组件，比如CPU、内存，一些命令可以查询多个硬件信息。</p>
-
-<p>在ubuntu下执行一下命令可以得到相应的硬件信息：</p>
-
-<p>一. lscpu</p>
-
-<p><code>
-Architecture:          x86_64
-CPU op-mode(s):        32-bit, 64-bit
-Byte Order:            Little Endian
-CPU(s):                4
-On-line CPU(s) list:   0-3
-Thread(s) per core:    2
-Core(s) per socket:    2
-Socket(s):             1
-NUMA 节点：         1
-厂商 ID：           GenuineIntel
-CPU 系列：          6
-型号：              42
-步进：              7
-CPU MHz：             800.000
-BogoMIPS:              4390.02
-虚拟化：           VT-x
-L1d 缓存：          32K
-L1i 缓存：          32K
-L2 缓存：           256K
-L3 缓存：           3072K
-NUMA node0 CPU(s):     0-3
-</code></p>
-
-<!-- more -->
-
-
-<p>二. sudo lshw</p>
-
-<p>```
-rainmonster-nv57h</p>
-
-<pre><code>description: Notebook
-product: NV57H ()
-vendor: Gateway
-version: V1.14
-serial: LXWZN0C0021383BECD1601
-width: 64 bits
-capabilities: smbios-2.7 dmi-2.7 vsyscall32
-configuration: boot=normal chassis=notebook uuid=FA223F2F-DB7E-11E0-A844-B870F4F3661C
-</code></pre>
-
-<p>  *-core</p>
-
-<pre><code>   description: Motherboard
-   product: SJV50_HR
-   vendor: Gateway
-   physical id: 0
-   version: Base Board Version
-   serial: Base Board Serial Number
-   slot: Base Board Chassis Location
- *-firmware
-      description: BIOS
-</code></pre>
-
-<p>```</p>
-
-<p>三. lspci</p>
-
-<p><code>
-00:00.0 Host bridge: Intel Corporation 2nd Generation Core Processor Family DRAM Controller (rev 09)
-00:01.0 PCI bridge: Intel Corporation Xeon E3-1200/2nd Generation Core Processor Family PCI Express Root Port (rev 09)
-00:02.0 VGA compatible controller: Intel Corporation 2nd Generation Core Processor Family Integrated Graphics Controller (rev 09)
-00:16.0 Communication controller: Intel Corporation 6 Series/C200 Series Chipset Family MEI Controller #1 (rev 04)
-00:1a.0 USB controller: Intel Corporation 6 Series/C200 Series Chipset Family USB Enhanced Host Controller #2 (rev 04)
-00:1b.0 Audio device: Intel Corporation 6 Series/C200 Series Chipset Family High Definition Audio Controller (rev 04)
-00:1c.0 PCI bridge: Intel Corporation 6 Series/C200 Series Chipset Family PCI Express Root Port 1 (rev b4)
-00:1c.1 PCI bridge: Intel Corporation 6 Series/C200 Series Chipset Family PCI Express Root Port 2 (rev b4)
-</code></p>
-
-<p>四. lsblk</p>
-
-<p><code>
-NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
-sda      8:0    0 465.8G  0 disk
-├─sda1   8:1    0  78.2G  0 part
-├─sda2   8:2    0     1K  0 part
-├─sda5   8:5    0  90.6G  0 part
-├─sda6   8:6    0   120G  0 part
-├─sda7   8:7    0 102.8G  0 part
-├─sda8   8:8    0     2G  0 part [SWAP]
-└─sda9   8:9    0  72.2G  0 part /
-sr0     11:0    1  1024M  0 rom
-</code></p>
-
-<p>五. lsusb</p>
-
-<p><code>
-Bus 002 Device 003: ID 046d:c05a Logitech, Inc. M90/M100 Optical Mouse
-Bus 002 Device 002: ID 8087:0024 Intel Corp. Integrated Rate Matching Hub
-Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
-Bus 001 Device 004: ID 0489:e010 Foxconn / Hon Hai
-Bus 001 Device 003: ID 064e:d250 Suyin Corp.
-Bus 001 Device 002: ID 8087:0024 Intel Corp. Integrated Rate Matching Hub
-Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
-</code></p>
 ]]></content>
   </entry>
   

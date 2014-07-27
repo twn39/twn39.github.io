@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Redis | 唐微南的博客]]></title>
+  <link href="http://libre.me/blog/categories/redis/atom.xml" rel="self"/>
+  <link href="http://libre.me/"/>
+  <updated>2014-07-27T10:19:22+08:00</updated>
+  <id>http://libre.me/</id>
+  <author>
+    <name><![CDATA[唐微南]]></name>
+    <email><![CDATA[twn39@163.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ubuntu Server:PHP,Nginx,MySQL,NoSQL,Beanstalkd配置与安装]]></title>
+    <link href="http://libre.me/blog/2014/07/26/ubuntu-server-php/"/>
+    <updated>2014-07-26T23:08:17+08:00</updated>
+    <id>http://libre.me/blog/2014/07/26/ubuntu-server-php</id>
+    <content type="html"><![CDATA[<p>搭建 LAMP 环境是一件非常繁琐的事情，尤其是随着系统的不同，相应的配置也会有所差异。
+以下是 LAMP 环境和一些其他服务的安装与配置，基于 Ubuntu 14.04 LTS。可用于开发环境，
+因为本身不是运维人员，也不知道能否用于生成环境。</p>
+
+<h3>PHP 与 Nginx</h3>
+
+<p><strong>安装： </strong></p>
+
+<pre><code>sudo apt-get install nginx php5 php5-fpm php5-cli
+</code></pre>
+
+<p>Nginx 在 Ubuntu 中的网页根目录为 /usr/share/nginx/html, 配置文件为 /etc/nginx/。</p>
+
+<p><strong>配置：</strong></p>
+
+<p>打开 /etc/nginx/sites-avluable/default 文件，取消注释：</p>
+
+<p>```
+location ~ .php$ {</p>
+
+<pre><code>    fastcgi_split_path_info ^(.+\.php)(/.+)$;
+    # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
+
+    # With php5-cgi alone:
+    # ifastcgi_pass 127.0.0.1:9000;
+    # With php5-fpm:
+    fastcgi_pass unix:/var/run/php5-fpm.sock;
+    fastcgi_index index.php;
+    include fastcgi_params;
+</code></pre>
+
+<p>}
+```</p>
+
+<p>这样的话就可以通过nginx来执行php了，如果需要自动索引 index.php 文件，更改如下位置：</p>
+
+<p>```
+server {</p>
+
+<pre><code>    listen 80 default_server;
+    listen [::]:80 default_server ipv6only=on;
+
+    root /usr/share/nginx/html;
+    index index.php index.html index.htm;
+
+    # Make site accessible from http://localhost/
+    server_name localhost;
+
+    location / {
+            # First attempt to serve request as file, then
+            # as directory, then fall back to displaying a 404.
+            try_files $uri $uri/ =404;
+            # Uncomment to enable naxsi on this location
+            # include /etc/nginx/naxsi.rules
+</code></pre>
+
+<p>}
+```</p>
+
+<p>重启 Nginx：</p>
+
+<pre><code>sudo service nginx restart
+</code></pre>
+
+<p><strong>安装扩展：</strong></p>
+
+<p>搜索扩展：</p>
+
+<pre><code>apt-cache search php5-
+</code></pre>
+
+<p>安装扩展：</p>
+
+<pre><code>sudo apt-get install php5-curl php5-mcrypt php5-apcu php5-imagick php5-oauth
+</code></pre>
+
+<p>像 mcrypt 需要手动启用，启用扩展：</p>
+
+<pre><code>sudo php5enmod mcrypt
+</code></pre>
+
+<p>重启Nginx：</p>
+
+<pre><code>sudo service nginx restart
+</code></pre>
+
+<h3>MySQL</h3>
+
+<p><strong>命令安装： </strong></p>
+
+<pre><code>sudo apt-get install mysql-server mysql-client
+</code></pre>
+
+<p>在安装过程中会提示输入密码，输入密码就可以继续往下安装。</p>
+
+<p>查看进程：</p>
+
+<pre><code>ps -aux | grep mysql
+</code></pre>
+
+<p>默认端口为：<code>localhost:3306</code></p>
+
+<p>安装PHP扩展：</p>
+
+<pre><code>sudo apt-get install php5-mysql
+</code></pre>
+
+<p>启动/停止/重启</p>
+
+<pre><code>sudo service mysql start/stop/restart
+</code></pre>
+
+<p>进入shell环境：</p>
+
+<p>```
+vagrant@vagrant-ubuntu-trusty-64:~$ mysql -u root -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 36
+Server version: 5.5.38-0ubuntu0.14.04.1 (Ubuntu)</p>
+
+<p>Copyright &copy; 2000, 2014, Oracle and/or its affiliates. All rights reserved.</p>
+
+<p>Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.</p>
+
+<p>Type &lsquo;help;&rsquo; or &lsquo;\h&rsquo; for help. Type &lsquo;\c&rsquo; to clear the current input statement.</p>
+
+<p>mysql>
+```</p>
+
+<h3>Memcache</h3>
+
+<p>命令安装：</p>
+
+<pre><code>sudo apt-get install memcached
+</code></pre>
+
+<p>php扩展：</p>
+
+<pre><code>sudo apt-get install php5-memcached
+</code></pre>
+
+<p>查看进程：</p>
+
+<pre><code>ps -aux | grep memcached
+</code></pre>
+
+<p>默认端口：<code>localhost：11211</code></p>
+
+<h3>Redis</h3>
+
+<p><strong>命令安装:</strong></p>
+
+<pre><code>sudo apt-get install redis-server redis-tools
+</code></pre>
+
+<p><strong>PHP扩展：</strong></p>
+
+<pre><code>sudo apt-get install php5-redis
+</code></pre>
+
+<p>默认端口：<code>localhost:6379</code></p>
+
+<p>进入shell环境：
+```
+vagrant@vagrant-ubuntu-trusty-64:/usr/share/nginx/html$ redis-cli
+127.0.0.1:6379></p>
+
+<p>```</p>
+
+<h3>MongoDB</h3>
+
+<p><strong>安装：</strong></p>
+
+<pre><code>sudo apt-get install mongodb mongodb-clients
+</code></pre>
+
+<p><strong>php扩展：</strong></p>
+
+<pre><code>sudo apt-get install php5-mongo
+</code></pre>
+
+<p><strong>启动/停止/重启：</strong></p>
+
+<pre><code>sudo service mongo start/stop/restart
+</code></pre>
+
+<p>默认端口：<code>localhost:27017</code></p>
+
+<p>使用shell环境：
+```
+vagrant@vagrant-ubuntu-trusty-64:/usr/share/nginx/html$ mongo
+MongoDB shell version: 2.4.9
+connecting to: test
+Welcome to the MongoDB shell.
+For interactive help, type &ldquo;help&rdquo;.
+For more comprehensive documentation, see</p>
+
+<pre><code>http://docs.mongodb.org/
+</code></pre>
+
+<p>Questions? Try the support group</p>
+
+<pre><code>http://groups.google.com/group/mongodb-user
+</code></pre>
+
+<blockquote><p>```</p>
+
+<h3>Beanstalkd</h3></blockquote>
+
+<pre><code>sudo apt-get install beanstalkd
+</code></pre>
+
+<p>默认端口：<code>localhost：11300</code></p>
+
+<p>PHP 扩展：<a href="https://github.com/pda/pheanstalk">https://github.com/pda/pheanstalk</a></p>
+]]></content>
+  </entry>
+  
+</feed>
