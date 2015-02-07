@@ -1,0 +1,62 @@
+
+@font-face {
+    font-family: 'Great Vibes';
+    src:url('../fonts/GreatVibes-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+body {
+    font-family: Helvetica,Arial,sans-serif;
+}
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding-top: 4%;
+}
+/* TODO: javascript */
+.main {
+    margin-right: 20px;
+}
+.menu p {
+    color: #b4b4b4;
+    font-family: 'Great Vibes';
+}
+.title {
+    color: #a6a6a6;
+}
+
+.header {
+    padding: 92px 0;
+}
+.header h2 {
+    font-size: 48px;
+    padding-top: 10px;
+    color: #515151;
+}
+
+.description h3 {
+    font-size: 36px;
+    font-family: 'Great Vibes';
+    color: #515151;
+}
+.share {
+    display: inline-block;
+}
+.share ul li {
+    display: inline;
+    list-style-type: none;
+    float: left;
+    padding: 2px 15px;
+}
+
+.poetry p {
+    font-size: 13px;
+    padding: 2px 0;
+    margin-bottom: 0;
+    color: #515151;
+}
+.subject cite {
+    float: right;
+    font-size: 14px;
+    color: #a6a6a6;
+}
