@@ -12,6 +12,7 @@ body {
     max-width: 960px;
     margin: 0 auto;
     padding-top: 4%;
+    padding-bottom: 4%;
 }
 /* TODO: javascript */
 .main {
