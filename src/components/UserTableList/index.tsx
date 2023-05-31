@@ -228,6 +228,7 @@ export default function UserTableList(): ReactElement {
 
   return (
     <UserTableListStyle>
+      <h2>Table Example</h2>
       <Table
         rowKey={(record) => record.email}
         rowSelection={{
