@@ -1,99 +1,52 @@
 ---
 // src/components/dai/DaiGitHubGraph.astro
 import type { Lang } from '../../i18n/ui';
+import { getGitHubUserProfile } from '../../lib/github';
 
 interface Props {
   lang?: Lang;
-  orgHandle?: string;
-  repoSeed?: string;
-  compact?: boolean;
-  colorScheme?: 'espresso' | 'emerald' | 'monochrome';
+  username?: string;
+  colorScheme?: 'emerald' | 'espresso' | 'monochrome';
 }
 
 const {
   lang = 'zh',
-  orgHandle = 'espresso-lab',
-  repoSeed = 'espresso-org',
-  compact = false,
+  username = 'twn39',
   colorScheme = 'emerald',
 } = Astro.props;
 
-// Hash seed string so each repository gets its own distinct commit calendar
-let seedHash = 0;
-for (let i = 0; i < repoSeed.length; i++) {
-  seedHash = (seedHash * 31 + repoSeed.charCodeAt(i)) % 9973;
-}
+const profile = getGitHubUserProfile(username);
+const weeks = profile.weeks;
+const totalWeeks = weeks.length;
 
-const totalWeeks = compact ? 28 : 53;
-const endDate = new Date('2026-11-17T00:00:00Z');
-const endDayOfWeek = endDate.getUTCDay();
-const startDate = new Date(endDate);
-startDate.setUTCDate(endDate.getUTCDate() - ((totalWeeks - 1) * 7 + endDayOfWeek));
-
-interface DayCell {
-  dateStr: string;
-  level: number;
-  commits: number;
-  inRange: boolean;
-}
-
-const weeksData: DayCell[][] = [];
-const monthLabels: { weekIndex: number; label: string }[] = [];
 const enMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const zhMonths = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
 
+const monthLabels: { weekIndex: number; label: string }[] = [];
 let lastMonth = -1;
-let totalCommits = 0;
 
-for (let w = 0; w < totalWeeks; w++) {
-  const weekCol: DayCell[] = [];
-  for (let d = 0; d < 7; d++) {
-    const cur = new Date(startDate);
-    cur.setUTCDate(startDate.getUTCDate() + w * 7 + d);
-    const inRange = cur <= endDate;
-    const m = cur.getUTCMonth();
-
-    if (d === 0 && m !== lastMonth) {
-      if (monthLabels.length === 0 || w - monthLabels[monthLabels.length - 1].weekIndex >= 3) {
-        monthLabels.push({
-          weekIndex: w,
-          label: lang === 'zh' ? zhMonths[m] : enMonths[m],
-        });
-      }
-      lastMonth = m;
+weeks.forEach((week, wIdx) => {
+  const firstDay = week[0];
+  if (!firstDay) return;
+  const monthIdx = Number(firstDay.date.slice(5, 7)) - 1;
+  if (monthIdx !== lastMonth) {
+    if (monthLabels.length === 0 || wIdx - monthLabels[monthLabels.length - 1].weekIndex >= 3) {
+      monthLabels.push({
+        weekIndex: wIdx,
+        label: lang === 'zh' ? zhMonths[monthIdx] : enMonths[monthIdx],
+      });
     }
-
-    if (!inRange) {
-      weekCol.push({ dateStr: '', level: 0, commits: 0, inRange: false });
-      continue;
-    }
-
-    const noise = (w * 37 + d * 19 + seedHash + ((w * (d + 5 + (seedHash % 7))) % 17)) % 20;
-    let level = 0;
-    if (noise >= 17) level = 4;
-    else if (noise >= 13) level = 3;
-    else if (noise >= 9) level = 2;
-    else if (noise >= 5) level = 1;
-
-    if ((d === 0 || d === 6) && noise < 15) {
-      level = Math.max(0, level - 1);
-    }
-
-    const commits = level === 0 ? 0 : (compact ? level + ((w + d) % 3) : level * 2 + ((w + d) % 4) + 1);
-    totalCommits += commits;
-    const dateStr = cur.toISOString().slice(0, 10);
-    weekCol.push({ dateStr, level, commits, inRange: true });
+    lastMonth = monthIdx;
   }
-  weeksData.push(weekCol);
-}
+});
 
 const palettes = {
   emerald: [
     'bg-zinc-100 dark:bg-zinc-900 border-zinc-200/80 dark:border-zinc-800',
-    'bg-emerald-200/85 dark:bg-emerald-950/90 border-emerald-300/50 dark:border-emerald-900',
-    'bg-emerald-400/85 dark:bg-emerald-800 border-emerald-500/40 dark:border-emerald-700',
-    'bg-emerald-500 dark:bg-emerald-600 border-emerald-600/40 dark:border-emerald-500',
-    'bg-emerald-700 dark:bg-emerald-400 border-emerald-800/40 dark:border-emerald-300',
+    'bg-emerald-200 dark:bg-emerald-950 border-emerald-300/60 dark:border-emerald-900',
+    'bg-emerald-400 dark:bg-emerald-800 border-emerald-500/50 dark:border-emerald-700',
+    'bg-emerald-500 dark:bg-emerald-600 border-emerald-600/50 dark:border-emerald-500',
+    'bg-emerald-700 dark:bg-emerald-400 border-emerald-800/50 dark:border-emerald-300',
   ],
   espresso: [
     'bg-zinc-100 dark:bg-zinc-900 border-zinc-200/80 dark:border-zinc-800',
@@ -111,72 +64,74 @@ const palettes = {
   ],
 }[colorScheme];
 
-const summaryText = compact
-  ? lang === 'zh'
-    ? `近半年 ${totalCommits.toLocaleString()} 次仓库提交`
-    : `${totalCommits.toLocaleString()} commits in last 6 months`
-  : lang === 'zh'
-    ? `过去一年共 ${totalCommits.toLocaleString()} 次开源提交`
-    : `${totalCommits.toLocaleString()} contributions in the last year`;
+const summaryText =
+  lang === 'zh'
+    ? `过去一年共 ${profile.totalContributions.toLocaleString()} 次 GitHub 贡献`
+    : `${profile.totalContributions.toLocaleString()} contributions in the last year`;
 
-const defaultReadout = compact
-  ? lang === 'zh'
-    ? '悬停查看单日提交'
-    : 'Hover to inspect daily commits'
-  : lang === 'zh'
-    ? '将鼠标悬停在任意日期方格查看当日提交记录'
-    : 'Hover over any square to inspect daily commit count';
+const defaultReadout =
+  lang === 'zh'
+    ? '将鼠标悬停在任意日期方格查看当日真实提交数'
+    : 'Hover over any square to inspect daily contribution count';
 ---
 
 <div
   data-gh-graph
-  class:list={[
-    'w-full',
-    compact
-      ? 'p-3.5 rounded-lg border border-edge bg-white dark:bg-zinc-950'
-      : 'p-5 sm:p-6 bg-white dark:bg-zinc-950',
-  ]}
+  data-gh-username={profile.login}
+  data-gh-lang={lang}
+  data-gh-palettes={JSON.stringify(palettes)}
+  class="w-full p-5 sm:p-6 bg-white dark:bg-zinc-950"
 >
-  <!-- Top Summary Row -->
-  <div class:list={['flex flex-wrap items-center justify-between gap-2', compact ? 'mb-2.5' : 'mb-4']}>
-    <div class="flex flex-wrap items-center gap-2.5">
-      <span class:list={[compact ? 'font-mono text-[11px] font-medium text-zinc-700 dark:text-zinc-300' : 'text-sm font-semibold text-zinc-900 dark:text-zinc-100']}>
+  <!-- Top Real GitHub Profile & Stats Row -->
+  <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+    <div class="flex flex-wrap items-center gap-3">
+      {profile.avatarUrl && (
+        <a
+          href={profile.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="w-7 h-7 rounded-full border border-edge overflow-hidden shrink-0"
+        >
+          <img
+            src={profile.avatarUrl}
+            alt={profile.name}
+            width="28"
+            height="28"
+            loading="lazy"
+            class="w-full h-full object-cover"
+          />
+        </a>
+      )}
+      <span data-gh-total class="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
         {summaryText}
       </span>
-      {!compact && (
-        <div class="flex items-center gap-2 font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
-          <span class="px-2 py-0.5 rounded-md border border-edge bg-zinc-50 dark:bg-zinc-900">
-            4 {lang === 'zh' ? '个核心仓库' : 'Repos'}
-          </span>
-          <span class="px-2 py-0.5 rounded-md border border-edge bg-zinc-50 dark:bg-zinc-900">
-            ★ 11.6k Stars
-          </span>
-        </div>
-      )}
+      <div class="flex flex-wrap items-center gap-2 font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
+        <span class="px-2 py-0.5 rounded-md border border-edge bg-zinc-50 dark:bg-zinc-900">
+          {profile.publicRepos} {lang === 'zh' ? '个公开仓库' : 'Public Repos'}
+        </span>
+        <span class="px-2 py-0.5 rounded-md border border-edge bg-zinc-50 dark:bg-zinc-900">
+          {profile.followers} {lang === 'zh' ? '关注者' : 'Followers'}
+        </span>
+      </div>
     </div>
 
-    {!compact ? (
-      <a
-        href={`https://github.com/${orgHandle}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="font-mono text-xs text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-colors inline-flex items-center gap-1"
-      >
-        @{orgHandle} ↗
-      </a>
-    ) : (
-      <span data-gh-readout class="font-mono text-[10px] text-zinc-400 truncate">
-        {defaultReadout}
-      </span>
-    )}
+    <a
+      href={profile.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="font-mono text-xs text-zinc-600 dark:text-zinc-300 hover:text-espresso-600 dark:hover:text-espresso-400 transition-colors inline-flex items-center gap-1.5"
+    >
+      <span>github.com/{profile.login}</span>
+      <span>↗</span>
+    </a>
   </div>
 
-  <!-- Calendar Matrix -->
-  <div class="overflow-x-auto pb-0.5">
-    <div class:list={[compact ? 'min-w-[300px]' : 'min-w-[680px]']}>
+  <!-- Responsive Full-Width Real Contribution Calendar Matrix -->
+  <div class="overflow-x-auto pb-1">
+    <div class="min-w-[680px]">
       <!-- Month Headers Row -->
-      <div class:list={['flex items-center mb-1', compact ? '' : 'pl-8 mb-1.5']}>
-        <div class="relative w-full h-3.5 font-mono text-[9.5px] text-zinc-400">
+      <div class="flex items-center mb-1.5 pl-8">
+        <div class="relative w-full h-4 font-mono text-[10px] text-zinc-400">
           {monthLabels.map((m) => (
             <span
               style={`left: ${(m.weekIndex / totalWeeks) * 100}%`}
@@ -188,65 +143,68 @@ const defaultReadout = compact
         </div>
       </div>
 
-      <!-- Weekday Labels (Full Mode) + Week Columns -->
+      <!-- Weekday Labels + Week Columns -->
       <div class="flex items-stretch gap-2">
-        {!compact && (
-          <div class="w-6 shrink-0 grid grid-rows-7 gap-[3px] font-mono text-[9.5px] text-zinc-400 select-none">
-            <span />
-            <span class="flex items-center leading-none">Mon</span>
-            <span />
-            <span class="flex items-center leading-none">Wed</span>
-            <span />
-            <span class="flex items-center leading-none">Fri</span>
-            <span />
-          </div>
-        )}
+        <div class="w-6 shrink-0 grid grid-rows-7 gap-[3px] font-mono text-[9.5px] text-zinc-400 select-none">
+          <span />
+          <span class="flex items-center leading-none">Mon</span>
+          <span />
+          <span class="flex items-center leading-none">Wed</span>
+          <span />
+          <span class="flex items-center leading-none">Fri</span>
+          <span />
+        </div>
 
         <div
           style={`grid-template-columns: repeat(${totalWeeks}, minmax(0, 1fr));`}
           class="flex-1 grid gap-[3px]"
         >
-          {weeksData.map((week) => (
-            <div class="grid grid-rows-7 gap-[3px]">
-              {week.map((cell) =>
-                cell.inRange ? (
-                  <span
-                    data-gh-cell={
-                      lang === 'zh'
-                        ? `${cell.dateStr} · ${cell.commits} 次提交`
-                        : `${cell.dateStr} · ${cell.commits} commits`
-                    }
-                    class:list={[
-                      'aspect-square w-full rounded-[2px] border transition-transform duration-100 hover:scale-125 hover:z-10',
-                      palettes[cell.level],
-                    ]}
-                  />
-                ) : (
-                  <span class="aspect-square w-full rounded-[2px] opacity-0 pointer-events-none" />
-                )
-              )}
-            </div>
-          ))}
+          {weeks.map((week) => {
+            const slots = Array.from({ length: 7 }, (_, weekday) =>
+              week.find((d) => d.weekday === weekday)
+            );
+            return (
+              <div class="grid grid-rows-7 gap-[3px]">
+                {slots.map((cell) =>
+                  cell ? (
+                    <span
+                      data-gh-date={cell.date}
+                      data-gh-level={cell.level}
+                      data-gh-cell={
+                        lang === 'zh'
+                          ? `${cell.date} · ${cell.count} 次贡献`
+                          : `${cell.date} · ${cell.count} contribution${cell.count === 1 ? '' : 's'}`
+                      }
+                      class:list={[
+                        'aspect-square w-full rounded-[2.5px] border transition-transform duration-100 hover:scale-125 hover:z-10',
+                        palettes[cell.level] || palettes[0],
+                      ]}
+                    />
+                  ) : (
+                    <span class="aspect-square w-full rounded-[2.5px] opacity-0 pointer-events-none" />
+                  )
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Bottom Legend Bar -->
-  {!compact && (
-    <div class="flex flex-wrap items-center justify-between gap-2 font-mono text-[11px] text-zinc-400 mt-4 pt-3 border-t border-edge">
-      <span data-gh-readout class="truncate text-zinc-500 dark:text-zinc-400">
-        {defaultReadout}
-      </span>
-      <div class="flex items-center gap-1.5 shrink-0">
-        <span>{lang === 'zh' ? '少' : 'Less'}</span>
-        {palettes.map((cls) => (
-          <span class:list={['w-2.5 h-2.5 rounded-[2px] border', cls]} />
-        ))}
-        <span>{lang === 'zh' ? '多' : 'More'}</span>
-      </div>
+  <!-- Bottom Interactive Readout & Color Scale Legend -->
+  <div class="flex flex-wrap items-center justify-between gap-2 font-mono text-[11px] text-zinc-400 mt-4 pt-3 border-t border-edge">
+    <span data-gh-readout class="truncate text-zinc-500 dark:text-zinc-400">
+      {defaultReadout}
+    </span>
+    <div class="flex items-center gap-1.5 shrink-0">
+      <span>{lang === 'zh' ? '少' : 'Less'}</span>
+      {palettes.map((cls) => (
+        <span class:list={['w-2.5 h-2.5 rounded-[2.5px] border', cls]} />
+      ))}
+      <span>{lang === 'zh' ? '多' : 'More'}</span>
     </div>
-  )}
+  </div>
 </div>
 
 <script>
@@ -254,8 +212,13 @@ const defaultReadout = compact
     document.querySelectorAll<HTMLElement>('[data-gh-graph]').forEach((root) => {
       if (root.dataset.bound === 'true') return;
       root.dataset.bound = 'true';
+
       const readout = root.querySelector<HTMLElement>('[data-gh-readout]');
+      const totalEl = root.querySelector<HTMLElement>('[data-gh-total]');
       const defaultText = readout?.textContent || '';
+      const username = root.dataset.ghUsername || 'twn39';
+      const lang = root.dataset.ghLang || 'zh';
+      const palettes: string[] = JSON.parse(root.dataset.ghPalettes || '[]');
 
       root.querySelectorAll<HTMLElement>('[data-gh-cell]').forEach((cell) => {
         cell.addEventListener('pointerenter', () => {
@@ -265,8 +228,47 @@ const defaultReadout = compact
       root.addEventListener('pointerleave', () => {
         if (readout) readout.textContent = defaultText;
       });
+
+      // Live client-side refresh so static GitHub Pages stays up-to-date between builds
+      fetch(`https://github-contributions-api.jogruber.de/v4/${encodeURIComponent(username)}?y=last`)
+        .then((r) => (r.ok ? r.json() : null))
+        .then((data) => {
+          if (!data || !Array.isArray(data.contributions)) return;
+          if (typeof data.total?.lastYear === 'number' && totalEl) {
+            totalEl.textContent =
+              lang === 'zh'
+                ? `过去一年共 ${data.total.lastYear.toLocaleString()} 次 GitHub 贡献`
+                : `${data.total.lastYear.toLocaleString()} contributions in the last year`;
+          }
+
+          const map = new Map<string, { count: number; level: number }>();
+          for (const item of data.contributions) {
+            map.set(item.date, { count: item.count, level: item.level });
+          }
+
+          root.querySelectorAll<HTMLElement>('[data-gh-date]').forEach((cell) => {
+            const d = cell.dataset.ghDate || '';
+            const entry = map.get(d);
+            if (!entry) return;
+            cell.dataset.ghCell =
+              lang === 'zh'
+                ? `${d} · ${entry.count} 次贡献`
+                : `${d} · ${entry.count} contribution${entry.count === 1 ? '' : 's'}`;
+
+            const oldLevel = Number(cell.dataset.ghLevel ?? 0);
+            if (oldLevel !== entry.level && palettes[entry.level]) {
+              const base = 'aspect-square w-full rounded-[2.5px] border transition-transform duration-100 hover:scale-125 hover:z-10';
+              cell.className = `${base} ${palettes[entry.level]}`;
+              cell.dataset.ghLevel = String(entry.level);
+            }
+          });
+        })
+        .catch(() => {
+          // Static gh CLI build-time data is already rendered; ignore network errors offline
+        });
     });
   }
+
   initGhGraphs();
   document.addEventListener('astro:page-load', initGhGraphs);
 </script>

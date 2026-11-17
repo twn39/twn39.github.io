@@ -40,7 +40,7 @@ const uniqueLangs = Array.from(new Set(ESPRESSO_PROJECTS.map((p) => p.primaryLan
   <!-- Page Header -->
   <section class="screen-line-bottom px-6 sm:px-8 py-10 bg-dot-grid">
     <div class="font-mono text-[11px] uppercase tracking-widest text-espresso-600 dark:text-espresso-400 mb-2">
-      GITHUB.COM/ESPRESSO-LAB · {ESPRESSO_PROJECTS.length} REPOSITORIES
+      GITHUB.COM/TWN39 · {ESPRESSO_PROJECTS.length} FEATURED REPOSITORIES
     </div>
     <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">{t('projects.title')}</h1>
     <p class="mt-2.5 text-sm text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">
@@ -72,8 +72,10 @@ const uniqueLangs = Array.from(new Set(ESPRESSO_PROJECTS.map((p) => p.primaryLan
   <div>
     {ESPRESSO_PROJECTS.map((project, idx) => {
       const cmdTabs = [
+        ...(project.installCmd.uv ? [{ label: 'uv', command: project.installCmd.uv }] : []),
+        ...(project.installCmd.pip ? [{ label: 'pip', command: project.installCmd.pip }] : []),
         ...(project.installCmd.cargo ? [{ label: 'cargo', command: project.installCmd.cargo }] : []),
-        ...(project.installCmd.pnpm ? [{ label: 'pnpm', command: project.installCmd.pnpm }] : []),
+        ...(project.installCmd.cmake ? [{ label: 'cmake', command: project.installCmd.cmake }] : []),
         { label: 'git clone', command: project.installCmd.git },
       ];
       return (
@@ -126,15 +128,28 @@ const uniqueLangs = Array.from(new Set(ESPRESSO_PROJECTS.map((p) => p.primaryLan
                     </div>
                   </div>
 
-                  <a
-                    href={project.repoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="w-full h-9 px-3.5 rounded-md border border-edge bg-white dark:bg-zinc-950 text-xs font-mono font-medium text-zinc-700 dark:text-zinc-200 hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors inline-flex items-center justify-between"
-                  >
-                    <span>{t('projects.view_repo')} ({project.repo})</span>
-                    <span>↗</span>
-                  </a>
+                  <div class="flex flex-col gap-2">
+                    <a
+                      href={project.repoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="w-full h-9 px-3.5 rounded-md border border-edge bg-white dark:bg-zinc-950 text-xs font-mono font-medium text-zinc-700 dark:text-zinc-200 hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors inline-flex items-center justify-between"
+                    >
+                      <span>{t('projects.view_repo')} ({project.repo})</span>
+                      <span>↗</span>
+                    </a>
+                    {project.docsUrl && (
+                      <a
+                        href={project.docsUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="w-full h-9 px-3.5 rounded-md border border-edge bg-zinc-50 dark:bg-zinc-900/60 text-xs font-mono text-zinc-600 dark:text-zinc-300 hover:border-espresso-500/60 hover:text-espresso-600 dark:hover:text-espresso-400 transition-colors inline-flex items-center justify-between"
+                      >
+                        <span>{t('projects.view_demo')} (Docs)</span>
+                        <span>↗</span>
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

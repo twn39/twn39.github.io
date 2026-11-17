@@ -108,14 +108,26 @@ const info = project.i18n[lang];
   <div class="mt-5 pt-4 border-t border-edge space-y-2.5">
     <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-wider text-zinc-400">
       <span>{t('projects.related_posts')} ({relatedPosts.length})</span>
-      <a
-        href={project.repoUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="text-zinc-600 dark:text-zinc-300 hover:text-espresso-500 inline-flex items-center gap-1 normal-case"
-      >
-        GitHub ↗
-      </a>
+      <div class="flex items-center gap-3 normal-case">
+        {project.docsUrl && (
+          <a
+            href={project.docsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-zinc-500 dark:text-zinc-400 hover:text-espresso-500 inline-flex items-center gap-0.5"
+          >
+            Docs ↗
+          </a>
+        )}
+        <a
+          href={project.repoUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-zinc-600 dark:text-zinc-300 hover:text-espresso-500 inline-flex items-center gap-0.5"
+        >
+          GitHub ↗
+        </a>
+      </div>
     </div>
 
     {relatedPosts.length > 0 ? (

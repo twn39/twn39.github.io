@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import { CLOSED_SOURCE_PROJECTS, ESPRESSO_PROJECTS } from '../data/projects';
 
 export const GET: APIRoute = async ({ site }) => {
-  const origin = site?.origin || 'https://espresso-lab.github.io';
+  const origin = site?.origin || 'https://twn39.github.io';
   const allPosts = await getCollection('blog');
 
   const zhPosts = allPosts
@@ -15,9 +15,9 @@ export const GET: APIRoute = async ({ site }) => {
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
   const lines: string[] = [
-    `# Espresso Engineering Lab & Technical Blog (浓缩工程志)`,
+    `# Espresso · 浓缩工程志 (@twn39 Technical Blog & Projects)`,
     ``,
-    `> High-extraction systems architecture, Rust/WebAssembly edge runtimes, LSM-Tree storage engines, eBPF continuous profiling, and AI-native documentation engineering. Bilingual (zh-CN / en).`,
+    `> High-performance C++/Python nanobind libraries (pylibheif, pyopenxlsx), C++17 OOXML document kernels (OpenXLSX-NX), Rust zero-copy math compilers (tex2math), cross-platform PySide6 desktop craft (yt-dlp-qt-gui), and AI Coding Agent static analysis tools (codegraph-gen) by Tang Weinan (https://github.com/twn39). Bilingual (zh-CN / en).`,
     ``,
     `This file conforms to the https://llmstxt.org specification to help AI search engines, RAG pipelines, and coding agents index our open-source GitHub repositories and technical essays with minimal token overhead.`,
     ``,
@@ -39,7 +39,7 @@ export const GET: APIRoute = async ({ site }) => {
       return `- [${proj.repo} (${proj.version}, ${proj.primaryLang}, ★ ${proj.stars})](${proj.repoUrl}): ${proj.i18n.en.tagline} — ${proj.i18n.zh.tagline}${linkedNote}`;
     }),
     ``,
-    `## Closed-Source & Proprietary Systems`,
+    `## Closed-Source Apps — Apple App Store`,
     ``,
     ...CLOSED_SOURCE_PROJECTS.map((proj) => {
       const linked = zhPosts.filter((p) => p.data.project === proj.slug);
@@ -47,7 +47,7 @@ export const GET: APIRoute = async ({ site }) => {
         linked.length > 0
           ? ` | Public Architecture Essay (.md): ${origin}/en/blog/${linked[0].data.translationSlug}.md`
           : '';
-      return `- [${proj.name} (${proj.version}, ${proj.deliveryModel}, ${proj.slaMetric})](${origin}/en/closed-source/#${proj.slug}): ${proj.i18n.en.tagline} — ${proj.i18n.zh.tagline}${linkedNote}`;
+      return `- [${proj.i18n.en.displayName} (${proj.version}, ${proj.deliveryModel})](${proj.appStoreUrl.en}): ${proj.i18n.en.tagline} — ${proj.i18n.zh.tagline}${linkedNote}`;
     }),
     ``,
     `## Technical Blog Essays — English (Clean Markdown Endpoints)`,

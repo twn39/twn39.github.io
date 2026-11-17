@@ -12,7 +12,7 @@ interface Props {
 }
 
 const {
-  packageName = '@espresso-lab/tamp-llms-index',
+  packageName = 'pylibheif pyopenxlsx',
   defaultPkgManager = 'pnpm',
   tabs,
 } = Astro.props;
@@ -20,10 +20,10 @@ const {
 const resolvedTabs: CommandTab[] = tabs && tabs.length > 0
   ? tabs
   : [
-      { label: 'git', command: 'git clone https://github.com/espresso-lab/espresso-runtime.git' },
-      { label: 'cargo', command: 'cargo add espresso-runtime barista-kv' },
-      { label: defaultPkgManager, command: `pnpm add -D ${packageName}` },
-      { label: 'curl (llms)', command: 'curl -sL https://espresso-lab.github.io/llms.txt | head -n 25' },
+      { label: 'uv', command: `uv add ${packageName}` },
+      { label: 'cargo', command: 'cargo add tex2math' },
+      { label: 'agent', command: 'uv tool install codegraph-gen' },
+      { label: 'git', command: 'git clone https://github.com/twn39/OpenXLSX-NX.git' },
     ];
 ---
 

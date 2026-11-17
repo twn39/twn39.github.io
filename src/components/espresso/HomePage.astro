@@ -5,8 +5,9 @@ import DaiBlueprintGrid from '../dai/DaiBlueprintGrid.astro';
 import DaiGitHubGraph from '../dai/DaiGitHubGraph.astro';
 import DaiBlockHero01 from '../dai/blocks/DaiBlockHero01.astro';
 import ProjectCard from './ProjectCard.astro';
+import ClosedProjectCard from './ClosedProjectCard.astro';
 import BlogCard from './BlogCard.astro';
-import { ESPRESSO_PROJECTS } from '../../data/projects';
+import { CLOSED_SOURCE_PROJECTS, ESPRESSO_PROJECTS } from '../../data/projects';
 import { localizePath, useTranslations, type Lang } from '../../i18n/ui';
 
 interface Props {
@@ -35,9 +36,14 @@ function getPostsForProject(projectSlug: string) {
   <!-- 1. Top Subtitle Bar -->
   <div class="screen-line-bottom px-5 sm:px-6 py-2.5 bg-zinc-50/65 dark:bg-zinc-900/35 flex items-center justify-between gap-3 text-xs text-zinc-500 dark:text-zinc-400">
     <span class="truncate">{t('site.tagline')}</span>
-    <span class="hidden sm:inline font-mono text-[11px] text-zinc-400 shrink-0">
-      github.com/espresso-lab
-    </span>
+    <a
+      href="https://github.com/twn39"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="hidden sm:inline font-mono text-[11px] text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors shrink-0"
+    >
+      github.com/twn39 ↗
+    </a>
   </div>
 
   <!-- 2. Minimalist Blueprint Hero -->
@@ -60,29 +66,29 @@ function getPostsForProject(projectSlug: string) {
       {t('hero.cta.blog')}
     </a>
     <a
-      href="https://github.com/espresso-lab"
+      href="https://github.com/twn39"
       target="_blank"
       rel="noopener noreferrer"
       class="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-md border border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white font-mono text-xs transition-colors"
     >
-      github.com/espresso-lab ↗
+      github.com/twn39 ↗
     </a>
   </DaiBlockHero01>
 
-  <!-- 3. GitHub Contribution Calendar -->
+  <!-- 3. Real GitHub Contribution Calendar (twn39) -->
   <DaiBlueprintGrid
     title={t('section.profile')}
-    specCode="52 WEEKS"
+    specCode="@twn39"
     handNote={t('section.activity.note')}
     columns="1"
   >
-    <DaiGitHubGraph lang={lang} orgHandle="espresso-lab" colorScheme="emerald" />
+    <DaiGitHubGraph lang={lang} username="twn39" colorScheme="emerald" />
   </DaiBlueprintGrid>
 
   <!-- 4. Featured GitHub Projects + Linked Technical Blog Posts -->
   <DaiBlueprintGrid
     title={t('section.projects')}
-    specCode="4 REPOS"
+    specCode={`${ESPRESSO_PROJECTS.length} REPOS`}
     handNote={t('section.projects.note')}
     columns="2"
   >
@@ -99,6 +105,31 @@ function getPostsForProject(projectSlug: string) {
         project={project}
         lang={lang}
         relatedPosts={getPostsForProject(project.slug)}
+      />
+    ))}
+  </DaiBlueprintGrid>
+
+  <!-- 5. Closed-Source App Store Products -->
+  <DaiBlueprintGrid
+    title={t('section.closed_projects')}
+    specCode={`${CLOSED_SOURCE_PROJECTS.length} APPS`}
+    handNote={t('section.closed_projects.note')}
+    columns="2"
+  >
+    <a
+      slot="action"
+      href={localizePath('/closed-source/', lang)}
+      class="font-mono text-[11px] text-espresso-600 dark:text-espresso-400 hover:underline"
+    >
+      {lang === 'zh' ? '查看全部 →' : 'All Apps →'}
+    </a>
+
+    {CLOSED_SOURCE_PROJECTS.map((project) => (
+      <ClosedProjectCard
+        project={project}
+        lang={lang}
+        relatedPosts={getPostsForProject(project.slug)}
+        compact={true}
       />
     ))}
   </DaiBlueprintGrid>

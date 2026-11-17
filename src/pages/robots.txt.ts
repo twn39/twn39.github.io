@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 
 export const GET: APIRoute = async ({ site }) => {
-  const origin = site?.origin || 'https://espresso-lab.github.io';
+  const origin = site?.origin || 'https://twn39.github.io';
 
   const body = [
     `# Espresso Engineering Lab — Search & AI Agent Indexing Policy`,

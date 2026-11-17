@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" fill="none">
+  <rect width="960" height="400" rx="12" fill="#0D0D10"/>
+  <rect x="1" y="1" width="958" height="398" rx="11" stroke="#27272A" stroke-width="2"/>
+  <line x1="0" y1="44" x2="960" y2="44" stroke="#27272A"/>
+  <text x="24" y="27" fill="#A1A1AA" font-family="JetBrains Mono, monospace" font-size="11" letter-spacing="1">FIG 01 — TWN39/PYLIBHEIF · NANOBIND ZERO-COPY BUFFER PROTOCOL &amp; STREAMING IO</text>
+  <text x="802" y="27" fill="#10B981" font-family="JetBrains Mono, monospace" font-size="11">&gt; 300K STREAM OPS</text>
+
+  <rect x="44" y="86" width="256" height="248" rx="8" fill="#121216" stroke="#3F3F46"/>
+  <text x="64" y="116" fill="#FAFAFA" font-family="Inter, sans-serif" font-size="14" font-weight="600">1. C/C++ libheif Codec Core</text>
+  <text x="64" y="136" fill="#71717A" font-family="JetBrains Mono, monospace" font-size="10">GIL Released · Multi-Threaded</text>
+  <rect x="64" y="158" width="216" height="68" rx="6" fill="#18181B" stroke="#27272A"/>
+  <text x="80" y="183" fill="#E4E4E7" font-family="JetBrains Mono, monospace" font-size="11">HEIC (HEVC) · AVIF (AV1)</text>
+  <text x="80" y="203" fill="#A1A1AA" font-family="JetBrains Mono, monospace" font-size="10">JPEG2000 in HEIF Container</text>
+  <rect x="64" y="242" width="216" height="72" rx="6" fill="#1C1613" stroke="#DA9468"/>
+  <text x="80" y="268" fill="#F2D7C2" font-family="JetBrains Mono, monospace" font-size="11">Aligned Plane Stride Buffer</text>
+  <text x="80" y="290" fill="#DA9468" font-family="JetBrains Mono, monospace" font-size="10">heif_image_get_plane_readonly</text>
+
+  <path d="M308 210 L368 210" stroke="#DA9468" stroke-width="1.5"/>
+  <polygon points="374,210 366,205 366,215" fill="#DA9468"/>
+  <text x="313" y="198" fill="#DA9468" font-family="JetBrains Mono, monospace" font-size="10">nanobind</text>
+
+  <rect x="382" y="86" width="256" height="248" rx="8" fill="#121216" stroke="#DA9468"/>
+  <text x="402" y="116" fill="#F2D7C2" font-family="Inter, sans-serif" font-size="14" font-weight="600">2. Zero-Copy Capsule Bridge</text>
+  <text x="402" y="136" fill="#DA9468" font-family="JetBrains Mono, monospace" font-size="10">PEP 3118 Py_buffer Protocol</text>
+  <rect x="402" y="158" width="216" height="156" rx="6" fill="#09090B" stroke="#27272A"/>
+  <text x="418" y="186" fill="#10B981" font-family="JetBrains Mono, monospace" font-size="10">● write_to_memoryview()</text>
+  <text x="418" y="210" fill="#E4E4E7" font-family="JetBrains Mono, monospace" font-size="10">● Decoupled C++ shared_ptr</text>
+  <text x="418" y="234" fill="#E4E4E7" font-family="JetBrains Mono, monospace" font-size="10">● 0-copy ndarray(H, W, C)</text>
+  <text x="418" y="258" fill="#DA9468" font-family="JetBrains Mono, monospace" font-size="10">● Custom heif_reader/writer</text>
+  <text x="418" y="290" fill="#71717A" font-family="JetBrains Mono, monospace" font-size="10">Zero memcpy across boundary</text>
+
+  <path d="M646 210 L702 210" stroke="#10B981" stroke-width="1.5"/>
+  <polygon points="708,210 700,205 700,215" fill="#10B981"/>
+
+  <rect x="716" y="86" width="200" height="248" rx="8" fill="#121216" stroke="#3F3F46"/>
+  <text x="736" y="116" fill="#FAFAFA" font-family="Inter, sans-serif" font-size="14" font-weight="600">3. Python Ecosystem</text>
+  <rect x="736" y="150" width="160" height="48" rx="5" fill="#18181B" stroke="#10B981"/>
+  <text x="752" y="178" fill="#FAFAFA" font-family="JetBrains Mono, monospace" font-size="11">NumPy / PyTorch</text>
+  <rect x="736" y="210" width="160" height="48" rx="5" fill="#18181B" stroke="#27272A"/>
+  <text x="752" y="238" fill="#FAFAFA" font-family="JetBrains Mono, monospace" font-size="11">Pillow ImagePlugin</text>
+  <rect x="736" y="270" width="160" height="44" rx="5" fill="#18181B" stroke="#27272A"/>
+  <text x="752" y="296" fill="#DA9468" font-family="JetBrains Mono, monospace" font-size="11">BytesIO / Async CLI</text>
+
+  <line x1="0" y1="364" x2="960" y2="364" stroke="#27272A"/>
+  <text x="24" y="386" fill="#52525B" font-family="JetBrains Mono, monospace" font-size="10">REPO: GITHUB.COM/TWN39/PYLIBHEIF · V1.23.1 · PYTHON 3.11+ &amp; C++17</text>
+</svg>

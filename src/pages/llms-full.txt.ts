@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import { CLOSED_SOURCE_PROJECTS, ESPRESSO_PROJECTS } from '../data/projects';
 
 export const GET: APIRoute = async ({ site }) => {
-  const origin = site?.origin || 'https://espresso-lab.github.io';
+  const origin = site?.origin || 'https://twn39.github.io';
   const allPosts = (await getCollection('blog')).sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
   );
@@ -14,7 +14,7 @@ export const GET: APIRoute = async ({ site }) => {
     `> Complete plain-Markdown compilation of all Espresso GitHub repositories and bilingual (zh-CN / EN) technical blog essays for LLM context windows, AI search indexing, and local RAG ingestion.`,
     ``,
     `- Canonical Index: ${origin}/llms.txt`,
-    `- GitHub Organization: https://github.com/espresso-lab`,
+    `- GitHub Profile: https://github.com/twn39`,
     ``,
     `================================================================================`,
     `PART 1: OPEN SOURCE REPOSITORY SPECIFICATIONS`,
@@ -44,9 +44,10 @@ export const GET: APIRoute = async ({ site }) => {
 
   for (const proj of CLOSED_SOURCE_PROJECTS) {
     sections.push(
-      `## Proprietary System: ${proj.name} (${proj.version} · ${proj.deliveryModel})`,
-      `- Overview URL: ${origin}/en/closed-source/#${proj.slug}`,
-      `- SLA / Scale: ${proj.slaMetric} | ${proj.scaleMetric}`,
+      `## App Store Application: ${proj.i18n.en.displayName} / ${proj.i18n.zh.displayName} (${proj.version} · ${proj.deliveryModel})`,
+      `- App Store (US): ${proj.appStoreUrl.en}`,
+      `- App Store (CN): ${proj.appStoreUrl.zh}`,
+      `- Core Stack: ${proj.scaleMetric}`,
       `- EN Summary: ${proj.i18n.en.tagline} — ${proj.i18n.en.summary}`,
       `- ZH Summary: ${proj.i18n.zh.tagline} — ${proj.i18n.zh.summary}`,
       `- Key Architecture Highlights:`,

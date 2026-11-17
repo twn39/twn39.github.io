@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" fill="none">
+  <rect width="960" height="400" rx="12" fill="#0D0D10"/>
+  <rect x="1" y="1" width="958" height="398" rx="11" stroke="#27272A" stroke-width="2"/>
+  <line x1="0" y1="44" x2="960" y2="44" stroke="#27272A"/>
+  <text x="24" y="27" fill="#A1A1AA" font-family="JetBrains Mono, monospace" font-size="11" letter-spacing="1">FIG 05 — TWN39/OPENXLSX-NX · C++17 OOXML STREAMING, AST FORMULA &amp; FUZZ HARDENING</text>
+  <text x="790" y="27" fill="#10B981" font-family="JetBrains Mono, monospace" font-size="11">LIBFUZZER + ASAN CLEAN</text>
+
+  <rect x="44" y="88" width="256" height="244" rx="8" fill="#121216" stroke="#3F3F46"/>
+  <text x="64" y="118" fill="#FAFAFA" font-family="Inter, sans-serif" font-size="14" font-weight="600">1. Security &amp; ZIP Archive</text>
+  <text x="64" y="138" fill="#71717A" font-family="JetBrains Mono, monospace" font-size="10">Agile AES Crypto · Zip-Bomb Guard</text>
+  <rect x="64" y="162" width="216" height="148" rx="6" fill="#18181B" stroke="#27272A"/>
+  <text x="80" y="190" fill="#10B981" font-family="JetBrains Mono, monospace" font-size="10">● LLVM libFuzzer Corpus</text>
+  <text x="80" y="214" fill="#E4E4E7" font-family="JetBrains Mono, monospace" font-size="10">● ASan / UBSan Zero-Leak</text>
+  <text x="80" y="238" fill="#E4E4E7" font-family="JetBrains Mono, monospace" font-size="10">● MS-OFFCRYPTO Agile AES</text>
+  <text x="80" y="262" fill="#A1A1AA" font-family="JetBrains Mono, monospace" font-size="10">● UTF-8 Cross-OS Paths</text>
+
+  <path d="M308 210 L368 210" stroke="#DA9468" stroke-width="1.5"/>
+  <polygon points="374,210 366,205 366,215" fill="#DA9468"/>
+
+  <rect x="382" y="88" width="256" height="244" rx="8" fill="#1C1613" stroke="#DA9468"/>
+  <text x="402" y="118" fill="#F2D7C2" font-family="Inter, sans-serif" font-size="14" font-weight="600">2. Core C++17 Engine</text>
+  <text x="402" y="138" fill="#DA9468" font-family="JetBrains Mono, monospace" font-size="10">DOM + SAX Streaming Dual Mode</text>
+  <rect x="402" y="162" width="216" height="148" rx="6" fill="#09090B" stroke="#27272A"/>
+  <text x="418" y="190" fill="#FAFAFA" font-family="JetBrains Mono, monospace" font-size="10">● AST Formula Evaluator</text>
+  <text x="418" y="214" fill="#DA9468" font-family="JetBrains Mono, monospace" font-size="10">● O(1) Style Hash Dedup</text>
+  <text x="418" y="238" fill="#E4E4E7" font-family="JetBrains Mono, monospace" font-size="10">● SharedString Pool</text>
+  <text x="418" y="262" fill="#10B981" font-family="JetBrains Mono, monospace" font-size="10">● StreamReader / Writer</text>
+
+  <path d="M646 210 L702 210" stroke="#10B981" stroke-width="1.5"/>
+  <polygon points="708,210 700,205 700,215" fill="#10B981"/>
+
+  <rect x="716" y="88" width="200" height="244" rx="8" fill="#121216" stroke="#3F3F46"/>
+  <text x="736" y="118" fill="#FAFAFA" font-family="Inter, sans-serif" font-size="14" font-weight="600">3. Rich OOXML Spec</text>
+  <rect x="736" y="156" width="160" height="46" rx="5" fill="#18181B" stroke="#27272A"/>
+  <text x="750" y="184" fill="#FAFAFA" font-family="JetBrains Mono, monospace" font-size="11">Threaded Comments</text>
+  <rect x="736" y="212" width="160" height="46" rx="5" fill="#18181B" stroke="#27272A"/>
+  <text x="750" y="240" fill="#FAFAFA" font-family="JetBrains Mono, monospace" font-size="11">VML &amp; Vector Shapes</text>
+  <rect x="736" y="268" width="160" height="42" rx="5" fill="#18181B" stroke="#10B981"/>
+  <text x="750" y="294" fill="#10B981" font-family="JetBrains Mono, monospace" font-size="10">Excel / WPS Verified</text>
+
+  <line x1="0" y1="364" x2="960" y2="364" stroke="#27272A"/>
+  <text x="24" y="386" fill="#52525B" font-family="JetBrains Mono, monospace" font-size="10">REPO: GITHUB.COM/TWN39/OPENXLSX-NX · V1.12.1 · C++17 BSD-3-CLAUSE</text>
+</svg>

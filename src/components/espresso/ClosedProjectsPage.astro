@@ -39,14 +39,14 @@ const deliveryModels = Array.from(new Set(CLOSED_SOURCE_PROJECTS.map((p) => p.de
   <!-- Page Header -->
   <section class="screen-line-bottom px-6 sm:px-8 py-10 bg-dot-grid">
     <div class="font-mono text-[11px] uppercase tracking-widest text-espresso-600 dark:text-espresso-400 mb-2">
-      PROPRIETARY & COMMERCIAL SYSTEMS · {CLOSED_SOURCE_PROJECTS.length} PLATFORMS
+      APPLE APP STORE · {CLOSED_SOURCE_PROJECTS.length} NATIVE APPLICATIONS
     </div>
     <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">{t('closed.title')}</h1>
     <p class="mt-2.5 text-sm text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">
       {t('closed.subtitle')}
     </p>
 
-    <!-- Delivery Model Filter Pills -->
+    <!-- Platform Filter Pills -->
     <div data-closed-filters class="mt-6 flex flex-wrap items-center gap-2 font-mono text-xs">
       <button
         type="button"
@@ -67,71 +67,113 @@ const deliveryModels = Array.from(new Set(CLOSED_SOURCE_PROJECTS.map((p) => p.de
     </div>
   </section>
 
-  <!-- Closed-Source Systems List -->
+  <!-- Closed-Source App Store Applications List -->
   <div>
-    {CLOSED_SOURCE_PROJECTS.map((project, idx) => (
-      <div
-        id={project.slug}
-        data-closed-section={project.deliveryModel}
-        class="scroll-mt-16"
-      >
-        <DaiBlueprintGrid
-          title={`0${idx + 1} · ${project.name}`}
-          specCode={project.deliveryModel}
-          handNote={project.i18n[lang].category}
-          columns="1"
-          showHatchBottom={idx < CLOSED_SOURCE_PROJECTS.length - 1}
+    {CLOSED_SOURCE_PROJECTS.map((project, idx) => {
+      const storeHref = project.appStoreUrl[lang];
+      const storeBtnLabel =
+        project.deliveryModel === 'macOS'
+          ? t('closed.mac_appstore_download')
+          : t('closed.appstore_download');
+
+      return (
+        <div
+          id={project.slug}
+          data-closed-section={project.deliveryModel}
+          class="scroll-mt-16"
         >
-          <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-edge">
-            <!-- Left: System Overview & Public Architecture Essays -->
-            <div class="lg:col-span-7">
-              <ClosedProjectCard
-                project={project}
-                lang={lang}
-                relatedPosts={getPostsForProject(project.slug)}
-              />
-            </div>
+          <DaiBlueprintGrid
+            title={`0${idx + 1} · ${project.name}`}
+            specCode={project.deliveryModel}
+            handNote={project.i18n[lang].category}
+            columns="1"
+            showHatchBottom={idx < CLOSED_SOURCE_PROJECTS.length - 1}
+          >
+            <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-edge">
+              <!-- Left: System Overview & Public Architecture Essays -->
+              <div class="lg:col-span-7">
+                <ClosedProjectCard
+                  project={project}
+                  lang={lang}
+                  relatedPosts={getPostsForProject(project.slug)}
+                />
+              </div>
 
-            <!-- Right: Architecture & Production Spec Sheet -->
-            <div class="lg:col-span-5 p-6 bg-zinc-50/40 dark:bg-zinc-900/20 flex flex-col justify-between gap-5">
-              <div class="space-y-3">
-                <span class="font-mono text-[10px] uppercase tracking-widest text-zinc-400">
-                  {t('closed.arch_spec')}
-                </span>
+              <!-- Right: Technical Spec Sheet + Official App Store Download Button -->
+              <div class="lg:col-span-5 p-6 bg-zinc-50/40 dark:bg-zinc-900/20 flex flex-col justify-between gap-5">
+                <div class="space-y-3">
+                  <span class="font-mono text-[10px] uppercase tracking-widest text-zinc-400">
+                    {t('closed.arch_spec')}
+                  </span>
 
-                <div class="rounded-lg border border-edge bg-white dark:bg-zinc-950 divide-y divide-edge">
-                  {project.specs.map((spec) => (
-                    <div class="px-3.5 py-2.5 flex flex-col gap-0.5">
-                      <span class="font-mono text-[10px] text-zinc-400">
-                        {lang === 'zh' ? spec.labelZh : spec.labelEn}
-                      </span>
-                      <span class="font-mono text-xs font-medium text-zinc-800 dark:text-zinc-200">
-                        {spec.value}
-                      </span>
+                  <div class="rounded-lg border border-edge bg-white dark:bg-zinc-950 divide-y divide-edge">
+                    {project.specs.map((spec) => (
+                      <div class="px-3.5 py-2.5 flex flex-col gap-0.5">
+                        <span class="font-mono text-[10px] text-zinc-400">
+                          {lang === 'zh' ? spec.labelZh : spec.labelEn}
+                        </span>
+                        <span class="font-mono text-xs font-medium text-zinc-800 dark:text-zinc-200">
+                          {spec.value}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <!-- Platform Info + Prominent App Store Download Action -->
+                <div class="space-y-4 pt-4 border-t border-edge">
+                  <div class="grid grid-cols-2 gap-3 font-mono text-xs">
+                    <div>
+                      <div class="text-[10px] text-zinc-400">{t('closed.delivery')}</div>
+                      <div class="font-semibold mt-0.5 text-zinc-900 dark:text-zinc-100">{project.deliveryModel}</div>
                     </div>
-                  ))}
-                </div>
-              </div>
+                    <div>
+                      <div class="text-[10px] text-zinc-400">{t('projects.latest')}</div>
+                      <div class="font-semibold mt-0.5 text-zinc-900 dark:text-zinc-100">{project.version}</div>
+                    </div>
+                    <div class="col-span-2">
+                      <div class="text-[10px] text-zinc-400">{t('closed.scale')}</div>
+                      <div class="font-semibold mt-0.5 text-zinc-800 dark:text-zinc-200">{project.scaleMetric}</div>
+                    </div>
+                  </div>
 
-              <div class="grid grid-cols-2 gap-3 pt-4 border-t border-edge font-mono text-xs">
-                <div>
-                  <div class="text-[10px] text-zinc-400">{t('closed.delivery')}</div>
-                  <div class="font-semibold mt-0.5 text-zinc-900 dark:text-zinc-100">{project.deliveryModel}</div>
-                </div>
-                <div>
-                  <div class="text-[10px] text-zinc-400">{t('closed.sla')}</div>
-                  <div class="font-semibold mt-0.5 text-espresso-600 dark:text-espresso-400">{project.slaMetric}</div>
-                </div>
-                <div class="col-span-2">
-                  <div class="text-[10px] text-zinc-400">{t('closed.scale')}</div>
-                  <div class="font-semibold mt-0.5 text-zinc-900 dark:text-zinc-100">{project.scaleMetric}</div>
+                  <!-- Apple App Store Download Button -->
+                  <a
+                    href={storeHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="w-full px-4 py-2.5 rounded-lg bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 hover:opacity-90 transition-opacity flex items-center justify-between gap-3 shadow-xs"
+                  >
+                    <div class="flex items-center gap-3">
+                      <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.96 6.32c.67-.81 1.12-1.94 1-3.07-.96.04-2.13.64-2.82 1.45-.61.7-.1.85-.99 3.01 1.08.08 2.14-.58 2.81-1.39Z" />
+                      </svg>
+                      <div class="text-left leading-tight">
+                        <div class="text-[10px] opacity-75 font-mono">
+                          {lang === 'zh' ? 'Apple 官方商店' : 'Available on'}
+                        </div>
+                        <div class="text-xs sm:text-[13px] font-semibold tracking-tight">
+                          {storeBtnLabel}
+                        </div>
+                      </div>
+                    </div>
+                    <span class="font-mono text-xs opacity-75">↗</span>
+                  </a>
+
+                  {project.brewCmd && (
+                    <div class="px-3 py-2 rounded-md border border-edge bg-zinc-950 text-zinc-200 font-mono text-[11px] flex items-center justify-between gap-2 overflow-x-auto">
+                      <code class="whitespace-nowrap">
+                        <span class="text-espresso-400">$</span> {project.brewCmd}
+                      </code>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
-          </div>
-        </DaiBlueprintGrid>
-      </div>
-    ))}
+          </DaiBlueprintGrid>
+        </div>
+      );
+    })}
   </div>
 </BlueprintLayout>
 

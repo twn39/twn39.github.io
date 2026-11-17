@@ -46,7 +46,7 @@ const currentPath = Astro.url.pathname;
 const zhHref = alternatePath && lang === 'en' ? alternatePath : switchLocalePath(currentPath, 'zh');
 const enHref = alternatePath && lang === 'zh' ? alternatePath : switchLocalePath(currentPath, 'en');
 
-const siteOrigin = Astro.site?.origin || 'https://espresso-lab.github.io';
+const siteOrigin = Astro.site?.origin || 'https://twn39.github.io';
 const canonicalUrl = new URL(currentPath, siteOrigin).toString();
 const zhFullUrl = new URL(zhHref, siteOrigin).toString();
 const enFullUrl = new URL(enHref, siteOrigin).toString();
@@ -222,10 +222,10 @@ function isNavActive(href: string, pathname: string): boolean {
 
           <!-- GitHub Link -->
           <a
-            href="https://github.com/espresso-lab"
+            href="https://github.com/twn39"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="GitHub"
+            aria-label="GitHub (@twn39)"
             class="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-edge bg-white dark:bg-zinc-950 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100/80 dark:hover:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
           >
             <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
@@ -302,12 +302,12 @@ function isNavActive(href: string, pathname: string): boolean {
           <!-- Related Links (GitHub, Navigation, llms.txt, RSS) -->
           <nav aria-label="Footer" class="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[11.5px]">
             <a
-              href="https://github.com/espresso-lab"
+              href="https://github.com/twn39"
               target="_blank"
               rel="noopener noreferrer"
               class="text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-colors"
             >
-              GitHub
+              github.com/twn39
             </a>
             <a
               href={localizePath('/projects/', lang)}

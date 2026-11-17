@@ -3,7 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://espresso-lab.github.io',
+  site: 'https://twn39.github.io',
   i18n: {
     defaultLocale: 'zh',
     locales: ['zh', 'en'],

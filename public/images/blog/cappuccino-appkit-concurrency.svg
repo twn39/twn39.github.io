@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" fill="none">
+  <rect width="960" height="400" rx="12" fill="#0D0D10"/>
+  <rect x="1" y="1" width="958" height="398" rx="11" stroke="#27272A" stroke-width="2"/>
+  <line x1="0" y1="44" x2="960" y2="44" stroke="#27272A"/>
+  <text x="24" y="27" fill="#A1A1AA" font-family="JetBrains Mono, monospace" font-size="11" letter-spacing="1">FIG 09 — CAPPUCCINO MACOS · PURE APPKIT, SCREENCAPTUREKIT &amp; ACTOR ISOLATION</text>
+  <text x="772" y="27" fill="#DA9468" font-family="JetBrains Mono, monospace" font-size="11">STRICT CONCURRENCY COMPLETE</text>
+
+  <rect x="44" y="88" width="250" height="244" rx="8" fill="#121216" stroke="#3F3F46"/>
+  <text x="64" y="118" fill="#FAFAFA" font-family="Inter, sans-serif" font-size="14" font-weight="600">1. ScreenCaptureKit Layer</text>
+  <text x="64" y="138" fill="#71717A" font-family="JetBrains Mono, monospace" font-size="10">Zero Storyboard · Pure AppKit</text>
+  <rect x="64" y="162" width="210" height="148" rx="6" fill="#18181B" stroke="#27272A"/>
+  <text x="80" y="190" fill="#E4E4E7" font-family="JetBrains Mono, monospace" font-size="10">● Retina Window / Area HUD</text>
+  <text x="80" y="214" fill="#E4E4E7" font-family="JetBrains Mono, monospace" font-size="10">● Scroll Capture Stream</text>
+  <text x="80" y="238" fill="#DA9468" font-family="JetBrains Mono, monospace" font-size="10">● Scoped autoreleasepool</text>
+  <text x="80" y="262" fill="#A1A1AA" font-family="JetBrains Mono, monospace" font-size="10">● Floating Pin Overlay</text>
+
+  <path d="M302 210 L362 210" stroke="#DA9468" stroke-width="1.5"/>
+  <polygon points="368,210 360,205 360,215" fill="#DA9468"/>
+
+  <rect x="376" y="88" width="266" height="244" rx="8" fill="#1C1613" stroke="#DA9468"/>
+  <text x="396" y="118" fill="#F2D7C2" font-family="Inter, sans-serif" font-size="14" font-weight="600">2. Actor Vision &amp; Merge</text>
+  <text x="396" y="138" fill="#DA9468" font-family="JetBrains Mono, monospace" font-size="10">Zero Data-Race Sendable Graph</text>
+  <rect x="396" y="162" width="226" height="148" rx="6" fill="#09090B" stroke="#27272A"/>
+  <text x="412" y="190" fill="#10B981" font-family="JetBrains Mono, monospace" font-size="10">● Strip Feature Alignment</text>
+  <text x="412" y="214" fill="#FAFAFA" font-family="JetBrains Mono, monospace" font-size="10">● VNRecognizeTextRequest OCR</text>
+  <text x="412" y="238" fill="#E4E4E7" font-family="JetBrains Mono, monospace" font-size="10">● AI Visual Explanation/Trans</text>
+  <text x="412" y="262" fill="#DA9468" font-family="JetBrains Mono, monospace" font-size="10">● Vector Markup Canvas</text>
+
+  <path d="M650 210 L704 210" stroke="#10B981" stroke-width="1.5"/>
+  <polygon points="710,210 702,205 702,215" fill="#10B981"/>
+
+  <rect x="718" y="88" width="198" height="244" rx="8" fill="#121216" stroke="#3F3F46"/>
+  <text x="738" y="118" fill="#FAFAFA" font-family="Inter, sans-serif" font-size="14" font-weight="600">3. Output &amp; Share</text>
+  <rect x="738" y="156" width="158" height="68" rx="5" fill="#18181B" stroke="#10B981"/>
+  <text x="752" y="182" fill="#10B981" font-family="JetBrains Mono, monospace" font-size="11">HEIC / PNG / WebP</text>
+  <text x="752" y="202" fill="#A1A1AA" font-family="JetBrains Mono, monospace" font-size="10">Color-Managed Export</text>
+  <rect x="738" y="238" width="158" height="70" rx="5" fill="#18181B" stroke="#27272A"/>
+  <text x="752" y="264" fill="#FAFAFA" font-family="JetBrains Mono, monospace" font-size="11">Universal Binary</text>
+  <text x="752" y="284" fill="#71717A" font-family="JetBrains Mono, monospace" font-size="10">macOS 15+ · arm64/x64</text>
+
+  <line x1="0" y1="364" x2="960" y2="364" stroke="#27272A"/>
+  <text x="24" y="386" fill="#52525B" font-family="JetBrains Mono, monospace" font-size="10">MAC APP STORE ID 6792465311 · CAPPUCCINO V1.3.0 · APPKIT + SWIFT 6</text>
+</svg>

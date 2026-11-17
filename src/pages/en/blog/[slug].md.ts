@@ -13,7 +13,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const GET: APIRoute = async ({ props, site }) => {
   const { post } = props as { post: CollectionEntry<'blog'> };
   const project = resolveProjectMeta(post.data.project, 'en');
-  const origin = site?.origin || 'https://espresso-lab.github.io';
+  const origin = site?.origin || 'https://twn39.github.io';
 
   const markdown = [
     `# ${post.data.title}`,

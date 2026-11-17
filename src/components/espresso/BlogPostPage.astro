@@ -23,7 +23,7 @@ const alternateLang: Lang = lang === 'zh' ? 'en' : 'zh';
 const alternatePath = localizePath(`/blog/${slug}/`, alternateLang);
 const rawMarkdownUrl = localizePath(`/blog/${slug}.md`, lang);
 
-const siteOrigin = Astro.site?.origin || 'https://espresso-lab.github.io';
+const siteOrigin = Astro.site?.origin || 'https://twn39.github.io';
 const canonicalUrl = new URL(localizePath(`/blog/${slug}/`, lang), siteOrigin).toString();
 
 const llmMarkdownPayload = [
@@ -50,9 +50,9 @@ const jsonLd = {
   url: canonicalUrl,
   keywords: post.data.tags.join(', '),
   author: {
-    '@type': 'Organization',
-    name: 'Espresso Engineering Lab',
-    url: 'https://github.com/espresso-lab',
+    '@type': 'Person',
+    name: 'Tang Weinan (twn39)',
+    url: 'https://github.com/twn39',
   },
 };
 ---
@@ -212,12 +212,24 @@ const jsonLd = {
               <span>{t('blog.related_project')}</span>
               <span>{project.badgeText}</span>
             </div>
-            <a
-              href={project.href}
-              class="block text-sm font-bold text-zinc-900 dark:text-zinc-100 hover:text-espresso-500 transition-colors"
-            >
-              {project.label}
-            </a>
+            <div class="flex items-center gap-2.5">
+              {project.iconPath && (
+                <img
+                  src={project.iconPath}
+                  alt={project.label}
+                  width="32"
+                  height="32"
+                  loading="lazy"
+                  class="w-8 h-8 rounded-lg border border-edge shrink-0 object-cover"
+                />
+              )}
+              <a
+                href={project.href}
+                class="block text-sm font-bold text-zinc-900 dark:text-zinc-100 hover:text-espresso-500 transition-colors truncate"
+              >
+                {project.label}
+              </a>
+            </div>
             <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
               {project.tagline}
             </p>
@@ -234,6 +246,15 @@ const jsonLd = {
                   class="text-espresso-600 dark:text-espresso-400 hover:underline"
                 >
                   GitHub ↗
+                </a>
+              ) : project.appStoreUrl ? (
+                <a
+                  href={project.appStoreUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-espresso-600 dark:text-espresso-400 hover:underline"
+                >
+                  App Store ↗
                 </a>
               ) : (
                 <a

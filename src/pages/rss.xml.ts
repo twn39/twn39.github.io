@@ -11,7 +11,7 @@ function escapeXml(str: string): string {
 }
 
 export const GET: APIRoute = async ({ site }) => {
-  const origin = site?.origin || 'https://espresso-lab.github.io';
+  const origin = site?.origin || 'https://twn39.github.io';
   const posts = (await getCollection('blog')).sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
   );
