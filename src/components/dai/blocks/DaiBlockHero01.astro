@@ -1,0 +1,83 @@
+---
+// src/components/dai/blocks/DaiBlockHero01.astro
+interface Props {
+  eyebrow?: string;
+  headline?: string;
+  subheadline?: string;
+  ratioTag?: string;
+}
+
+const {
+  eyebrow = 'GitHub Open Source Lab · Architecture & Systems Essays',
+  headline = 'High-extraction engineering. Zero filler.',
+  subheadline = '',
+  ratioTag = '',
+} = Astro.props;
+---
+
+<section class="relative overflow-hidden screen-line-bottom bg-white dark:bg-zinc-950">
+  <!-- Subtle Dot Matrix faded gently toward the left text area -->
+  <div
+    class="absolute inset-0 bg-dot-grid opacity-45 pointer-events-none"
+    style="-webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 100%); mask-image: linear-gradient(to right, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 100%);"
+    aria-hidden="true"
+  />
+
+  <!-- Minimalist Geometric Blueprint Curve (Masked on left so it never collides with text) -->
+  <div
+    class="hidden md:flex items-center justify-end absolute inset-y-0 right-0 w-[44%] pointer-events-none select-none"
+    style="-webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 36%, rgba(0,0,0,0.18) 80%, transparent 100%); mask-image: linear-gradient(to left, rgba(0,0,0,1) 36%, rgba(0,0,0,0.18) 80%, transparent 100%);"
+    aria-hidden="true"
+  >
+    <svg
+      class="h-[86%] w-auto mr-6 text-zinc-900 dark:text-zinc-100 opacity-[0.11] dark:opacity-[0.16]"
+      viewBox="0 0 460 280"
+      fill="none"
+    >
+      <rect x="12" y="12" width="436" height="256" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3" />
+      <line x1="282" y1="12" x2="282" y2="268" stroke="currentColor" stroke-width="1" />
+      <line x1="282" y1="170" x2="448" y2="170" stroke="currentColor" stroke-width="1" />
+      <line x1="346" y1="170" x2="346" y2="268" stroke="currentColor" stroke-width="1" />
+      <path
+        d="M 26 268 A 256 256 0 0 1 282 12 A 166 166 0 0 1 448 170 A 98 98 0 0 1 346 268 A 64 64 0 0 1 282 204"
+        stroke="#cd7745"
+        stroke-width="1.75"
+      />
+      <circle cx="282" cy="170" r="3" fill="#cd7745" />
+    </svg>
+  </div>
+
+  <div class="relative z-10 px-6 sm:px-10 py-12 sm:py-15">
+    <!-- Clean, Understated Eyebrow Pill -->
+    <div class="mb-5">
+      <div class="inline-flex items-center gap-2 h-7 px-3 rounded-full border border-edge bg-zinc-50/90 dark:bg-zinc-900/80 backdrop-blur-xs">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+        <span class="text-[11.5px] font-medium tracking-wide text-zinc-600 dark:text-zinc-300 truncate">
+          {eyebrow}
+        </span>
+        {ratioTag && (
+          <>
+            <span class="h-3 w-px bg-zinc-200 dark:bg-zinc-700/80 shrink-0" aria-hidden="true" />
+            <span class="font-mono text-[10.5px] font-medium text-espresso-600 dark:text-espresso-400 shrink-0">
+              {ratioTag}
+            </span>
+          </>
+        )}
+      </div>
+    </div>
+
+    <h1 class="text-2xl sm:text-4xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50 max-w-xl leading-[1.22]">
+      {headline}
+    </h1>
+
+    {subheadline && (
+      <p class="mt-4 text-sm sm:text-[15px] text-zinc-600 dark:text-zinc-400 max-w-xl leading-relaxed">
+        {subheadline}
+      </p>
+    )}
+
+    <div class="mt-7 flex flex-wrap items-center gap-3">
+      <slot />
+    </div>
+  </div>
+</section>

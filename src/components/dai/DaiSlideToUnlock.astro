@@ -1,0 +1,63 @@
+---
+// src/components/dai/DaiSlideToUnlock.astro
+interface Props {
+  shimmerText?: string;
+  unlockedText?: string;
+  width?: string;
+}
+
+const {
+  shimmerText = 'slide to unlock',
+  unlockedText = 'Unlocked · Access Granted',
+  width = '260px',
+} = Astro.props;
+---
+
+<div
+  data-dai-slide-unlock
+  data-unlocked-text={unlockedText}
+  style={`width: ${width}`}
+  class="h-12 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 p-1 relative flex items-center select-none overflow-hidden"
+>
+  <span data-slide-label class="w-full text-center font-mono text-xs animate-shimmer pointer-events-none pl-6">
+    {shimmerText}
+  </span>
+  <button
+    type="button"
+    data-slide-handle
+    class="w-10 h-10 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 flex items-center justify-center cursor-grab active:cursor-grabbing shadow-md z-10"
+  >
+    →
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll('[data-dai-slide-unlock]').forEach((track) => {
+    const handle = track.querySelector('[data-slide-handle]') as HTMLElement;
+    const label = track.querySelector('[data-slide-label]') as HTMLElement;
+    let dragging = false, startX = 0;
+
+    handle?.addEventListener('pointerdown', (e) => {
+      dragging = true;
+      startX = e.clientX;
+      handle.setPointerCapture(e.pointerId);
+    });
+
+    handle?.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      const max = track.clientWidth - handle.clientWidth - 8;
+      const dx = Math.max(0, Math.min(max, e.clientX - startX));
+      handle.style.transform = `translateX(${dx}px)`;
+      if (dx >= max * 0.92) {
+        dragging = false;
+        label.textContent = track.getAttribute('data-unlocked-text') || 'Unlocked!';
+      }
+    });
+
+    handle?.addEventListener('pointerup', () => {
+      if (!dragging) return;
+      dragging = false;
+      handle.style.transform = 'translateX(0px)';
+    });
+  });
+</script>

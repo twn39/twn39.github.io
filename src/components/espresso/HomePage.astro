@@ -1,0 +1,139 @@
+---
+import { getCollection } from 'astro:content';
+import BlueprintLayout from '../../layouts/BlueprintLayout.astro';
+import DaiBlueprintGrid from '../dai/DaiBlueprintGrid.astro';
+import DaiGitHubGraph from '../dai/DaiGitHubGraph.astro';
+import DaiBlockHero01 from '../dai/blocks/DaiBlockHero01.astro';
+import ProjectCard from './ProjectCard.astro';
+import BlogCard from './BlogCard.astro';
+import { ESPRESSO_PROJECTS } from '../../data/projects';
+import { localizePath, useTranslations, type Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const posts = (await getCollection('blog', (entry) => entry.data.lang === lang)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+function getPostsForProject(projectSlug: string) {
+  return posts
+    .filter((p) => p.data.project === projectSlug)
+    .map((p) => ({
+      slug: p.data.translationSlug,
+      title: p.data.title,
+      readingTime: p.data.readingTime,
+    }));
+}
+---
+
+<BlueprintLayout lang={lang} maxWidth="5xl">
+  <!-- 1. Top Subtitle Bar -->
+  <div class="screen-line-bottom px-5 sm:px-6 py-2.5 bg-zinc-50/65 dark:bg-zinc-900/35 flex items-center justify-between gap-3 text-xs text-zinc-500 dark:text-zinc-400">
+    <span class="truncate">{t('site.tagline')}</span>
+    <span class="hidden sm:inline font-mono text-[11px] text-zinc-400 shrink-0">
+      github.com/espresso-lab
+    </span>
+  </div>
+
+  <!-- 2. Minimalist Blueprint Hero -->
+  <DaiBlockHero01
+    eyebrow={t('hero.eyebrow')}
+    headline={t('hero.headline')}
+    subheadline={t('hero.subheadline')}
+  >
+    <a
+      href={localizePath('/projects/', lang)}
+      class="inline-flex items-center gap-2 h-9 px-4 rounded-md bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 font-mono text-xs font-medium hover:opacity-90 transition-opacity"
+    >
+      <span class="w-1.5 h-1.5 rounded-full bg-espresso-400 dark:bg-espresso-600" />
+      {t('hero.cta.projects')} →
+    </a>
+    <a
+      href={localizePath('/blog/', lang)}
+      class="inline-flex items-center gap-2 h-9 px-4 rounded-md border border-edge bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-mono text-xs font-medium hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors"
+    >
+      {t('hero.cta.blog')}
+    </a>
+    <a
+      href="https://github.com/espresso-lab"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-md border border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white font-mono text-xs transition-colors"
+    >
+      github.com/espresso-lab ↗
+    </a>
+  </DaiBlockHero01>
+
+  <!-- 3. GitHub Contribution Calendar -->
+  <DaiBlueprintGrid
+    title={t('section.profile')}
+    specCode="52 WEEKS"
+    handNote={t('section.activity.note')}
+    columns="1"
+  >
+    <DaiGitHubGraph lang={lang} orgHandle="espresso-lab" colorScheme="emerald" />
+  </DaiBlueprintGrid>
+
+  <!-- 4. Featured GitHub Projects + Linked Technical Blog Posts -->
+  <DaiBlueprintGrid
+    title={t('section.projects')}
+    specCode="4 REPOS"
+    handNote={t('section.projects.note')}
+    columns="2"
+  >
+    <a
+      slot="action"
+      href={localizePath('/projects/', lang)}
+      class="font-mono text-[11px] text-espresso-600 dark:text-espresso-400 hover:underline"
+    >
+      {lang === 'zh' ? '查看全部 →' : 'All Repos →'}
+    </a>
+
+    {ESPRESSO_PROJECTS.map((project) => (
+      <ProjectCard
+        project={project}
+        lang={lang}
+        relatedPosts={getPostsForProject(project.slug)}
+      />
+    ))}
+  </DaiBlueprintGrid>
+
+  <!-- 5. Latest Illustrated Technical Blog List -->
+  <DaiBlueprintGrid
+    title={t('section.blog')}
+    specCode={`${posts.length} ESSAYS`}
+    handNote={t('section.blog.note')}
+    columns="1"
+    showHatchBottom={false}
+  >
+    <a
+      slot="action"
+      href={localizePath('/blog/', lang)}
+      class="font-mono text-[11px] text-espresso-600 dark:text-espresso-400 hover:underline"
+    >
+      {lang === 'zh' ? '全部文章 →' : 'Archive →'}
+    </a>
+
+    <div class="divide-y divide-edge">
+      {posts.map((post) => (
+        <BlogCard
+          slug={post.data.translationSlug}
+          title={post.data.title}
+          description={post.data.description}
+          pubDate={post.data.pubDate}
+          readingTime={post.data.readingTime}
+          projectSlug={post.data.project}
+          tags={post.data.tags}
+          coverImage={post.data.coverImage}
+          coverAlt={post.data.coverAlt}
+          lang={lang}
+        />
+      ))}
+    </div>
+  </DaiBlueprintGrid>
+</BlueprintLayout>

@@ -1,0 +1,12 @@
+---
+// src/components/dai/blocks/DaiBlockLogin01.astro
+// pnpm dlx shadcn add @ncdai/login-01
+interface Props {
+  heading?: string;
+}
+const { heading = 'Sign in to Registry' } = Astro.props;
+---
+<div class="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 overflow-hidden">
+  <div class="h-3 bg-hatch border-b border-zinc-200 dark:border-zinc-800" />
+  <div class="p-5">{heading}</div>
+</div>

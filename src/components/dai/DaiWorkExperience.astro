@@ -1,0 +1,14 @@
+---
+// src/components/dai/DaiWorkExperience.astro
+// pnpm dlx shadcn add @ncdai/work-experience
+interface Props {
+  company: string;
+  role: string;
+  period: string;
+}
+const { company = 'shadcncraft', role = 'Design Engineer', period = '01.2026 — Present' } = Astro.props;
+---
+<article class="p-5 border-b border-zinc-200 dark:border-zinc-800">
+  <h3>{company} — {role}</h3>
+  <time>{period}</time>
+</article>

@@ -1,0 +1,13 @@
+---
+// src/components/dai/blocks/DaiBlockMetrics01.astro
+// pnpm dlx shadcn add @ncdai/metrics-01
+interface Props {
+  metricValue?: string;
+  metricLabel?: string;
+}
+const { metricValue = '1.7M', metricLabel = 'npm downloads / year' } = Astro.props;
+---
+<section class="p-6 border border-zinc-200 dark:border-zinc-800 font-mono">
+  <div class="text-2xl font-bold">{metricValue}</div>
+  <div class="text-xs text-zinc-400">{metricLabel}</div>
+</section>

@@ -1,0 +1,10 @@
+---
+// src/components/dai/DaiTypographyEffects.astro
+// Includes @ncdai/shimmering-text, @ncdai/fluid-gradient-text, @ncdai/middle-truncation
+interface Props {
+  effectMode?: 'shimmer' | 'fluid-gradient' | 'middle-truncate' | 'apple-hello';
+  text: string;
+}
+const { effectMode = 'shimmer', text = 'Creating with code. Small details matter.' } = Astro.props;
+---
+<span class="animate-shimmer font-mono">{text}</span>

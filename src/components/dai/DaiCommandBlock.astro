@@ -1,0 +1,107 @@
+---
+// src/components/dai/DaiCommandBlock.astro
+interface CommandTab {
+  label: string;
+  command: string;
+}
+
+interface Props {
+  packageName?: string;
+  defaultPkgManager?: 'pnpm' | 'npm' | 'yarn' | 'bun';
+  tabs?: CommandTab[];
+}
+
+const {
+  packageName = '@espresso-lab/tamp-llms-index',
+  defaultPkgManager = 'pnpm',
+  tabs,
+} = Astro.props;
+
+const resolvedTabs: CommandTab[] = tabs && tabs.length > 0
+  ? tabs
+  : [
+      { label: 'git', command: 'git clone https://github.com/espresso-lab/espresso-runtime.git' },
+      { label: 'cargo', command: 'cargo add espresso-runtime barista-kv' },
+      { label: defaultPkgManager, command: `pnpm add -D ${packageName}` },
+      { label: 'curl (llms)', command: 'curl -sL https://espresso-lab.github.io/llms.txt | head -n 25' },
+    ];
+---
+
+<div
+  data-dai-cmd-block
+  class="w-full rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-950 text-zinc-200 overflow-hidden font-mono text-xs shadow-2xs"
+>
+  <div class="px-3 py-2 border-b border-zinc-800/90 flex items-center justify-between gap-2 bg-zinc-900/70">
+    <div class="flex items-center gap-1 overflow-x-auto">
+      {resolvedTabs.map((tab, idx) => (
+        <button
+          type="button"
+          data-cmd-tab={idx}
+          data-cmd-value={tab.command}
+          class:list={[
+            'px-2 py-0.5 rounded text-[11px] transition-colors cursor-pointer whitespace-nowrap',
+            idx === 0
+              ? 'bg-zinc-800 text-white font-medium'
+              : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50',
+          ]}
+        >
+          {tab.label}
+        </button>
+      ))}
+    </div>
+    <button
+      type="button"
+      data-cmd-copy
+      class="px-2 py-0.5 rounded border border-zinc-700/80 text-[10px] text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors cursor-pointer shrink-0"
+    >
+      Copy
+    </button>
+  </div>
+  <div class="p-3.5 flex items-center gap-2.5 overflow-x-auto">
+    <span class="text-espresso-400 select-none shrink-0">$</span>
+    <code data-cmd-display class="text-zinc-100 whitespace-nowrap">{resolvedTabs[0]?.command}</code>
+  </div>
+</div>
+
+<script>
+  function initCommandBlocks() {
+    document.querySelectorAll<HTMLElement>('[data-dai-cmd-block]').forEach((block) => {
+      if (block.dataset.bound === 'true') return;
+      block.dataset.bound = 'true';
+
+      const tabBtns = block.querySelectorAll<HTMLButtonElement>('[data-cmd-tab]');
+      const display = block.querySelector<HTMLElement>('[data-cmd-display]');
+      const copyBtn = block.querySelector<HTMLButtonElement>('[data-cmd-copy]');
+
+      tabBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          tabBtns.forEach((b) => {
+            b.classList.remove('bg-zinc-800', 'text-white', 'font-medium');
+            b.classList.add('text-zinc-400');
+          });
+          btn.classList.add('bg-zinc-800', 'text-white', 'font-medium');
+          btn.classList.remove('text-zinc-400');
+          if (display) {
+            display.textContent = btn.dataset.cmdValue || '';
+          }
+        });
+      });
+
+      copyBtn?.addEventListener('click', async () => {
+        const text = display?.textContent || '';
+        try {
+          await navigator.clipboard.writeText(text);
+          const prev = copyBtn.textContent;
+          copyBtn.textContent = 'Copied ✓';
+          setTimeout(() => {
+            copyBtn.textContent = prev;
+          }, 1600);
+        } catch {
+          // ignore clipboard errors in restricted contexts
+        }
+      });
+    });
+  }
+  initCommandBlocks();
+  document.addEventListener('astro:page-load', initCommandBlocks);
+</script>

@@ -1,0 +1,26 @@
+---
+// src/components/dai/DaiWheelPicker.astro
+interface Props {
+  options?: string[];
+  unitLabel?: string;
+  defaultIndex?: number;
+}
+
+const {
+  options = ['Next.js 16', 'Astro 5.0', 'Tailwind CSS v4', 'shadcn/ui', 'Base UI'],
+  unitLabel = 'Framework',
+  defaultIndex = 1,
+} = Astro.props;
+---
+
+<div
+  data-dai-wheel
+  data-options={JSON.stringify(options)}
+  data-index={defaultIndex}
+  class="w-64 h-36 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 relative overflow-hidden flex flex-col items-center justify-center select-none"
+>
+  <div class="inset-x-3 h-9 rounded bg-zinc-100 dark:bg-zinc-900 border-y border-zinc-200 dark:border-zinc-800 pointer-events-none absolute flex items-center justify-end pr-3">
+    <span class="font-mono text-[10px] text-zinc-400">{unitLabel}</span>
+  </div>
+  <div data-wheel-items class="relative z-10 flex flex-col items-center font-mono text-xs" />
+</div>

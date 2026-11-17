@@ -1,0 +1,11 @@
+---
+// src/components/dai/DaiAppleCarousel.astro
+// pnpm dlx shadcn add @ncdai/apple-carousel
+interface Props {
+  slideIndex?: number;
+}
+const { slideIndex = 0 } = Astro.props;
+---
+<div data-apple-carousel class="flex flex-col items-center gap-3">
+  <slot />
+</div>

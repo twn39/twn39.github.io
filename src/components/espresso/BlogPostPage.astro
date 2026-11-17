@@ -1,0 +1,309 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import BlueprintLayout from '../../layouts/BlueprintLayout.astro';
+import DaiTocMinimap from '../dai/DaiTocMinimap.astro';
+import DaiLightbox from '../dai/DaiLightbox.astro';
+import { resolveProjectMeta } from '../../data/projects';
+import { formatDate, localizePath, useTranslations, type Lang } from '../../i18n/ui';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  prevPost?: CollectionEntry<'blog'>;
+  nextPost?: CollectionEntry<'blog'>;
+  lang: Lang;
+}
+
+const { post, prevPost, nextPost, lang } = Astro.props;
+const t = useTranslations(lang);
+const { Content, headings } = await render(post);
+const project = resolveProjectMeta(post.data.project, lang);
+
+const slug = post.data.translationSlug;
+const alternateLang: Lang = lang === 'zh' ? 'en' : 'zh';
+const alternatePath = localizePath(`/blog/${slug}/`, alternateLang);
+const rawMarkdownUrl = localizePath(`/blog/${slug}.md`, lang);
+
+const siteOrigin = Astro.site?.origin || 'https://espresso-lab.github.io';
+const canonicalUrl = new URL(localizePath(`/blog/${slug}/`, lang), siteOrigin).toString();
+
+const llmMarkdownPayload = [
+  `# ${post.data.title}`,
+  `> ${post.data.description}`,
+  ``,
+  `- Canonical URL: ${canonicalUrl}`,
+  `- Related Project: ${project ? `${project.label}${project.externalRepoUrl ? ` (${project.externalRepoUrl})` : ' (Proprietary)'}` : post.data.project}`,
+  `- Published: ${post.data.pubDate.toISOString().slice(0, 10)}`,
+  `- Tags: ${post.data.tags.join(', ')}`,
+  `---`,
+  ``,
+  post.body ?? '',
+].join('\n');
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'TechArticle',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.pubDate.toISOString(),
+  dateModified: (post.data.updatedDate || post.data.pubDate).toISOString(),
+  inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
+  url: canonicalUrl,
+  keywords: post.data.tags.join(', '),
+  author: {
+    '@type': 'Organization',
+    name: 'Espresso Engineering Lab',
+    url: 'https://github.com/espresso-lab',
+  },
+};
+---
+
+<BlueprintLayout
+  lang={lang}
+  title={post.data.title}
+  description={post.data.description}
+  alternatePath={alternatePath}
+  rawMarkdownUrl={rawMarkdownUrl}
+  ogType="article"
+  jsonLd={jsonLd}
+  maxWidth="5xl"
+>
+  <!-- Top Breadcrumb & AI Action Strip -->
+  <div class="screen-line-bottom px-5 sm:px-8 py-3 bg-zinc-50/70 dark:bg-zinc-900/30 flex flex-wrap items-center justify-between gap-3 font-mono text-xs">
+    <div class="flex items-center gap-2 text-zinc-500 dark:text-zinc-400">
+      <a href={localizePath('/blog/', lang)} class="hover:text-zinc-900 dark:hover:text-white transition-colors">
+        ← {t('blog.back_to_list')}
+      </a>
+      {project && (
+        <>
+          <span>/</span>
+          <a
+            href={project.href}
+            class="inline-flex items-center gap-1.5 text-espresso-600 dark:text-espresso-400 hover:underline"
+          >
+            <span class="w-1.5 h-1.5 rounded-full" style={`background-color: ${project.primaryLangColor};`} />
+            {project.label}
+          </a>
+        </>
+      )}
+    </div>
+
+    <!-- Copy Markdown for LLM + Raw .md Endpoint -->
+    <div class="flex items-center gap-2">
+      <button
+        type="button"
+        id="copy-llm-md-btn"
+        data-copied-label={t('blog.copied_llm')}
+        data-default-label={t('blog.copy_llm')}
+        class="px-2.5 py-1 rounded border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-[11px] text-zinc-700 dark:text-zinc-300 hover:border-espresso-500 transition-colors cursor-pointer"
+      >
+        ✦ {t('blog.copy_llm')}
+      </button>
+      <a
+        href={rawMarkdownUrl}
+        class="px-2.5 py-1 rounded border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-[11px] text-zinc-500 hover:text-espresso-500 transition-colors"
+      >
+        {t('blog.raw_md')} ↗
+      </a>
+    </div>
+  </div>
+
+  <!-- Hidden Clean Markdown Payload for One-Click LLM Copy -->
+  <template id="llm-markdown-template">{llmMarkdownPayload}</template>
+
+  <!-- Article Hero Header -->
+  <header class="screen-line-bottom px-5 sm:px-8 py-9 sm:py-11 bg-dot-grid">
+    <div class="flex flex-wrap items-center gap-2.5 font-mono text-xs text-zinc-500 dark:text-zinc-400 mb-3">
+      <time datetime={post.data.pubDate.toISOString()}>
+        {t('blog.published')} {formatDate(post.data.pubDate, lang)}
+      </time>
+      {post.data.updatedDate && (
+        <>
+          <span>·</span>
+          <span>{t('blog.updated')} {formatDate(post.data.updatedDate, lang)}</span>
+        </>
+      )}
+      <span>·</span>
+      <span>{post.data.readingTime} {t('blog.read_time')}</span>
+    </div>
+
+    <h1 class="text-2xl sm:text-3xl md:text-[2rem] font-bold tracking-tight text-zinc-950 dark:text-zinc-50 leading-[1.28] max-w-3xl">
+      {post.data.title}
+    </h1>
+
+    <p class="mt-3.5 text-sm sm:text-base text-zinc-600 dark:text-zinc-400 max-w-3xl leading-relaxed">
+      {post.data.description}
+    </p>
+
+    <div class="mt-5 flex flex-wrap items-center gap-2">
+      {post.data.tags.map((tag) => (
+        <span class="font-mono text-[11px] px-2.5 py-0.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-600 dark:text-zinc-300">
+          #{tag}
+        </span>
+      ))}
+    </div>
+  </header>
+
+  <!-- Main Two-Column Reading Grid + Sticky TOC Minimap -->
+  <div class="screen-line-bottom grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-edge">
+    <!-- Left Column: Illustrated Essay Content -->
+    <div class="lg:col-span-8 px-5 sm:px-8 py-8 min-w-0">
+      <!-- Mobile Collapsible TOC -->
+      <DaiTocMinimap headings={headings} lang={lang} mode="mobile" />
+
+      <!-- Cover Architectural Figure with Lightbox -->
+      <div class="mb-7">
+        <DaiLightbox
+          src={post.data.coverImage}
+          alt={post.data.coverAlt}
+          exifSpec={post.data.coverSpec || 'FIG · VECTOR ARCHITECTURE DIAGRAM'}
+        />
+        <p class="mt-1.5 font-mono text-[10px] text-zinc-400 text-right">
+          ⌕ {t('blog.figure.hint')}
+        </p>
+      </div>
+
+      <!-- Rendered Markdown Body -->
+      <article data-article-body class="espresso-prose max-w-none">
+        <Content />
+      </article>
+
+      <!-- Prev / Next Navigation -->
+      {(prevPost || nextPost) && (
+        <nav class="mt-12 pt-6 border-t border-edge grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {prevPost ? (
+            <a
+              href={localizePath(`/blog/${prevPost.data.translationSlug}/`, lang)}
+              class="p-4 rounded-lg border border-edge hover:border-espresso-500 transition-colors"
+            >
+              <span class="font-mono text-[10px] uppercase tracking-wider text-zinc-400">
+                ← {t('blog.prev_post')}
+              </span>
+              <div class="mt-1 text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100 line-clamp-2">
+                {prevPost.data.title}
+              </div>
+            </a>
+          ) : <div />}
+
+          {nextPost && (
+            <a
+              href={localizePath(`/blog/${nextPost.data.translationSlug}/`, lang)}
+              class="p-4 rounded-lg border border-edge hover:border-espresso-500 transition-colors sm:text-right"
+            >
+              <span class="font-mono text-[10px] uppercase tracking-wider text-zinc-400">
+                {t('blog.next_post')} →
+              </span>
+              <div class="mt-1 text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100 line-clamp-2">
+                {nextPost.data.title}
+              </div>
+            </a>
+          )}
+        </nav>
+      )}
+    </div>
+
+    <!-- Right Rail: Sticky TOC Minimap + Linked GitHub Repository Card -->
+    <div class="lg:col-span-4 p-5 sm:p-6 bg-zinc-50/30 dark:bg-zinc-950">
+      <div class="sticky top-20 space-y-6">
+        <DaiTocMinimap headings={headings} lang={lang} mode="desktop" />
+
+        {project && (
+          <div class="p-4 rounded-lg border border-edge bg-white dark:bg-zinc-900/40 space-y-2.5">
+            <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-wider text-zinc-400">
+              <span>{t('blog.related_project')}</span>
+              <span>{project.badgeText}</span>
+            </div>
+            <a
+              href={project.href}
+              class="block text-sm font-bold text-zinc-900 dark:text-zinc-100 hover:text-espresso-500 transition-colors"
+            >
+              {project.label}
+            </a>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+              {project.tagline}
+            </p>
+            <div class="pt-1 flex items-center justify-between font-mono text-[11px]">
+              <span class="inline-flex items-center gap-1.5 text-zinc-500">
+                <span class="w-2 h-2 rounded-full" style={`background-color: ${project.primaryLangColor};`} />
+                {project.primaryLang} · {project.version}
+              </span>
+              {project.externalRepoUrl ? (
+                <a
+                  href={project.externalRepoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-espresso-600 dark:text-espresso-400 hover:underline"
+                >
+                  GitHub ↗
+                </a>
+              ) : (
+                <a
+                  href={project.href}
+                  class="text-espresso-600 dark:text-espresso-400 hover:underline"
+                >
+                  {t('closed.badge')} →
+                </a>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Blueprint Lightbox Modal for all prose images -->
+  <DaiLightbox enableGlobalModal={true} />
+</BlueprintLayout>
+
+<script>
+  function initArticleActions() {
+    const copyBtn = document.getElementById('copy-llm-md-btn') as HTMLButtonElement | null;
+    const tpl = document.getElementById('llm-markdown-template') as HTMLTemplateElement | null;
+    if (copyBtn && tpl && copyBtn.dataset.bound !== 'true') {
+      copyBtn.dataset.bound = 'true';
+      copyBtn.addEventListener('click', async () => {
+        const md = tpl.innerHTML
+          .replace(/&lt;/g, '<')
+          .replace(/&gt;/g, '>')
+          .replace(/&amp;/g, '&');
+        try {
+          await navigator.clipboard.writeText(md);
+          const copiedLabel = copyBtn.dataset.copiedLabel || 'Copied!';
+          const defaultLabel = copyBtn.dataset.defaultLabel || 'Copy Markdown';
+          copyBtn.textContent = `✓ ${copiedLabel}`;
+          setTimeout(() => {
+            copyBtn.textContent = `✦ ${defaultLabel}`;
+          }, 1800);
+        } catch {
+          // ignore
+        }
+      });
+    }
+
+    // Inject subtle Copy buttons on every fenced code block inside .espresso-prose
+    document.querySelectorAll<HTMLPreElement>('.espresso-prose pre').forEach((pre) => {
+      if (pre.dataset.copyBound === 'true') return;
+      pre.dataset.copyBound = 'true';
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = 'Copy';
+      btn.className =
+        'absolute top-2.5 right-2.5 px-2 py-0.5 rounded border border-zinc-300 dark:border-zinc-700 bg-white/90 dark:bg-zinc-900/90 font-mono text-[10px] text-zinc-500 hover:text-zinc-900 dark:hover:text-white cursor-pointer transition-colors';
+      btn.addEventListener('click', async () => {
+        const code = pre.querySelector('code')?.textContent || '';
+        try {
+          await navigator.clipboard.writeText(code);
+          btn.textContent = 'Copied ✓';
+          setTimeout(() => {
+            btn.textContent = 'Copy';
+          }, 1500);
+        } catch {
+          // ignore
+        }
+      });
+      pre.appendChild(btn);
+    });
+  }
+
+  initArticleActions();
+  document.addEventListener('astro:page-load', initArticleActions);
+</script>

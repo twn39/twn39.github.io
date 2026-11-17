@@ -1,0 +1,26 @@
+---
+// src/components/dai/DaiLineNav.astro
+interface Props {
+  activeItem?: string;
+  showStars?: boolean;
+}
+const { activeItem = 'Components', showStars = true } = Astro.props;
+const items = ['Components', 'Blocks', 'Craft', 'Blog', 'Sponsors'];
+---
+
+<nav class="border-b border-zinc-200 dark:border-zinc-800 bg-white/85 dark:bg-zinc-950/85 backdrop-blur-md px-6 h-14 flex items-center justify-between">
+  <div class="flex items-center gap-5 text-xs font-medium">
+    {items.map((item) => (
+      <a
+        href={`/${item.toLowerCase()}`}
+        class:list={[
+          'relative py-4 transition-colors',
+          activeItem === item ? 'text-zinc-900 dark:text-white font-semibold' : 'text-zinc-400 hover:text-zinc-700',
+        ]}
+      >
+        {item}
+        {activeItem === item && <span class="inset-x-0 bottom-0 h-[2px] bg-zinc-900 dark:bg-white absolute" />}
+      </a>
+    ))}
+  </div>
+</nav>

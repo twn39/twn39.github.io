@@ -1,0 +1,11 @@
+---
+// src/components/dai/DaiBrandShareMenu.astro
+// pnpm dlx shadcn add @ncdai/brand-assets-menu @ncdai/share-menu
+interface Props {
+  menuType?: 'brand-assets' | 'share-menu';
+}
+const { menuType = 'brand-assets' } = Astro.props;
+---
+<div class="w-56 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-1.5 shadow-lg font-mono text-xs">
+  <slot />
+</div>

@@ -1,0 +1,11 @@
+---
+// src/components/dai/DaiConsentManager.astro
+// pnpm dlx shadcn add @ncdai/consent-manager
+interface Props {
+  bannerTitle?: string;
+}
+const { bannerTitle = 'Privacy & Telemetry Consent' } = Astro.props;
+---
+<div class="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4">
+  <slot />
+</div>

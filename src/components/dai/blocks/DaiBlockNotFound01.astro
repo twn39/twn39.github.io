@@ -1,0 +1,104 @@
+---
+// src/components/dai/blocks/DaiBlockNotFound01.astro
+interface Props {
+  errorCode?: string;
+  backHref?: string;
+  backLabel?: string;
+}
+
+const {
+  errorCode = '404 — ROUTE NOT EXTRACTED',
+  backHref = '/',
+  backLabel = 'Return to Overview →',
+} = Astro.props;
+---
+
+<section class="screen-line-bottom py-16 px-6 flex flex-col items-center text-center">
+  <span class="font-mono text-[11px] px-2.5 py-1 rounded border border-espresso-500/40 text-espresso-500 mb-3">
+    HTTP 404 · BLUEPRINT BREAKOUT
+  </span>
+  <h1 class="font-mono text-xl sm:text-2xl font-bold tracking-tight">{errorCode}</h1>
+  <p class="mt-2 text-xs font-mono text-zinc-500">Move mouse or touch over the canvas to play while you are here.</p>
+
+  <canvas
+    data-brick-breaker
+    width="480"
+    height="240"
+    class="mt-6 max-w-full rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-950 cursor-ew-resize"
+  />
+
+  <a
+    href={backHref}
+    class="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-md bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 font-mono text-xs font-medium hover:opacity-90"
+  >
+    {backLabel}
+  </a>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLCanvasElement>('[data-brick-breaker]').forEach((canvas) => {
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let paddleX = (canvas.width - 76) / 2;
+    let x = canvas.width / 2;
+    let y = canvas.height - 32;
+    let dx = 2.4;
+    let dy = -2.4;
+    const cols = 7;
+    const rows = 3;
+    const bricks: { x: number; y: number; alive: boolean }[] = [];
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        bricks.push({ x: 24 + c * 62, y: 24 + r * 22, alive: true });
+      }
+    }
+
+    canvas.addEventListener('pointermove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const scale = canvas.width / rect.width;
+      paddleX = Math.max(0, Math.min(canvas.width - 76, (e.clientX - rect.left) * scale - 38));
+    });
+
+    function draw() {
+      if (!ctx) return;
+      ctx.fillStyle = '#09090b';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      bricks.forEach((b) => {
+        if (!b.alive) return;
+        ctx.fillStyle = '#cd7745';
+        ctx.fillRect(b.x, b.y, 54, 14);
+        if (x > b.x && x < b.x + 54 && y > b.y && y < b.y + 14) {
+          dy = -dy;
+          b.alive = false;
+        }
+      });
+
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, Math.PI * 2);
+      ctx.fillStyle = '#fafafa';
+      ctx.fill();
+
+      ctx.fillStyle = '#e4e4e7';
+      ctx.fillRect(paddleX, canvas.height - 14, 76, 6);
+
+      if (x + dx > canvas.width - 5 || x + dx < 5) dx = -dx;
+      if (y + dy < 5) dy = -dy;
+      else if (y + dy > canvas.height - 18) {
+        if (x > paddleX && x < paddleX + 76) {
+          dy = -Math.abs(dy);
+        } else if (y + dy > canvas.height) {
+          x = canvas.width / 2;
+          y = canvas.height - 32;
+          dy = -2.4;
+        }
+      }
+
+      x += dx;
+      y += dy;
+      requestAnimationFrame(draw);
+    }
+    draw();
+  });
+</script>

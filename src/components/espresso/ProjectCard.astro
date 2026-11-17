@@ -1,0 +1,141 @@
+---
+import DaiGlowCardGrid from '../dai/DaiGlowCardGrid.astro';
+import { getStatusLabel, type EspressoProject } from '../../data/projects';
+import { localizePath, useTranslations, type Lang } from '../../i18n/ui';
+
+interface LinkedPost {
+  slug: string;
+  title: string;
+  readingTime: number;
+}
+
+interface Props {
+  project: EspressoProject;
+  lang: Lang;
+  relatedPosts?: LinkedPost[];
+  detailed?: boolean;
+}
+
+const {
+  project,
+  lang,
+  relatedPosts = [],
+  detailed = false,
+} = Astro.props;
+
+const t = useTranslations(lang);
+const info = project.i18n[lang];
+---
+
+<DaiGlowCardGrid class="p-6 flex flex-col justify-between h-full">
+  <div>
+    <!-- Top Row: Repo Name + Status & Version -->
+    <div class="flex items-start justify-between gap-3">
+      <div class="min-w-0">
+        <div class="flex items-center gap-2 font-mono text-[11px] text-zinc-400">
+          <svg class="w-3.5 h-3.5 shrink-0 text-zinc-400" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"/>
+          </svg>
+          <span class="truncate">{project.repo}</span>
+        </div>
+        <h3 class="mt-1.5 text-lg font-bold tracking-tight text-zinc-950 dark:text-zinc-50 flex items-center gap-2">
+          <a
+            href={`${localizePath('/projects', lang)}#${project.slug}`}
+            class="hover:text-espresso-600 dark:hover:text-espresso-400 transition-colors"
+          >
+            {project.name}
+          </a>
+          <span class="font-mono text-[10px] font-normal px-1.5 py-0.5 rounded border border-edge text-zinc-500">
+            {project.version}
+          </span>
+        </h3>
+      </div>
+
+      <span class="inline-flex items-center gap-1.5 font-mono text-[10px] px-2 py-0.5 rounded-full border border-edge bg-zinc-50 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-300 shrink-0">
+        <span class:list={[
+          'w-1.5 h-1.5 rounded-full',
+          project.status === 'production' ? 'bg-emerald-500' : 'bg-espresso-500',
+        ]} />
+        {getStatusLabel(project.status, lang)}
+      </span>
+    </div>
+
+    <!-- Category & Tagline -->
+    <p class="mt-3 text-sm font-medium text-zinc-800 dark:text-zinc-200 leading-snug">
+      {info.tagline}
+    </p>
+    <p class="mt-2 text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+      {info.summary}
+    </p>
+
+    {detailed && (
+      <ul class="mt-4 space-y-1.5 border-t border-edge pt-3">
+        {info.highlights.map((hl) => (
+          <li class="flex items-start gap-2 text-xs text-zinc-600 dark:text-zinc-300">
+            <span class="font-mono text-espresso-500 mt-0.5">›</span>
+            <span>{hl}</span>
+          </li>
+        ))}
+      </ul>
+    )}
+
+    <!-- GitHub Multi-Language Breakdown Bar -->
+    <div class="mt-4">
+      <div class="h-1.5 w-full rounded-full overflow-hidden flex bg-zinc-100 dark:bg-zinc-900">
+        {project.languages.map((l) => (
+          <span style={`width: ${l.percent}%; background-color: ${l.color};`} title={`${l.name} ${l.percent}%`} />
+        ))}
+      </div>
+      <div class="mt-2 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-zinc-500 dark:text-zinc-400">
+        <div class="flex items-center gap-3">
+          {project.languages.map((l) => (
+            <span class="inline-flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full" style={`background-color: ${l.color};`} />
+              {l.name} <span class="opacity-65">{l.percent}%</span>
+            </span>
+          ))}
+        </div>
+        <div class="flex items-center gap-3">
+          <span>★ {project.stars}</span>
+          <span>⑂ {project.forks}</span>
+          <span>{project.license}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Linked Technical Blog Posts Section -->
+  <div class="mt-5 pt-4 border-t border-edge space-y-2.5">
+    <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-wider text-zinc-400">
+      <span>{t('projects.related_posts')} ({relatedPosts.length})</span>
+      <a
+        href={project.repoUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-zinc-600 dark:text-zinc-300 hover:text-espresso-500 inline-flex items-center gap-1 normal-case"
+      >
+        GitHub ↗
+      </a>
+    </div>
+
+    {relatedPosts.length > 0 ? (
+      <div class="space-y-1.5">
+        {relatedPosts.map((post) => (
+          <a
+            href={localizePath(`/blog/${post.slug}/`, lang)}
+            class="group/post flex items-center justify-between gap-2 px-2.5 py-2 rounded-md border border-edge bg-zinc-50/70 dark:bg-zinc-900/40 hover:border-espresso-500/50 transition-colors"
+          >
+            <span class="text-xs font-medium text-zinc-800 dark:text-zinc-200 group-hover/post:text-espresso-600 dark:group-hover/post:text-espresso-400 truncate">
+              ✦ {post.title}
+            </span>
+            <span class="font-mono text-[10px] text-zinc-400 shrink-0">
+              {post.readingTime}m →
+            </span>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <p class="font-mono text-[11px] text-zinc-400">{t('projects.no_posts')}</p>
+    )}
+  </div>
+</DaiGlowCardGrid>

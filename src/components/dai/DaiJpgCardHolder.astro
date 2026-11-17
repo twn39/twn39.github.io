@@ -1,0 +1,12 @@
+---
+// src/components/dai/DaiJpgCardHolder.astro
+// pnpm dlx shadcn add @ncdai/jpg-card-holder
+interface Props {
+  extracted?: boolean;
+  fileBadge?: string;
+}
+const { extracted = true, fileBadge = 'PORTFOLIO.JPG' } = Astro.props;
+---
+<div class="relative w-44 h-48">
+  <slot />
+</div>

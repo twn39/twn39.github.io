@@ -1,0 +1,123 @@
+---
+import { getCollection } from 'astro:content';
+import BlueprintLayout from '../../layouts/BlueprintLayout.astro';
+import BlogCard from './BlogCard.astro';
+import { CLOSED_SOURCE_PROJECTS, ESPRESSO_PROJECTS } from '../../data/projects';
+import { useTranslations, type Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const posts = (await getCollection('blog', (entry) => entry.data.lang === lang)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const filterableProjects = [
+  ...ESPRESSO_PROJECTS.map((p) => ({ slug: p.slug, name: p.name, color: p.primaryLangColor })),
+  ...CLOSED_SOURCE_PROJECTS.map((p) => ({ slug: p.slug, name: p.name, color: p.primaryLangColor })),
+].filter((p) => posts.some((post) => post.data.project === p.slug));
+---
+
+<BlueprintLayout
+  lang={lang}
+  title={t('blog.title')}
+  description={t('blog.subtitle')}
+  maxWidth="5xl"
+>
+  <!-- Header & Project Filter Tabs -->
+  <section class="screen-line-bottom px-6 sm:px-8 py-10 bg-dot-grid">
+    <div class="flex flex-wrap items-center justify-between gap-2 mb-2 font-mono text-[11px] uppercase tracking-widest text-espresso-600 dark:text-espresso-400">
+      <span>TECHNICAL ESSAYS · {posts.length} PUBLISHED</span>
+    </div>
+
+    <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">{t('blog.title')}</h1>
+    <p class="mt-2.5 text-sm text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">
+      {t('blog.subtitle')}
+    </p>
+
+    <!-- Filter Blog List by Associated GitHub Project -->
+    <div data-blog-filters class="mt-6 flex flex-wrap items-center gap-2 font-mono text-xs">
+      <button
+        type="button"
+        data-blog-filter="all"
+        class="px-3 py-1 rounded-full border border-zinc-900 bg-zinc-900 text-white dark:border-white dark:bg-white dark:text-zinc-950 cursor-pointer"
+      >
+        {t('blog.filter.all')} ({posts.length})
+      </button>
+      {filterableProjects.map((proj) => {
+        const count = posts.filter((p) => p.data.project === proj.slug).length;
+        return (
+          <button
+            type="button"
+            data-blog-filter={proj.slug}
+            class="px-3 py-1 rounded-full border border-edge bg-white dark:bg-zinc-950 text-zinc-600 dark:text-zinc-400 hover:border-zinc-400 cursor-pointer inline-flex items-center gap-1.5"
+          >
+            <span class="w-1.5 h-1.5 rounded-full" style={`background-color: ${proj.color};`} />
+            <span>{proj.name}</span>
+            <span class="opacity-60">({count})</span>
+          </button>
+        );
+      })}
+    </div>
+  </section>
+
+  <!-- Blog List -->
+  <section class="screen-line-bottom divide-y divide-edge">
+    {posts.map((post) => (
+      <BlogCard
+        slug={post.data.translationSlug}
+        title={post.data.title}
+        description={post.data.description}
+        pubDate={post.data.pubDate}
+        readingTime={post.data.readingTime}
+        projectSlug={post.data.project}
+        tags={post.data.tags}
+        coverImage={post.data.coverImage}
+        coverAlt={post.data.coverAlt}
+        lang={lang}
+      />
+    ))}
+  </section>
+</BlueprintLayout>
+
+<script>
+  function initBlogFilter() {
+    const bar = document.querySelector('[data-blog-filters]');
+    if (!bar) return;
+    const buttons = Array.from(bar.querySelectorAll<HTMLButtonElement>('[data-blog-filter]'));
+    const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-blog-card]'));
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.blogFilter || 'all';
+        buttons.forEach((b) => {
+          const active = b === btn;
+          b.classList.toggle('border-zinc-900', active);
+          b.classList.toggle('bg-zinc-900', active);
+          b.classList.toggle('text-white', active);
+          b.classList.toggle('dark:border-white', active);
+          b.classList.toggle('dark:bg-white', active);
+          b.classList.toggle('dark:text-zinc-950', active);
+          b.classList.toggle('border-zinc-200', !active);
+          b.classList.toggle('dark:border-zinc-800', !active);
+          b.classList.toggle('bg-white', !active);
+          b.classList.toggle('dark:bg-zinc-950', !active);
+          b.classList.toggle('text-zinc-600', !active);
+          b.classList.toggle('dark:text-zinc-400', !active);
+        });
+
+        cards.forEach((card) => {
+          const match = target === 'all' || card.dataset.project === target;
+          card.classList.toggle('hidden', !match);
+        });
+      });
+    });
+  }
+
+  initBlogFilter();
+  document.addEventListener('astro:page-load', initBlogFilter);
+</script>

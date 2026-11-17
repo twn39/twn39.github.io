@@ -1,0 +1,173 @@
+---
+import { getCollection } from 'astro:content';
+import BlueprintLayout from '../../layouts/BlueprintLayout.astro';
+import DaiBlueprintGrid from '../dai/DaiBlueprintGrid.astro';
+import DaiCommandBlock from '../dai/DaiCommandBlock.astro';
+import ProjectCard from './ProjectCard.astro';
+import { ESPRESSO_PROJECTS } from '../../data/projects';
+import { useTranslations, type Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const posts = (await getCollection('blog', (entry) => entry.data.lang === lang)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+function getPostsForProject(projectSlug: string) {
+  return posts
+    .filter((p) => p.data.project === projectSlug)
+    .map((p) => ({
+      slug: p.data.translationSlug,
+      title: p.data.title,
+      readingTime: p.data.readingTime,
+    }));
+}
+
+const uniqueLangs = Array.from(new Set(ESPRESSO_PROJECTS.map((p) => p.primaryLang)));
+---
+
+<BlueprintLayout
+  lang={lang}
+  title={t('projects.title')}
+  description={t('projects.subtitle')}
+  maxWidth="5xl"
+>
+  <!-- Page Header -->
+  <section class="screen-line-bottom px-6 sm:px-8 py-10 bg-dot-grid">
+    <div class="font-mono text-[11px] uppercase tracking-widest text-espresso-600 dark:text-espresso-400 mb-2">
+      GITHUB.COM/ESPRESSO-LAB · {ESPRESSO_PROJECTS.length} REPOSITORIES
+    </div>
+    <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">{t('projects.title')}</h1>
+    <p class="mt-2.5 text-sm text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">
+      {t('projects.subtitle')}
+    </p>
+
+    <!-- Language Filter Pills -->
+    <div data-proj-filters class="mt-6 flex flex-wrap items-center gap-2 font-mono text-xs">
+      <button
+        type="button"
+        data-proj-filter="all"
+        class="px-3 py-1 rounded-full border border-zinc-900 bg-zinc-900 text-white dark:border-white dark:bg-white dark:text-zinc-950 cursor-pointer"
+      >
+        {t('projects.filter.all')} ({ESPRESSO_PROJECTS.length})
+      </button>
+      {uniqueLangs.map((l) => (
+        <button
+          type="button"
+          data-proj-filter={l}
+          class="px-3 py-1 rounded-full border border-edge bg-white dark:bg-zinc-950 text-zinc-600 dark:text-zinc-400 hover:border-zinc-400 cursor-pointer"
+        >
+          {l}
+        </button>
+      ))}
+    </div>
+  </section>
+
+  <!-- Detailed Project Sections with CLI + Linked Blog Posts (No GitHub commit calendar) -->
+  <div>
+    {ESPRESSO_PROJECTS.map((project, idx) => {
+      const cmdTabs = [
+        ...(project.installCmd.cargo ? [{ label: 'cargo', command: project.installCmd.cargo }] : []),
+        ...(project.installCmd.pnpm ? [{ label: 'pnpm', command: project.installCmd.pnpm }] : []),
+        { label: 'git clone', command: project.installCmd.git },
+      ];
+      return (
+        <div
+          id={project.slug}
+          data-proj-section={project.primaryLang}
+          class="scroll-mt-16"
+        >
+          <DaiBlueprintGrid
+            title={`0${idx + 1} · ${project.repo}`}
+            specCode={project.primaryLang}
+            handNote={project.i18n[lang].category}
+            columns="1"
+            showHatchBottom={idx < ESPRESSO_PROJECTS.length - 1}
+          >
+            <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-edge">
+              <div class="lg:col-span-7">
+                <ProjectCard
+                  project={project}
+                  lang={lang}
+                  relatedPosts={getPostsForProject(project.slug)}
+                  detailed={true}
+                />
+              </div>
+              <div class="lg:col-span-5 p-6 bg-zinc-50/40 dark:bg-zinc-900/20 flex flex-col justify-between gap-5">
+                <div class="space-y-3">
+                  <span class="font-mono text-[10px] uppercase tracking-widest text-zinc-400">
+                    Quick Start & Repository Clone
+                  </span>
+                  <DaiCommandBlock tabs={cmdTabs} />
+                </div>
+
+                <div class="space-y-4">
+                  <div class="grid grid-cols-2 gap-3 pt-4 border-t border-edge font-mono text-xs">
+                    <div>
+                      <div class="text-[10px] text-zinc-400">{t('projects.stars')}</div>
+                      <div class="font-semibold mt-0.5 text-zinc-900 dark:text-zinc-100">★ {project.stars}</div>
+                    </div>
+                    <div>
+                      <div class="text-[10px] text-zinc-400">{t('projects.forks')}</div>
+                      <div class="font-semibold mt-0.5 text-zinc-900 dark:text-zinc-100">⑂ {project.forks}</div>
+                    </div>
+                    <div>
+                      <div class="text-[10px] text-zinc-400">{t('projects.latest')}</div>
+                      <div class="font-semibold mt-0.5 text-zinc-900 dark:text-zinc-100">{project.version}</div>
+                    </div>
+                    <div>
+                      <div class="text-[10px] text-zinc-400">{t('projects.license')}</div>
+                      <div class="font-semibold mt-0.5 text-zinc-900 dark:text-zinc-100">{project.license}</div>
+                    </div>
+                  </div>
+
+                  <a
+                    href={project.repoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="w-full h-9 px-3.5 rounded-md border border-edge bg-white dark:bg-zinc-950 text-xs font-mono font-medium text-zinc-700 dark:text-zinc-200 hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors inline-flex items-center justify-between"
+                  >
+                    <span>{t('projects.view_repo')} ({project.repo})</span>
+                    <span>↗</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </DaiBlueprintGrid>
+        </div>
+      );
+    })}
+  </div>
+</BlueprintLayout>
+
+<script>
+  function initProjectFilter() {
+    const bar = document.querySelector('[data-proj-filters]');
+    if (!bar) return;
+    const buttons = Array.from(bar.querySelectorAll<HTMLButtonElement>('[data-proj-filter]'));
+    const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-proj-section]'));
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.projFilter || 'all';
+        buttons.forEach((b) => {
+          const active = b === btn;
+          b.className = active
+            ? 'px-3 py-1 rounded-full border border-zinc-900 bg-zinc-900 text-white dark:border-white dark:bg-white dark:text-zinc-950 cursor-pointer'
+            : 'px-3 py-1 rounded-full border border-edge bg-white dark:bg-zinc-950 text-zinc-600 dark:text-zinc-400 hover:border-zinc-400 cursor-pointer';
+        });
+        sections.forEach((sec) => {
+          const match = target === 'all' || sec.dataset.projSection === target;
+          sec.classList.toggle('hidden', !match);
+        });
+      });
+    });
+  }
+  initProjectFilter();
+  document.addEventListener('astro:page-load', initProjectFilter);
+</script>

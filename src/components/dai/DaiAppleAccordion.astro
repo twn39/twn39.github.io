@@ -1,0 +1,106 @@
+---
+// src/components/dai/DaiAppleAccordion.astro
+export interface AccordionItem {
+  title: string;
+  tag: string;
+  body: string;
+}
+
+interface Props {
+  items?: AccordionItem[];
+  defaultIndex?: number;
+}
+
+const {
+  items = [],
+  defaultIndex = 0,
+} = Astro.props;
+---
+
+<div data-apple-accordion class="w-full space-y-2.5">
+  {items.map((item, idx) => {
+    const isOpen = idx === defaultIndex;
+    return (
+      <div
+        data-acc-item
+        data-open={isOpen ? 'true' : 'false'}
+        class:list={[
+          'border border-zinc-200 dark:border-zinc-800 transition-all duration-200 overflow-hidden',
+          isOpen
+            ? 'rounded-2xl bg-zinc-50/90 dark:bg-zinc-900/60'
+            : 'rounded-full bg-white dark:bg-zinc-950 hover:border-zinc-300 dark:hover:border-zinc-700',
+        ]}
+      >
+        <button
+          type="button"
+          data-acc-trigger
+          class="w-full px-5 py-3 flex items-center justify-between gap-3 text-left cursor-pointer"
+        >
+          <div class="flex items-center gap-2.5 min-w-0">
+            <span class="font-mono text-[10px] px-2 py-0.5 rounded-full border border-espresso-500/30 text-espresso-600 dark:text-espresso-400 shrink-0">
+              {item.tag}
+            </span>
+            <span class="text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate">
+              {item.title}
+            </span>
+          </div>
+          <span
+            data-acc-icon
+            class:list={[
+              'font-mono text-xs text-zinc-400 transition-transform duration-200 shrink-0',
+              isOpen ? 'rotate-45' : '',
+            ]}
+          >
+            +
+          </span>
+        </button>
+        <div
+          data-acc-panel
+          class:list={[
+            'px-5 pb-4 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed border-t border-zinc-200/70 dark:border-zinc-800/70 pt-3',
+            isOpen ? 'block' : 'hidden',
+          ]}
+        >
+          {item.body}
+        </div>
+      </div>
+    );
+  })}
+  <slot />
+</div>
+
+<script>
+  function initAppleAccordions() {
+    document.querySelectorAll<HTMLElement>('[data-apple-accordion]').forEach((root) => {
+      if (root.dataset.bound === 'true') return;
+      root.dataset.bound = 'true';
+
+      const items = Array.from(root.querySelectorAll<HTMLElement>('[data-acc-item]'));
+      items.forEach((item) => {
+        const trigger = item.querySelector<HTMLButtonElement>('[data-acc-trigger]');
+        trigger?.addEventListener('click', () => {
+          const currentlyOpen = item.dataset.open === 'true';
+          items.forEach((other) => {
+            other.dataset.open = 'false';
+            other.classList.remove('rounded-2xl', 'bg-zinc-50/90', 'dark:bg-zinc-900/60');
+            other.classList.add('rounded-full', 'bg-white', 'dark:bg-zinc-950');
+            other.querySelector('[data-acc-panel]')?.classList.add('hidden');
+            other.querySelector('[data-acc-panel]')?.classList.remove('block');
+            other.querySelector('[data-acc-icon]')?.classList.remove('rotate-45');
+          });
+
+          if (!currentlyOpen) {
+            item.dataset.open = 'true';
+            item.classList.add('rounded-2xl', 'bg-zinc-50/90', 'dark:bg-zinc-900/60');
+            item.classList.remove('rounded-full', 'bg-white', 'dark:bg-zinc-950');
+            item.querySelector('[data-acc-panel]')?.classList.remove('hidden');
+            item.querySelector('[data-acc-panel]')?.classList.add('block');
+            item.querySelector('[data-acc-icon]')?.classList.add('rotate-45');
+          }
+        });
+      });
+    });
+  }
+  initAppleAccordions();
+  document.addEventListener('astro:page-load', initAppleAccordions);
+</script>

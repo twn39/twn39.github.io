@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" fill="none">
+  <rect width="960" height="440" rx="12" fill="#0D0D10"/>
+  <!-- Subtle Blueprint Grid -->
+  <defs>
+    <pattern id="grid1" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#27272A"/>
+    </pattern>
+  </defs>
+  <rect width="960" height="440" rx="12" fill="url(#grid1)"/>
+  <rect x="1" y="1" width="958" height="438" rx="11" stroke="#27272A" stroke-width="2"/>
+
+  <!-- Top CAD Header -->
+  <line x1="0" y1="44" x2="960" y2="44" stroke="#27272A" stroke-width="1"/>
+  <text x="24" y="27" fill="#A1A1AA" font-family="JetBrains Mono, monospace" font-size="11" letter-spacing="1">FIG 01.A — ESPRESSO-RUNTIME · COW LINEAR MEMORY SNAPSHOT ARCHITECTURE</text>
+  <text x="815" y="27" fill="#DA9468" font-family="JetBrains Mono, monospace" font-size="11">P99 COLD START: 0.38ms</text>
+
+  <!-- Stage 1: Ahead-of-Time Wasm Pre-Initializer -->
+  <rect x="44" y="88" width="240" height="292" rx="8" fill="#121216" stroke="#3F3F46"/>
+  <text x="64" y="118" fill="#FAFAFA" font-family="Inter, sans-serif" font-size="14" font-weight="600">1. Build-Time AOT Snapshot</text>
+  <text x="64" y="138" fill="#71717A" font-family="JetBrains Mono, monospace" font-size="10">wizer + cranelift .cwasm</text>
+
+  <rect x="64" y="162" width="200" height="54" rx="6" fill="#18181B" stroke="#27272A"/>
+  <text x="80" y="185" fill="#E4E4E7" font-family="JetBrains Mono, monospace" font-size="11">Wasm Component (.wasm)</text>
+  <text x="80" y="203" fill="#71717A" font-family="JetBrains Mono, monospace" font-size="10">init() + runtime tables</text>
+
+  <path d="M164 222 L164 248" stroke="#DA9468" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <polygon points="164,254 159,246 169,246" fill="#DA9468"/>
+
+  <rect x="64" y="260" width="200" height="96" rx="6" fill="#1C1613" stroke="#DA9468"/>
+  <text x="80" y="286" fill="#F2D7C2" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">Frozen Master Image</text>
+  <text x="80" y="306" fill="#DA9468" font-family="JetBrains Mono, monospace" font-size="10">Read-Only mmap Pages</text>
+  <text x="80" y="324" fill="#A1A1AA" font-family="JetBrains Mono, monospace" font-size="10">Zero dirty heap pages</text>
+  <text x="80" y="342" fill="#71717A" font-family="JetBrains Mono, monospace" font-size="10">SHA-256 Content Addressed</text>
+
+  <!-- Arrow 1 -> 2 -->
+  <path d="M292 308 L352 308" stroke="#DA9468" stroke-width="1.5"/>
+  <polygon points="358,308 350,303 350,313" fill="#DA9468"/>
+  <text x="298" y="296" fill="#DA9468" font-family="JetBrains Mono, monospace" font-size="10">MAP_PRIVATE</text>
+
+  <!-- Stage 2: Kernel Page Table CoW Mapping -->
+  <rect x="366" y="88" width="256" height="292" rx="8" fill="#121216" stroke="#3F3F46"/>
+  <text x="386" y="118" fill="#FAFAFA" font-family="Inter, sans-serif" font-size="14" font-weight="600">2. CoW Virtual Memory Pool</text>
+  <text x="386" y="138" fill="#71717A" font-family="JetBrains Mono, monospace" font-size="10">4KB Page Granularity ·uffd/mmap</text>
+
+  <!-- Page blocks -->
+  <g font-family="JetBrains Mono, monospace" font-size="10">
+    <rect x="386" y="164" width="102" height="42" rx="4" fill="#18181B" stroke="#3F3F46"/>
+    <text x="398" y="189" fill="#A1A1AA">Page 0 [RO]</text>
+    <rect x="500" y="164" width="102" height="42" rx="4" fill="#18181B" stroke="#3F3F46"/>
+    <text x="512" y="189" fill="#A1A1AA">Page 1 [RO]</text>
+
+    <rect x="386" y="218" width="102" height="42" rx="4" fill="#231915" stroke="#DA9468"/>
+    <text x="396" y="243" fill="#F2D7C2">Page 2 [CoW]</text>
+    <rect x="500" y="218" width="102" height="42" rx="4" fill="#18181B" stroke="#3F3F46"/>
+    <text x="512" y="243" fill="#A1A1AA">Page 3 [RO]</text>
+
+    <rect x="386" y="272" width="216" height="84" rx="6" fill="#09090B" stroke="#27272A"/>
+    <text x="402" y="296" fill="#10B981">● Shared Clean Pages: 94.2%</text>
+    <text x="402" y="316" fill="#DA9468">● Dirty Request Pages: ~48 KB</text>
+    <text x="402" y="336" fill="#71717A">● Reset via madvise(MADV_DONTNEED)</text>
+  </g>
+
+  <!-- Arrow 2 -> 3 -->
+  <path d="M630 234 L684 234" stroke="#10B981" stroke-width="1.5"/>
+  <polygon points="690,234 682,229 682,239" fill="#10B981"/>
+  <text x="635" y="222" fill="#10B981" font-family="JetBrains Mono, monospace" font-size="10">0-copy ABI</text>
+
+  <!-- Stage 3: Concurrent Edge Isolates -->
+  <rect x="696" y="88" width="220" height="292" rx="8" fill="#121216" stroke="#3F3F46"/>
+  <text x="716" y="118" fill="#FAFAFA" font-family="Inter, sans-serif" font-size="14" font-weight="600">3. Worker Isolates</text>
+  <text x="716" y="138" fill="#71717A" font-family="JetBrains Mono, monospace" font-size="10">12,400 isolates / core</text>
+
+  <rect x="716" y="164" width="180" height="56" rx="6" fill="#18181B" stroke="#10B981"/>
+  <text x="730" y="187" fill="#FAFAFA" font-family="JetBrains Mono, monospace" font-size="11">Isolate #01 · req_8f2a</text>
+  <text x="730" y="205" fill="#10B981" font-family="JetBrains Mono, monospace" font-size="10">Fuel: 42k/500k · 180μs</text>
+
+  <rect x="716" y="232" width="180" height="56" rx="6" fill="#18181B" stroke="#27272A"/>
+  <text x="730" y="255" fill="#FAFAFA" font-family="JetBrains Mono, monospace" font-size="11">Isolate #02 · req_9c11</text>
+  <text x="730" y="273" fill="#A1A1AA" font-family="JetBrains Mono, monospace" font-size="10">Fuel: 19k/500k · 95μs</text>
+
+  <rect x="716" y="300" width="180" height="56" rx="6" fill="#18181B" stroke="#27272A"/>
+  <text x="730" y="323" fill="#FAFAFA" font-family="JetBrains Mono, monospace" font-size="11">Isolate #N  · Stream</text>
+  <text x="730" y="341" fill="#DA9468" font-family="JetBrains Mono, monospace" font-size="10">Heap Cap ≤ 4.0 MB</text>
+
+  <!-- Footer Spec -->
+  <line x1="0" y1="404" x2="960" y2="404" stroke="#27272A" stroke-width="1"/>
+  <text x="24" y="426" fill="#52525B" font-family="JetBrains Mono, monospace" font-size="10">DWG NO. ESP-RT-01 · SCALE 1:1 · WASMTIME + LINUX MADV_DONTNEED POOL</text>
+</svg>

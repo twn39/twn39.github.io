@@ -1,0 +1,11 @@
+---
+// src/components/dai/DaiFoldable.astro
+// pnpm dlx shadcn add @ncdai/foldable
+interface Props {
+  unfolded?: boolean;
+}
+const { unfolded = true } = Astro.props;
+---
+<div data-dai-foldable class="inline-flex items-stretch">
+  <slot />
+</div>

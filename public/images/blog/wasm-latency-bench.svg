@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 380" fill="none">
+  <rect width="960" height="380" rx="12" fill="#0D0D10"/>
+  <rect x="1" y="1" width="958" height="378" rx="11" stroke="#27272A" stroke-width="2"/>
+  <line x1="0" y1="44" x2="960" y2="44" stroke="#27272A"/>
+  <text x="24" y="27" fill="#A1A1AA" font-family="JetBrains Mono, monospace" font-size="11" letter-spacing="1">FIG 01.B — COLD-START LATENCY BENCHMARK (P99, LOWER IS BETTER · AMD EPYC 9654)</text>
+  <text x="820" y="27" fill="#10B981" font-family="JetBrains Mono, monospace" font-size="11">N = 100,000 INVOCATIONS</text>
+
+  <!-- Bars -->
+  <g font-family="JetBrains Mono, monospace">
+    <!-- Row 1: Espresso CoW -->
+    <text x="40" y="106" fill="#FAFAFA" font-size="12" font-weight="600">espresso-runtime (CoW Snapshot)</text>
+    <rect x="340" y="88" width="24" height="26" rx="4" fill="#10B981"/>
+    <text x="376" y="106" fill="#10B981" font-size="12" font-weight="600">0.38 ms  (1.0x baseline · 48 KB RSS delta)</text>
+
+    <!-- Row 2: Raw Wasm Instantiate -->
+    <text x="40" y="164" fill="#D4D4D8" font-size="12">Standard Wasm Instantiate (No Snapshot)</text>
+    <rect x="340" y="146" width="152" height="26" rx="4" fill="#DA9468"/>
+    <text x="504" y="164" fill="#DA9468" font-size="12">4.92 ms  (12.9x slower)</text>
+
+    <!-- Row 3: V8 Isolate Snapshot -->
+    <text x="40" y="222" fill="#A1A1AA" font-size="12">V8 Isolate Cold Boot + Context Init</text>
+    <rect x="340" y="204" width="276" height="26" rx="4" fill="#52525B"/>
+    <text x="628" y="222" fill="#A1A1AA" font-size="12">11.40 ms (30.0x slower · 3.2 MB RSS)</text>
+
+    <!-- Row 4: MicroVM / Container -->
+    <text x="40" y="280" fill="#71717A" font-size="12">Lightweight Container / MicroVM Restore</text>
+    <rect x="340" y="262" width="520" height="26" rx="4" fill="#27272A" stroke="#3F3F46"/>
+    <text x="720" y="252" fill="#71717A" font-size="11">125.0 ms (328x slower)</text>
+  </g>
+
+  <line x1="340" y1="70" x2="340" y2="315" stroke="#3F3F46" stroke-dasharray="4 4"/>
+  <line x1="0" y1="340" x2="960" y2="340" stroke="#27272A"/>
+  <text x="24" y="364" fill="#52525B" font-family="JetBrains Mono, monospace" font-size="10">BENCHMARK SPEC: RUST 1.86 · LINUX 6.12 · JSON ROUTER + HMAC AUTH WORKLOAD</text>
+</svg>

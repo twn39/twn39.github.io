@@ -1,0 +1,12 @@
+---
+// src/components/dai/DaiTimescale.astro
+// pnpm dlx shadcn add @ncdai/timescale
+interface Props {
+  centerValue?: string;
+  tickCount?: number;
+}
+const { centerValue = '0.0 EV', tickCount = 21 } = Astro.props;
+---
+<div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 flex flex-col items-center">
+  <span class="font-mono text-xs font-bold text-amber-500">{centerValue}</span>
+</div>

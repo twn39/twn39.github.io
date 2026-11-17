@@ -1,0 +1,13 @@
+---
+// src/components/dai/DaiWallet.astro
+// pnpm dlx shadcn add @ncdai/wallet
+interface Props {
+  pulledCard?: number;
+  leatherTone?: 'obsidian' | 'espresso';
+}
+const { pulledCard = 0, leatherTone = 'obsidian' } = Astro.props;
+---
+<div data-dai-wallet class="relative w-64 h-40">
+  <!-- Stacked passes + stitched leather pocket overlay -->
+  <slot />
+</div>

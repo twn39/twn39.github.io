@@ -1,0 +1,22 @@
+{
+  "name": "espresso-engineering-blog",
+  "description": "Espresso Open Source Lab & Bilingual Technical Blog — Built with Astro 7, Tailwind CSS v4, Blueprint UI & llms.txt AI Indexing",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "build:timings": "astro build --timings",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.5",
+    "astro": "^7.4.12",
+    "tailwindcss": "^4.3.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}

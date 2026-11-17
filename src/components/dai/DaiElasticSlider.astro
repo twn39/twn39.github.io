@@ -1,0 +1,16 @@
+---
+// src/components/dai/DaiElasticSlider.astro
+// pnpm dlx shadcn add @ncdai/elastic-slider
+interface Props {
+  value?: number;
+  label?: string;
+}
+const { value = 68, label = 'Halation Intensity' } = Astro.props;
+---
+<div class="w-full max-w-xs space-y-2">
+  <div class="flex justify-between font-mono text-xs">
+    <span>{label}</span>
+    <span>{value}%</span>
+  </div>
+  <input type="range" value={value} class="w-full h-3 rounded-full active:scale-x-[1.04] transition-all" />
+</div>

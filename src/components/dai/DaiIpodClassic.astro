@@ -1,0 +1,12 @@
+---
+// src/components/dai/DaiIpodClassic.astro
+// pnpm dlx shadcn add @ncdai/ipod-classic
+interface Props {
+  bodyShell?: 'silver' | 'black';
+}
+const { bodyShell = 'silver' } = Astro.props;
+---
+<div data-ipod-classic class="w-48 rounded-[26px] border-2 p-3 shadow-xl flex flex-col items-center">
+  <!-- LCD Screen + Tactile Click Wheel -->
+  <slot />
+</div>

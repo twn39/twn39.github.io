@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import BlogPostPage from '../../../components/espresso/BlogPostPage.astro';
+
+export async function getStaticPaths() {
+  const enPosts = (await getCollection('blog', (entry) => entry.data.lang === 'en')).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  );
+
+  return enPosts.map((post, idx) => ({
+    params: { slug: post.data.translationSlug },
+    props: {
+      post,
+      prevPost: enPosts[idx + 1],
+      nextPost: enPosts[idx - 1],
+    },
+  }));
+}
+
+const { post, prevPost, nextPost } = Astro.props;
+---
+
+<BlogPostPage post={post} prevPost={prevPost} nextPost={nextPost} lang="en" />

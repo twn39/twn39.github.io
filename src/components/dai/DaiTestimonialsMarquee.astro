@@ -1,0 +1,14 @@
+---
+// src/components/dai/DaiTestimonialsMarquee.astro
+// pnpm dlx shadcn add @ncdai/testimonials-marquee
+interface Props {
+  quoteAuthor?: string;
+  quoteRole?: string;
+  quoteBody?: string;
+}
+const { quoteAuthor = 'Guillermo Rauch', quoteRole = 'CEO at Vercel', quoteBody = 'awesome. Love the components, especially slide-to-unlock. Great job' } = Astro.props;
+---
+<blockquote class="p-4 border border-zinc-200 dark:border-zinc-800">
+  <p>"{quoteBody}"</p>
+  <footer>{quoteAuthor} — {quoteRole}</footer>
+</blockquote>

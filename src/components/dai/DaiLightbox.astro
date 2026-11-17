@@ -1,0 +1,125 @@
+---
+// src/components/dai/DaiLightbox.astro
+interface Props {
+  src?: string;
+  alt?: string;
+  exifSpec?: string;
+  enableGlobalModal?: boolean;
+}
+
+const {
+  src,
+  alt = '',
+  exifSpec = 'BLUEPRINT VECTOR · 1:1 INSPECT',
+  enableGlobalModal = false,
+} = Astro.props;
+---
+
+{src ? (
+  <figure
+    data-dai-lightbox
+    class="rounded-xl border border-edge bg-zinc-50 dark:bg-zinc-950 p-2.5 sm:p-3 overflow-hidden"
+  >
+    <img
+      src={src}
+      alt={alt}
+      data-lightbox-src={src}
+      data-lightbox-spec={exifSpec}
+      class="w-full rounded-lg border border-edge cursor-zoom-in transition-transform duration-200 hover:scale-[1.005]"
+      loading="eager"
+    />
+    <figcaption class="px-1 pt-2.5 flex items-center justify-between gap-3 font-mono text-[10px] text-zinc-500 dark:text-zinc-400">
+      <span class="truncate">{alt}</span>
+      <span class="text-espresso-600 dark:text-espresso-400 shrink-0">{exifSpec}</span>
+    </figcaption>
+  </figure>
+) : (
+  !enableGlobalModal && (
+    <figure data-dai-lightbox class="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-950 p-3">
+      <slot />
+      <figcaption class="font-mono text-[10px] text-zinc-400 mt-2">{exifSpec}</figcaption>
+    </figure>
+  )
+)}
+
+{enableGlobalModal && (
+  <div
+    id="espresso-lightbox-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-hidden="true"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-zinc-950/90 backdrop-blur-md p-4 sm:p-8"
+  >
+    <div class="relative max-w-5xl w-full rounded-xl border border-zinc-800 bg-zinc-950 p-3 sm:p-4 shadow-2xl">
+      <div class="flex items-center justify-between gap-4 pb-3 mb-3 border-b border-zinc-800 font-mono text-xs text-zinc-400">
+        <span id="espresso-lightbox-spec" class="text-espresso-400 truncate">FIG · BLUEPRINT INSPECTOR</span>
+        <button
+          type="button"
+          id="espresso-lightbox-close"
+          class="px-2.5 py-1 rounded border border-zinc-700 text-zinc-200 hover:bg-zinc-800 cursor-pointer"
+        >
+          ESC · Close
+        </button>
+      </div>
+      <div class="max-h-[76vh] overflow-auto flex items-center justify-center bg-zinc-900/40 rounded-lg p-2">
+        <img id="espresso-lightbox-img" src="" alt="" class="max-w-full max-h-[72vh] object-contain rounded" />
+      </div>
+      <p id="espresso-lightbox-caption" class="mt-3 font-mono text-[11px] text-zinc-400 text-center" />
+    </div>
+  </div>
+)}
+
+{enableGlobalModal && (
+  <script>
+    function initBlueprintLightbox() {
+      const modal = document.getElementById('espresso-lightbox-modal');
+      const modalImg = document.getElementById('espresso-lightbox-img') as HTMLImageElement | null;
+      const modalCaption = document.getElementById('espresso-lightbox-caption');
+      const modalSpec = document.getElementById('espresso-lightbox-spec');
+      const closeBtn = document.getElementById('espresso-lightbox-close');
+
+      if (!modal || !modalImg || modal.dataset.bound === 'true') return;
+      modal.dataset.bound = 'true';
+
+      function openModal(src: string, alt: string, spec: string) {
+        if (!modal || !modalImg) return;
+        modalImg.src = src;
+        modalImg.alt = alt;
+        if (modalCaption) modalCaption.textContent = alt;
+        if (modalSpec) modalSpec.textContent = spec || 'BLUEPRINT FIGURE · 1:1 VECTOR INSPECT';
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        if (!modal) return;
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+
+      document.querySelectorAll<HTMLImageElement>('[data-lightbox-src], .espresso-prose img').forEach((img) => {
+        img.addEventListener('click', () => {
+          const src = img.dataset.lightboxSrc || img.getAttribute('src') || '';
+          const alt = img.getAttribute('alt') || '';
+          const spec = img.dataset.lightboxSpec || 'FIG · HIGH-RES DIAGRAM INSPECT';
+          if (src) openModal(src, alt, spec);
+        });
+      });
+
+      closeBtn?.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
+      });
+    }
+
+    initBlueprintLightbox();
+    document.addEventListener('astro:page-load', initBlueprintLightbox);
+  </script>
+)}

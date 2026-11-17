@@ -1,0 +1,163 @@
+---
+import { getCollection } from 'astro:content';
+import BlueprintLayout from '../../layouts/BlueprintLayout.astro';
+import DaiBlueprintGrid from '../dai/DaiBlueprintGrid.astro';
+import ClosedProjectCard from './ClosedProjectCard.astro';
+import { CLOSED_SOURCE_PROJECTS } from '../../data/projects';
+import { useTranslations, type Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const posts = (await getCollection('blog', (entry) => entry.data.lang === lang)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+function getPostsForProject(projectSlug: string) {
+  return posts
+    .filter((p) => p.data.project === projectSlug)
+    .map((p) => ({
+      slug: p.data.translationSlug,
+      title: p.data.title,
+      readingTime: p.data.readingTime,
+    }));
+}
+
+const deliveryModels = Array.from(new Set(CLOSED_SOURCE_PROJECTS.map((p) => p.deliveryModel)));
+---
+
+<BlueprintLayout
+  lang={lang}
+  title={t('closed.title')}
+  description={t('closed.subtitle')}
+  maxWidth="5xl"
+>
+  <!-- Page Header -->
+  <section class="screen-line-bottom px-6 sm:px-8 py-10 bg-dot-grid">
+    <div class="font-mono text-[11px] uppercase tracking-widest text-espresso-600 dark:text-espresso-400 mb-2">
+      PROPRIETARY & COMMERCIAL SYSTEMS · {CLOSED_SOURCE_PROJECTS.length} PLATFORMS
+    </div>
+    <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">{t('closed.title')}</h1>
+    <p class="mt-2.5 text-sm text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">
+      {t('closed.subtitle')}
+    </p>
+
+    <!-- Delivery Model Filter Pills -->
+    <div data-closed-filters class="mt-6 flex flex-wrap items-center gap-2 font-mono text-xs">
+      <button
+        type="button"
+        data-closed-filter="all"
+        class="px-3 py-1 rounded-full border border-zinc-900 bg-zinc-900 text-white dark:border-white dark:bg-white dark:text-zinc-950 cursor-pointer"
+      >
+        {t('closed.filter.all')} ({CLOSED_SOURCE_PROJECTS.length})
+      </button>
+      {deliveryModels.map((model) => (
+        <button
+          type="button"
+          data-closed-filter={model}
+          class="px-3 py-1 rounded-full border border-edge bg-white dark:bg-zinc-950 text-zinc-600 dark:text-zinc-400 hover:border-zinc-400 cursor-pointer"
+        >
+          {model}
+        </button>
+      ))}
+    </div>
+  </section>
+
+  <!-- Closed-Source Systems List -->
+  <div>
+    {CLOSED_SOURCE_PROJECTS.map((project, idx) => (
+      <div
+        id={project.slug}
+        data-closed-section={project.deliveryModel}
+        class="scroll-mt-16"
+      >
+        <DaiBlueprintGrid
+          title={`0${idx + 1} · ${project.name}`}
+          specCode={project.deliveryModel}
+          handNote={project.i18n[lang].category}
+          columns="1"
+          showHatchBottom={idx < CLOSED_SOURCE_PROJECTS.length - 1}
+        >
+          <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-edge">
+            <!-- Left: System Overview & Public Architecture Essays -->
+            <div class="lg:col-span-7">
+              <ClosedProjectCard
+                project={project}
+                lang={lang}
+                relatedPosts={getPostsForProject(project.slug)}
+              />
+            </div>
+
+            <!-- Right: Architecture & Production Spec Sheet -->
+            <div class="lg:col-span-5 p-6 bg-zinc-50/40 dark:bg-zinc-900/20 flex flex-col justify-between gap-5">
+              <div class="space-y-3">
+                <span class="font-mono text-[10px] uppercase tracking-widest text-zinc-400">
+                  {t('closed.arch_spec')}
+                </span>
+
+                <div class="rounded-lg border border-edge bg-white dark:bg-zinc-950 divide-y divide-edge">
+                  {project.specs.map((spec) => (
+                    <div class="px-3.5 py-2.5 flex flex-col gap-0.5">
+                      <span class="font-mono text-[10px] text-zinc-400">
+                        {lang === 'zh' ? spec.labelZh : spec.labelEn}
+                      </span>
+                      <span class="font-mono text-xs font-medium text-zinc-800 dark:text-zinc-200">
+                        {spec.value}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3 pt-4 border-t border-edge font-mono text-xs">
+                <div>
+                  <div class="text-[10px] text-zinc-400">{t('closed.delivery')}</div>
+                  <div class="font-semibold mt-0.5 text-zinc-900 dark:text-zinc-100">{project.deliveryModel}</div>
+                </div>
+                <div>
+                  <div class="text-[10px] text-zinc-400">{t('closed.sla')}</div>
+                  <div class="font-semibold mt-0.5 text-espresso-600 dark:text-espresso-400">{project.slaMetric}</div>
+                </div>
+                <div class="col-span-2">
+                  <div class="text-[10px] text-zinc-400">{t('closed.scale')}</div>
+                  <div class="font-semibold mt-0.5 text-zinc-900 dark:text-zinc-100">{project.scaleMetric}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </DaiBlueprintGrid>
+      </div>
+    ))}
+  </div>
+</BlueprintLayout>
+
+<script>
+  function initClosedFilter() {
+    const bar = document.querySelector('[data-closed-filters]');
+    if (!bar) return;
+    const buttons = Array.from(bar.querySelectorAll<HTMLButtonElement>('[data-closed-filter]'));
+    const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-closed-section]'));
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.closedFilter || 'all';
+        buttons.forEach((b) => {
+          const active = b === btn;
+          b.className = active
+            ? 'px-3 py-1 rounded-full border border-zinc-900 bg-zinc-900 text-white dark:border-white dark:bg-white dark:text-zinc-950 cursor-pointer'
+            : 'px-3 py-1 rounded-full border border-edge bg-white dark:bg-zinc-950 text-zinc-600 dark:text-zinc-400 hover:border-zinc-400 cursor-pointer';
+        });
+        sections.forEach((sec) => {
+          const match = target === 'all' || sec.dataset.closedSection === target;
+          sec.classList.toggle('hidden', !match);
+        });
+      });
+    });
+  }
+  initClosedFilter();
+  document.addEventListener('astro:page-load', initClosedFilter);
+</script>

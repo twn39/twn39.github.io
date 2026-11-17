@@ -1,0 +1,27 @@
+---
+// src/components/dai/DaiCadAvatar.astro
+interface Props {
+  diameterLabel?: string;
+  initials?: string;
+  roleTag?: string;
+  online?: boolean;
+}
+
+const {
+  diameterLabel = 'Ø160',
+  initials = 'CĐ',
+  roleTag = 'Design Eng',
+  online = true,
+} = Astro.props;
+---
+
+<div class="p-6 border border-edge rounded-lg bg-dot-grid relative inline-flex flex-col items-center justify-center">
+  <span class="absolute top-2 left-2.5 font-mono text-[10px] text-zinc-400">{diameterLabel}</span>
+  <div class="relative w-32 h-32 rounded-full border border-edge p-1 bg-white dark:bg-zinc-900">
+    <div class="w-full h-full rounded-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 flex flex-col items-center justify-center">
+      <span class="font-mono text-2xl font-bold tracking-tighter">{initials}</span>
+      <span class="font-mono text-[9px] uppercase tracking-widest opacity-60">{roleTag}</span>
+    </div>
+    {online && <span class="absolute bottom-1.5 right-1.5 w-3.5 h-3.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-zinc-950" />}
+  </div>
+</div>

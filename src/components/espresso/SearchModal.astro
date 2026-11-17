@@ -1,0 +1,171 @@
+---
+import { getCollection } from 'astro:content';
+import { CLOSED_SOURCE_PROJECTS, ESPRESSO_PROJECTS } from '../../data/projects';
+import { localizePath, useTranslations, type Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const posts = (await getCollection('blog', (entry) => entry.data.lang === lang)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const searchItems = [
+  ...ESPRESSO_PROJECTS.map((p) => ({
+    type: lang === 'zh' ? '开源仓库' : 'Open Source',
+    title: p.name,
+    subtitle: p.i18n[lang].tagline,
+    tags: `${p.primaryLang} ${p.repo}`,
+    href: `${localizePath('/projects/', lang)}#${p.slug}`,
+  })),
+  ...CLOSED_SOURCE_PROJECTS.map((p) => ({
+    type: lang === 'zh' ? '闭源系统' : 'Closed Source',
+    title: p.name,
+    subtitle: p.i18n[lang].tagline,
+    tags: `${p.primaryLang} ${p.deliveryModel} ${p.codeName}`,
+    href: `${localizePath('/closed-source/', lang)}#${p.slug}`,
+  })),
+  ...posts.map((post) => ({
+    type: lang === 'zh' ? '技术长文' : 'Essay',
+    title: post.data.title,
+    subtitle: post.data.description,
+    tags: `${post.data.project} ${post.data.tags.join(' ')}`,
+    href: localizePath(`/blog/${post.data.translationSlug}/`, lang),
+  })),
+  {
+    type: 'AI / GEO',
+    title: '/llms.txt',
+    subtitle: lang === 'zh' ? '结构化 AI 搜索索引目录清单' : 'Structured AI agent discovery directory',
+    tags: 'llm ai index markdown geo',
+    href: '/llms.txt',
+  },
+  {
+    type: 'AI / GEO',
+    title: '/llms-full.txt',
+    subtitle: lang === 'zh' ? '全站开源项目与双语技术博客全量语料库' : 'Full bilingual technical blog & repository corpus',
+    tags: 'llm full corpus rag context',
+    href: '/llms-full.txt',
+  },
+];
+---
+
+<div
+  id="espresso-search-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-hidden="true"
+  class="fixed inset-0 z-50 hidden items-start justify-center pt-[12vh] px-4 bg-zinc-950/75 backdrop-blur-xs"
+>
+  <div class="w-full max-w-xl rounded-xl border border-edge bg-white dark:bg-zinc-950 shadow-2xl overflow-hidden">
+    <div class="px-4 py-3 border-b border-edge flex items-center gap-3">
+      <span class="font-mono text-xs text-espresso-500">⌘K</span>
+      <input
+        id="espresso-search-input"
+        type="search"
+        autocomplete="off"
+        placeholder={t('search.placeholder')}
+        class="w-full bg-transparent text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none"
+      />
+      <button
+        type="button"
+        id="espresso-search-close"
+        class="font-mono text-[10px] px-2 py-1 rounded border border-edge text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 cursor-pointer shrink-0"
+      >
+        {t('search.esc')}
+      </button>
+    </div>
+
+    <div id="espresso-search-results" class="max-h-80 overflow-y-auto divide-y divide-edge">
+      {searchItems.map((item) => (
+        <a
+          href={item.href}
+          data-search-item
+          data-search-haystack={`${item.title} ${item.subtitle} ${item.tags}`.toLowerCase()}
+          class="block px-4 py-3 hover:bg-zinc-50 dark:hover:bg-zinc-900/70 transition-colors"
+        >
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-xs sm:text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate">
+              {item.title}
+            </span>
+            <span class="font-mono text-[10px] px-1.5 py-0.5 rounded border border-zinc-200 dark:border-zinc-800 text-zinc-400 shrink-0">
+              {item.type}
+            </span>
+          </div>
+          <p class="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400 truncate">{item.subtitle}</p>
+        </a>
+      ))}
+      <p id="espresso-search-empty" class="hidden px-4 py-8 text-center font-mono text-xs text-zinc-400">
+        {t('search.empty')}
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initSearchModal() {
+    const modal = document.getElementById('espresso-search-modal');
+    const input = document.getElementById('espresso-search-input') as HTMLInputElement | null;
+    const closeBtn = document.getElementById('espresso-search-close');
+    const emptyEl = document.getElementById('espresso-search-empty');
+    if (!modal || !input || modal.dataset.bound === 'true') return;
+    modal.dataset.bound = 'true';
+
+    const items = Array.from(modal.querySelectorAll<HTMLAnchorElement>('[data-search-item]'));
+
+    function openSearch() {
+      if (!modal || !input) return;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      modal.setAttribute('aria-hidden', 'false');
+      input.value = '';
+      filterItems('');
+      setTimeout(() => input.focus(), 20);
+    }
+
+    function closeSearch() {
+      if (!modal) return;
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+
+    function filterItems(query: string) {
+      const q = query.trim().toLowerCase();
+      let visibleCount = 0;
+      items.forEach((el) => {
+        const hay = el.dataset.searchHaystack || '';
+        const matched = !q || hay.includes(q);
+        el.classList.toggle('hidden', !matched);
+        if (matched) visibleCount++;
+      });
+      emptyEl?.classList.toggle('hidden', visibleCount > 0);
+    }
+
+    document.querySelectorAll('[data-open-search]').forEach((btn) => {
+      btn.addEventListener('click', openSearch);
+    });
+
+    input.addEventListener('input', () => filterItems(input.value));
+    closeBtn?.addEventListener('click', closeSearch);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeSearch();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        if (modal.classList.contains('hidden')) openSearch();
+        else closeSearch();
+      } else if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeSearch();
+      }
+    });
+  }
+
+  initSearchModal();
+  document.addEventListener('astro:page-load', initSearchModal);
+</script>

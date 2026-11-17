@@ -1,0 +1,12 @@
+---
+// src/components/dai/DaiBookshelf.astro
+// pnpm dlx shadcn add @ncdai/bookshelf
+interface Props {
+  openBookIndex?: number;
+}
+const { openBookIndex = 1 } = Astro.props;
+---
+<div class="h-44 flex items-end justify-center gap-2 border-b-2 border-zinc-300 dark:border-zinc-700">
+  <!-- Spines lift on hover (-translate-y-2) and expand to w-28 cover on click -->
+  <slot />
+</div>
