@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
 import fs from 'node:fs';
 import path from 'node:path';
+import { unified } from '@astrojs/markdown-remark';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import remarkMath from 'remark-math';
@@ -87,8 +88,10 @@ export default defineConfig({
     },
   },
   markdown: {
-    remarkPlugins: [remarkMath],
-    rehypePlugins: [rehypeKatex, rehypeFigureCaption],
+    processor: unified({
+      remarkPlugins: [remarkMath],
+      rehypePlugins: [rehypeKatex, rehypeFigureCaption],
+    }),
     shikiConfig: {
       themes: {
         light: 'github-light-default',

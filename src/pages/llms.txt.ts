@@ -27,7 +27,7 @@ export const GET: APIRoute = async ({ site }) => {
     `- [Open Source Matrix Markdown](${origin}/en/projects.md): Clean Markdown specification of all open-source repositories (中文版: ${origin}/projects.md).`,
     `- [Closed-Source Apps Markdown](${origin}/en/closed-source.md): Clean Markdown overview of all Apple App Store applications (中文版: ${origin}/closed-source.md).`,
     `- [XML Sitemap](${origin}/sitemap-index.xml): Bilingual URL index with hreflang alternates and lastmod timestamps.`,
-    `- [RSS 2.0 Feed](${origin}/rss.xml): Syndicated updates for new architecture essays.`,
+    `- [RSS 2.0 Feed (ZH / EN)](${origin}/rss.xml): Syndicated Chinese updates (English feed: ${origin}/en/rss.xml).`,
     `- [Chinese Home](${origin}/): Default Chinese edition.`,
     `- [English Home](${origin}/en/): Complete English mirror edition.`,
     ``,

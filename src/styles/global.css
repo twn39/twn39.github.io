@@ -273,7 +273,8 @@ html.dark .espresso-prose {
   margin: 1.75rem 0;
 }
 
-.espresso-prose figure > img {
+.espresso-prose figure > img,
+.espresso-prose figure picture > img {
   margin: 0;
 }
 
@@ -288,6 +289,7 @@ html.dark .espresso-prose {
 
 .espresso-prose img {
   width: 100%;
+  height: auto;
   border-radius: 0.5rem;
   border: 1px solid var(--color-edge);
   background-color: var(--color-surface);

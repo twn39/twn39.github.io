@@ -1,5 +1,7 @@
 ---
 // src/components/dai/DaiLightbox.astro
+import { resolvePublicImageMeta } from '../../lib/image-meta.mjs';
+
 interface Props {
   src?: string;
   alt?: string;
@@ -13,6 +15,8 @@ const {
   exifSpec = 'BLUEPRINT VECTOR · 1:1 INSPECT',
   enableGlobalModal = false,
 } = Astro.props;
+
+const imgMeta = src ? resolvePublicImageMeta(src) : {};
 ---
 
 {src ? (
@@ -21,14 +25,20 @@ const {
     class="group/fig rounded-xl border border-edge bg-zinc-50/80 dark:bg-zinc-950/90 p-2 sm:p-2.5 overflow-hidden transition-colors hover:border-espresso-500/45"
   >
     <div class="relative overflow-hidden rounded-lg border border-edge bg-white dark:bg-zinc-900">
-      <img
-        src={src}
-        alt={alt}
-        data-lightbox-src={src}
-        data-lightbox-spec={exifSpec}
-        class="w-full block cursor-zoom-in transition-transform duration-300 ease-out group-hover/fig:scale-[1.008]"
-        loading="eager"
-      />
+      <picture class="block">
+        {imgMeta.webpSrc && <source srcset={imgMeta.webpSrc} type="image/webp" />}
+        <img
+          src={src}
+          alt={alt}
+          width={imgMeta.width}
+          height={imgMeta.height}
+          decoding="async"
+          data-lightbox-src={src}
+          data-lightbox-spec={exifSpec}
+          class="w-full h-auto block cursor-zoom-in transition-transform duration-300 ease-out group-hover/fig:scale-[1.008]"
+          loading="eager"
+        />
+      </picture>
       <span
         aria-hidden="true"
         class="pointer-events-none absolute right-2.5 bottom-2.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zinc-950/75 text-zinc-100 backdrop-blur-md border border-white/15 font-mono text-[10px] opacity-0 translate-y-1 group-hover/fig:opacity-100 group-hover/fig:translate-y-0 transition-all duration-200 shadow-sm"

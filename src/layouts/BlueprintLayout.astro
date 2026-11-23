@@ -69,6 +69,7 @@ const zhFullUrl = new URL(zhHref, siteOrigin).toString();
 const enFullUrl = new URL(enHref, siteOrigin).toString();
 const ogImageUrl = new URL(image, siteOrigin).toString();
 const ogImageAltText = imageAlt || pageTitle;
+const rssPath = localizePath('/rss.xml', lang);
 const robotsContent = noindex
   ? 'noindex, nofollow'
   : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
@@ -106,18 +107,21 @@ function isNavActive(href: string, pathname: string): boolean {
       />
     )}
     <meta name="generator" content={Astro.generator} />
-    <link rel="canonical" href={canonicalUrl} />
-
-    <!-- Bilingual hreflang SEO -->
-    <link rel="alternate" hreflang="zh-CN" href={zhFullUrl} />
-    <link rel="alternate" hreflang="en" href={enFullUrl} />
-    <link rel="alternate" hreflang="x-default" href={zhFullUrl} />
+    {!noindex && (
+      <>
+        <link rel="canonical" href={canonicalUrl} />
+        <!-- Bilingual hreflang SEO -->
+        <link rel="alternate" hreflang="zh-CN" href={zhFullUrl} />
+        <link rel="alternate" hreflang="en" href={enFullUrl} />
+        <link rel="alternate" hreflang="x-default" href={zhFullUrl} />
+      </>
+    )}
 
     <!-- AI Agent & LLM Search Indexing Discovery -->
     <link rel="describedby" href="/llms.txt" />
     <link rel="alternate" type="text/plain" title="LLMs.txt" href="/llms.txt" />
     <link rel="alternate" type="text/plain" title="LLMs Full Corpus" href="/llms-full.txt" />
-    <link rel="alternate" type="application/rss+xml" title="BitesBytes Lab RSS" href="/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="BitesBytes Lab RSS" href={rssPath} />
     {rawMarkdownUrl && (
       <link rel="alternate" type="text/markdown" title="Clean Markdown for AI" href={rawMarkdownUrl} />
     )}
@@ -126,7 +130,7 @@ function isNavActive(href: string, pathname: string): boolean {
     <meta property="og:type" content={ogType} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
-    <meta property="og:url" content={canonicalUrl} />
+    {!noindex && <meta property="og:url" content={canonicalUrl} />}
     <meta property="og:site_name" content="BitesBytes Lab" />
     <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : 'en_US'} />
     <meta property="og:locale:alternate" content={lang === 'zh' ? 'en_US' : 'zh_CN'} />
@@ -392,7 +396,7 @@ function isNavActive(href: string, pathname: string): boolean {
               llms-full.txt
             </a>
             <a
-              href="/rss.xml"
+              href={rssPath}
               class="text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-colors"
             >
               RSS
