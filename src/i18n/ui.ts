@@ -8,11 +8,11 @@ export const defaultLang: Lang = 'zh';
 
 export const ui = {
   zh: {
-    'site.name': 'Espresso',
-    'site.subtitle': '浓缩工程志',
-    'site.tagline': '高萃度系统架构、边缘运行时与极简工程美学笔记',
+    'site.name': 'BitesBytes Lab',
+    'site.subtitle': '独立开发 · 技术分享',
+    'site.tagline': '聚焦独立开发、开源工具与硬核技术分享',
     'site.description':
-      'Espresso 开源技术实验室与工程博客 —— 专注 Rust/Wasm 边缘运行时、LSM-Tree 存储引擎与 AI 原生文档工程。',
+      'BitesBytes Lab —— 聚焦独立开发与技术分享，记录开源工具、原生应用架构与一线工程实践。',
     'nav.overview': '概览',
     'nav.projects': '开源项目',
     'nav.closed_projects': '闭源项目',
@@ -20,10 +20,10 @@ export const ui = {
     'nav.llms': 'llms.txt',
     'nav.search': '检索',
     'nav.theme': '切换主题',
-    'hero.eyebrow': 'GitHub 开源实验室 · 系统架构与底层实现笔记',
-    'hero.headline': '浓缩技术本质，剔除冗余噪音。',
+    'hero.eyebrow': '独立开发实验室 · 开源项目与技术分享',
+    'hero.headline': '独立开发，打磨好用的软件与硬核技术。',
     'hero.subheadline':
-      '像萃取一杯双份意式浓缩一样构建软件：克制的抽象、可验证的性能指标、清晰到像素级的 1px 工程蓝图。这里记录我们的 GitHub 开源项目与底层实现长文。',
+      '聚焦独立开发与深度技术分享：从开源底层库、跨平台工具到 App Store 原生应用，记录真实的架构权衡、性能优化与工程实践。',
     'hero.cta.projects': '浏览开源项目',
     'hero.cta.blog': '阅读技术长文',
     'hero.cta.github': 'GitHub 主页',
@@ -86,11 +86,11 @@ export const ui = {
     'footer.rights': 'MIT & CC BY 4.0',
   },
   en: {
-    'site.name': 'Espresso',
-    'site.subtitle': 'Engineering Lab',
-    'site.tagline': 'High-extraction systems architecture, edge runtimes & minimalist craft',
+    'site.name': 'BitesBytes Lab',
+    'site.subtitle': 'Indie Dev & Tech',
+    'site.tagline': 'Focused on indie development, open-source craft & technical sharing',
     'site.description':
-      'Espresso Open Source Lab & Technical Blog — Focused on Rust/Wasm edge runtimes, LSM-Tree storage engines, and AI-native documentation.',
+      'BitesBytes Lab — Focused on indie development and technical sharing, featuring open-source libraries, native apps, and hands-on engineering essays.',
     'nav.overview': 'Overview',
     'nav.projects': 'Open Source',
     'nav.closed_projects': 'Closed Source',
@@ -98,10 +98,10 @@ export const ui = {
     'nav.llms': 'llms.txt',
     'nav.search': 'Search',
     'nav.theme': 'Toggle Theme',
-    'hero.eyebrow': 'GitHub Open Source Lab · Architecture & Systems Essays',
-    'hero.headline': 'High-extraction engineering. Zero filler.',
+    'hero.eyebrow': 'Indie Dev Lab · Open Source & Technical Sharing',
+    'hero.headline': 'Indie craft, engineered in bites and bytes.',
     'hero.subheadline':
-      'We build software the way a double ristretto is pulled: restrained abstractions, reproducible benchmarks, and pixel-crisp 1px CAD blueprints. Home to our GitHub repositories and deep-dive architecture essays.',
+      'Focused on independent software development and practical technical sharing—from open-source libraries and developer tools to native App Store apps, with honest architecture notes and benchmarks.',
     'hero.cta.projects': 'Explore Projects',
     'hero.cta.blog': 'Read Essays',
     'hero.cta.github': 'GitHub Org',

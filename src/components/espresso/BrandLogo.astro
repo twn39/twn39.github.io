@@ -1,0 +1,56 @@
+---
+interface Props {
+  size?: 'sm' | 'md';
+}
+
+const { size = 'md' } = Astro.props;
+const isSm = size === 'sm';
+---
+
+<span class:list={['inline-flex items-center', isSm ? 'gap-1.5' : 'gap-2']}>
+  <!-- Minimalist 2x2 Bit-Matrix Mark: 3 solid bytes + 1 lifted accent bite -->
+  <svg
+    viewBox="0 0 22 22"
+    fill="none"
+    aria-hidden="true"
+    class:list={[
+      'shrink-0 text-slate-900 dark:text-slate-100',
+      isSm ? 'w-3.5 h-3.5' : 'w-[19px] h-[19px]',
+    ]}
+  >
+    <rect x="2" y="4" width="7" height="7" rx="1.8" fill="currentColor" />
+    <rect x="2" y="13" width="7" height="7" rx="1.8" fill="currentColor" />
+    <rect x="11" y="13" width="7" height="7" rx="1.8" fill="currentColor" />
+    <rect
+      x="13"
+      y="2"
+      width="7"
+      height="7"
+      rx="1.8"
+      class="fill-espresso-500 dark:fill-espresso-400 transition-transform duration-200 ease-out group-hover:-translate-x-[1.5px] group-hover:translate-y-[1.5px]"
+    />
+  </svg>
+
+  <!-- Typographic Wordmark: Bold/Medium contrast + Precision Monospace LAB badge -->
+  <span
+    class:list={[
+      'inline-flex items-baseline leading-none select-none font-sans',
+      isSm ? 'text-[13px] tracking-[-0.03em]' : 'text-[16.5px] tracking-[-0.035em]',
+    ]}
+  >
+    <span class="font-bold text-zinc-950 dark:text-zinc-50">Bites</span><span
+      class="font-medium text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-800 dark:group-hover:text-zinc-200 transition-colors"
+    >Bytes</span>
+  </span>
+
+  <span
+    class:list={[
+      'inline-flex items-center font-mono font-semibold uppercase leading-none rounded-[5px] border border-espresso-500/35 bg-espresso-500/[0.07] dark:bg-espresso-400/10 text-espresso-600 dark:text-espresso-400',
+      isSm
+        ? 'text-[8.5px] tracking-[0.1em] px-1 py-[2px]'
+        : 'text-[9.5px] tracking-[0.12em] px-1.5 py-[3px] -translate-y-[0.5px]',
+    ]}
+  >
+    LAB
+  </span>
+</span>

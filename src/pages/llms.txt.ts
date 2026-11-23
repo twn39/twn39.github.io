@@ -15,7 +15,7 @@ export const GET: APIRoute = async ({ site }) => {
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
   const lines: string[] = [
-    `# Espresso · 浓缩工程志 (@twn39 Technical Blog & Projects)`,
+    `# BitesBytes Lab · 独立开发与技术分享 (@twn39 Indie Dev & Technical Blog)`,
     ``,
     `> High-performance C++/Python nanobind libraries (pylibheif, pyopenxlsx), C++17 OOXML document kernels (OpenXLSX-NX), Rust zero-copy math compilers (tex2math), cross-platform PySide6 desktop craft (yt-dlp-qt-gui), and AI Coding Agent static analysis tools (codegraph-gen) by Tang Weinan (https://github.com/twn39). Bilingual (zh-CN / en).`,
     ``,

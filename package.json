@@ -1,6 +1,6 @@
 {
   "name": "espresso-engineering-blog",
-  "description": "Espresso Open Source Lab & Bilingual Technical Blog — Built with Astro 7, Tailwind CSS v4, Blueprint UI & llms.txt AI Indexing",
+  "description": "BitesBytes Lab — Indie Dev & Technical Sharing Site built with Astro, Tailwind CSS v4, Blueprint UI & llms.txt AI Indexing",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -15,8 +15,12 @@
     "preview": "astro preview"
   },
   "dependencies": {
+    "@astrojs/markdown-remark": "^7.3.10",
     "@tailwindcss/vite": "^4.3.5",
     "astro": "^7.4.12",
+    "katex": "^0.19.1",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0",
     "tailwindcss": "^4.3.5"
   },
   "devDependencies": {

@@ -9,9 +9,9 @@ export const GET: APIRoute = async ({ site }) => {
   );
 
   const sections: string[] = [
-    `# Espresso Engineering Lab — Full Technical Corpus (llms-full.txt)`,
+    `# BitesBytes Lab — Full Technical Corpus (llms-full.txt)`,
     ``,
-    `> Complete plain-Markdown compilation of all Espresso GitHub repositories and bilingual (zh-CN / EN) technical blog essays for LLM context windows, AI search indexing, and local RAG ingestion.`,
+    `> Complete plain-Markdown compilation of BitesBytes Lab indie dev projects, open-source GitHub repositories, and bilingual (zh-CN / EN) technical sharing essays for LLM context windows, AI search indexing, and local RAG ingestion.`,
     ``,
     `- Canonical Index: ${origin}/llms.txt`,
     `- GitHub Profile: https://github.com/twn39`,

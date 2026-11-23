@@ -62,12 +62,12 @@ const {
 
     function draw() {
       if (!ctx) return;
-      ctx.fillStyle = '#09090b';
+      ctx.fillStyle = '#0f172a';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       bricks.forEach((b) => {
         if (!b.alive) return;
-        ctx.fillStyle = '#cd7745';
+        ctx.fillStyle = '#3b82f6';
         ctx.fillRect(b.x, b.y, 54, 14);
         if (x > b.x && x < b.x + 54 && y > b.y && y < b.y + 14) {
           dy = -dy;

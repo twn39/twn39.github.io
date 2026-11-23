@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "katex/dist/katex.min.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -6,28 +7,28 @@
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --font-hand: 'Caveat', cursive;
-  --color-espresso-50: #fdf8f4;
-  --color-espresso-100: #f9ede2;
-  --color-espresso-200: #f2d7c2;
-  --color-espresso-300: #e7b997;
-  --color-espresso-400: #da9468;
-  --color-espresso-500: #cd7745;
-  --color-espresso-600: #b85f36;
-  --color-espresso-700: #994b2e;
-  --color-espresso-800: #7c3f2b;
-  --color-espresso-900: #653526;
+  --color-espresso-50: #eff6ff;
+  --color-espresso-100: #dbeafe;
+  --color-espresso-200: #bfdbfe;
+  --color-espresso-300: #93c5fd;
+  --color-espresso-400: #60a5fa;
+  --color-espresso-500: #3b82f6;
+  --color-espresso-600: #2563eb;
+  --color-espresso-700: #1d4ed8;
+  --color-espresso-800: #1e40af;
+  --color-espresso-900: #1e3a8a;
 }
 
 :root {
   --color-bg: #ffffff;
-  --color-surface: #fafafa;
-  --color-subtle: #f4f4f5;
-  --color-edge: #e4e4e7;
-  --color-text: #09090b;
-  --color-muted: #71717a;
-  --color-accent: #b85f36;
-  --hatch-color: rgba(9, 9, 11, 0.032);
-  --dot-color: rgba(9, 9, 11, 0.09);
+  --color-surface: #f8fafc;
+  --color-subtle: #f1f5f9;
+  --color-edge: #e2e8f0;
+  --color-text: #0f172a;
+  --color-muted: #64748b;
+  --color-accent: #2563eb;
+  --hatch-color: rgba(37, 99, 235, 0.042);
+  --dot-color: rgba(37, 99, 235, 0.13);
 }
 
 html {
@@ -35,15 +36,15 @@ html {
 }
 
 html.dark {
-  --color-bg: #09090b;
-  --color-surface: #0d0d10;
-  --color-subtle: #18181b;
-  --color-edge: #27272a;
-  --color-text: #fafafa;
-  --color-muted: #a1a1aa;
-  --color-accent: #da9468;
-  --hatch-color: rgba(255, 255, 255, 0.036);
-  --dot-color: rgba(255, 255, 255, 0.1);
+  --color-bg: #090d16;
+  --color-surface: #0f172a;
+  --color-subtle: #1e293b;
+  --color-edge: #1e293b;
+  --color-text: #f8fafc;
+  --color-muted: #94a3b8;
+  --color-accent: #60a5fa;
+  --hatch-color: rgba(96, 165, 250, 0.05);
+  --dot-color: rgba(96, 165, 250, 0.14);
 }
 
 /* Unified 1px Solid Edge Utilities (Single Source of Truth across Rails, Grids & Cards) */
@@ -272,6 +273,19 @@ html.dark .espresso-prose {
   margin: 1.75rem 0;
 }
 
+.espresso-prose figure > img {
+  margin: 0;
+}
+
+.espresso-prose figcaption {
+  margin-top: 0.65rem;
+  padding: 0 0.75rem;
+  text-align: center;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--color-muted);
+}
+
 .espresso-prose img {
   width: 100%;
   border-radius: 0.5rem;
@@ -310,4 +324,11 @@ html.dark .espresso-prose {
   margin: 2.5rem 0;
   border: 0;
   border-top: 1px solid var(--color-edge);
+}
+
+.espresso-prose .katex-display {
+  margin: 1.4rem 0;
+  padding: 0.25rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
 }

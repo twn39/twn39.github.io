@@ -1,5 +1,8 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import rehypeFigureCaption from './src/lib/rehype-figure-caption.mjs';
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,6 +15,8 @@ export default defineConfig({
     },
   },
   markdown: {
+    remarkPlugins: [remarkMath],
+    rehypePlugins: [rehypeKatex, rehypeFigureCaption],
     shikiConfig: {
       themes: {
         light: 'github-light-default',

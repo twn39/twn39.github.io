@@ -15,7 +15,13 @@ const {
 } = Astro.props;
 ---
 
-<section class="relative overflow-hidden screen-line-bottom bg-white dark:bg-zinc-950">
+<section class="relative overflow-hidden screen-line-bottom bg-white dark:bg-[#090d16]">
+  <!-- Subtle Cobalt Blueprint Ambient Glow -->
+  <div
+    class="absolute -top-24 right-0 w-[420px] h-[280px] bg-espresso-500/[0.06] dark:bg-espresso-400/[0.08] blur-3xl rounded-full pointer-events-none"
+    aria-hidden="true"
+  />
+
   <!-- Subtle Dot Matrix faded gently toward the left text area -->
   <div
     class="absolute inset-0 bg-dot-grid opacity-45 pointer-events-none"
@@ -40,10 +46,10 @@ const {
       <line x1="346" y1="170" x2="346" y2="268" stroke="currentColor" stroke-width="1" />
       <path
         d="M 26 268 A 256 256 0 0 1 282 12 A 166 166 0 0 1 448 170 A 98 98 0 0 1 346 268 A 64 64 0 0 1 282 204"
-        stroke="#cd7745"
+        class="stroke-espresso-600 dark:stroke-espresso-400"
         stroke-width="1.75"
       />
-      <circle cx="282" cy="170" r="3" fill="#cd7745" />
+      <circle cx="282" cy="170" r="3" class="fill-espresso-600 dark:fill-espresso-400" />
     </svg>
   </div>
 

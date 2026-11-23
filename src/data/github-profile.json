@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-11-17T08:38:03.105Z",
+  "fetchedAt": "2026-11-23T02:38:09.700Z",
   "login": "twn39",
   "name": "Tang Weinan",
   "bio": "Read, travel, keep the life simple.",
@@ -9,52 +9,8 @@
   "followers": 59,
   "publicRepos": 81,
   "totalStars": 95,
-  "totalContributions": 2656,
+  "totalContributions": 2690,
   "weeks": [
-    [
-      {
-        "date": "2025-11-16",
-        "count": 0,
-        "level": 0,
-        "weekday": 0
-      },
-      {
-        "date": "2025-11-17",
-        "count": 0,
-        "level": 0,
-        "weekday": 1
-      },
-      {
-        "date": "2025-11-18",
-        "count": 0,
-        "level": 0,
-        "weekday": 2
-      },
-      {
-        "date": "2025-11-19",
-        "count": 0,
-        "level": 0,
-        "weekday": 3
-      },
-      {
-        "date": "2025-11-20",
-        "count": 0,
-        "level": 0,
-        "weekday": 4
-      },
-      {
-        "date": "2025-11-21",
-        "count": 0,
-        "level": 0,
-        "weekday": 5
-      },
-      {
-        "date": "2025-11-22",
-        "count": 0,
-        "level": 0,
-        "weekday": 6
-      }
-    ],
     [
       {
         "date": "2025-11-23",
@@ -2308,15 +2264,53 @@
       },
       {
         "date": "2026-11-16",
-        "count": 0,
-        "level": 0,
+        "count": 1,
+        "level": 1,
         "weekday": 1
       },
       {
         "date": "2026-11-17",
+        "count": 3,
+        "level": 1,
+        "weekday": 2
+      },
+      {
+        "date": "2026-11-18",
+        "count": 6,
+        "level": 1,
+        "weekday": 3
+      },
+      {
+        "date": "2026-11-19",
+        "count": 6,
+        "level": 1,
+        "weekday": 4
+      },
+      {
+        "date": "2026-11-20",
+        "count": 8,
+        "level": 1,
+        "weekday": 5
+      },
+      {
+        "date": "2026-11-21",
+        "count": 4,
+        "level": 1,
+        "weekday": 6
+      }
+    ],
+    [
+      {
+        "date": "2026-11-22",
+        "count": 6,
+        "level": 1,
+        "weekday": 0
+      },
+      {
+        "date": "2026-11-23",
         "count": 0,
         "level": 0,
-        "weekday": 2
+        "weekday": 1
       }
     ]
   ]
