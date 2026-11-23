@@ -17,6 +17,14 @@ interface Props {
   alternatePath?: string;
   rawMarkdownUrl?: string;
   ogType?: 'website' | 'article';
+  image?: string;
+  imageAlt?: string;
+  publishedTime?: string;
+  modifiedTime?: string;
+  tags?: string[];
+  noindex?: boolean;
+  appleAppId?: string;
+  appleAppArgument?: string;
   jsonLd?: Record<string, unknown>;
   maxWidth?: '3xl' | '5xl' | '7xl';
 }
@@ -29,6 +37,14 @@ const {
   alternatePath,
   rawMarkdownUrl,
   ogType = 'website',
+  image = '/og-default.png',
+  imageAlt,
+  publishedTime,
+  modifiedTime,
+  tags = [],
+  noindex = false,
+  appleAppId,
+  appleAppArgument,
   jsonLd,
   maxWidth = '5xl',
 } = Astro.props;
@@ -51,6 +67,11 @@ const siteOrigin = Astro.site?.origin || 'https://twn39.github.io';
 const canonicalUrl = new URL(currentPath, siteOrigin).toString();
 const zhFullUrl = new URL(zhHref, siteOrigin).toString();
 const enFullUrl = new URL(enHref, siteOrigin).toString();
+const ogImageUrl = new URL(image, siteOrigin).toString();
+const ogImageAltText = imageAlt || pageTitle;
+const robotsContent = noindex
+  ? 'noindex, nofollow'
+  : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
 
 const navLinks = [
   { key: 'overview', label: t('nav.overview'), href: localizePath('/', lang) },
@@ -77,6 +98,13 @@ function isNavActive(href: string, pathname: string): boolean {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
+    <meta name="robots" content={robotsContent} />
+    {appleAppId && (
+      <meta
+        name="apple-itunes-app"
+        content={appleAppArgument ? `app-id=${appleAppId}, app-argument=${appleAppArgument}` : `app-id=${appleAppId}`}
+      />
+    )}
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={canonicalUrl} />
 
@@ -86,6 +114,7 @@ function isNavActive(href: string, pathname: string): boolean {
     <link rel="alternate" hreflang="x-default" href={zhFullUrl} />
 
     <!-- AI Agent & LLM Search Indexing Discovery -->
+    <link rel="describedby" href="/llms.txt" />
     <link rel="alternate" type="text/plain" title="LLMs.txt" href="/llms.txt" />
     <link rel="alternate" type="text/plain" title="LLMs Full Corpus" href="/llms-full.txt" />
     <link rel="alternate" type="application/rss+xml" title="BitesBytes Lab RSS" href="/rss.xml" />
@@ -99,6 +128,29 @@ function isNavActive(href: string, pathname: string): boolean {
     <meta property="og:description" content={pageDescription} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:site_name" content="BitesBytes Lab" />
+    <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : 'en_US'} />
+    <meta property="og:locale:alternate" content={lang === 'zh' ? 'en_US' : 'zh_CN'} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:alt" content={ogImageAltText} />
+    {ogType === 'article' && publishedTime && (
+      <meta property="article:published_time" content={publishedTime} />
+    )}
+    {ogType === 'article' && (modifiedTime || publishedTime) && (
+      <meta property="article:modified_time" content={modifiedTime || publishedTime} />
+    )}
+    {ogType === 'article' && (
+      <meta property="article:author" content="Tang Weinan (twn39)" />
+    )}
+    {ogType === 'article' &&
+      tags.map((tag) => <meta property="article:tag" content={tag} />)
+    }
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={ogImageAltText} />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

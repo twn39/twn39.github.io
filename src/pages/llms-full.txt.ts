@@ -69,6 +69,11 @@ export const GET: APIRoute = async ({ site }) => {
         ? `${origin}/blog/${post.data.translationSlug}/`
         : `${origin}/en/blog/${post.data.translationSlug}/`;
 
+    const normalizedBody = (post.body ?? '').replace(
+      /\]\(\/((?!\/)[^)\s]+)\)/g,
+      `](${origin}/$1)`
+    );
+
     sections.push(
       `---`,
       `# [${post.data.lang.toUpperCase()}] ${post.data.title}`,
@@ -78,7 +83,7 @@ export const GET: APIRoute = async ({ site }) => {
       `- Published: ${post.data.pubDate.toISOString().slice(0, 10)}`,
       `- Tags: ${post.data.tags.join(', ')}`,
       ``,
-      post.body ?? '',
+      normalizedBody,
       ``
     );
   }

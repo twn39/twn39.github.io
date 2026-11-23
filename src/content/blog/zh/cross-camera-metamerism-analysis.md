@@ -11,11 +11,22 @@ coverImage: "/images/blog/metamerism_fig1_ssf_vora.png"
 coverAlt: "归一化光谱敏感度曲线（SSF）与 Vora–Trussell 子空间测度"
 coverSpec: "FIG 01 · SSF & VORA-TRUSSELL SUBSPACE · 400–700nm"
 featured: true
+faqs:
+  - q: "iPhone ProRAW 套用富士或电影机原厂 LUT 时，传感器同色异谱色差有多大？"
+    a: "在 D65、D50、钨丝灯、荧光灯与白光 LED 等 6 种宽带照明条件下，iPhone 14 Pro Max 与 Fujifilm GFX 100 / X-T4 的光谱子空间重合度高达 Vora ν = 0.981，ColorChecker 24 色卡平均 CIEDE2000 色差仅 0.29–0.43（ISO 17321 SMI = 98），远低于人眼可分辨阈值（JND ≈ 1.0–2.0）。"
+  - q: "哪些极端光源会触发明显的跨相机同色异谱色偏？"
+    a: "在半高宽 15 nm 的窄带单色 LED 下，传感器滤色片差异会被放大：475–498 nm 青蓝霓虹波段相对 Sony A7S III 色相偏转可达 +26.3°（相对 Fuji GFX 100 为 +14.5°）；605–630 nm 橙红 LED 波段相对三款专业相机均会出现 +17.8° 至 +19.9° 的色相偏移。"
+  - q: "为什么 Espresso 选择 ACES 2.0 场景线性转换，而不是引入 6 项 RPCC 多项式拟合？"
+    a: "在宽带基准误差已低至 ΔE₀₀ ≈ 0.3–0.4 时，基于有限色卡样本引入高阶非线性多项式不仅收益极微，反而可能过拟合特定光源或引发肤色线性度与高光外推伪影。保持纯净 ACES 2.0 场景线性域直通与精确色域转换更加稳健。"
 ---
 
 > **适用背景**：Espresso 色彩管线（iPhone Pro RAW / ProRAW → 原厂电影/胶片 LUT）  
 > **测色学基准**：CIE 1931 2° 标准观察者、CIEDE2000（$\Delta E_{00}$）、ISO 17321 SMI、Vora–Trussell 子空间测度  
 > **核心问题**：当移动端传感器（iPhone Pro）接入富士、索尼、ARRI 等专业相机的原厂色彩科学 LUT 时，硬件滤色片（CFA）差异所引起的同色异谱究竟有多大？
+
+## 核心结论（TL;DR）
+
+在 D65 日光等常规宽带照明下，iPhone Pro 与 Fujifilm GFX 100 / X-T4 之间的硬件传感器同色异谱平均色差仅 **$\Delta E_{00} = 0.29\text{–}0.43$（ISO SMI = 98，Vora $\nu = 0.981$）**，远低于人眼可分辨阈值，肤色区域几乎零漂移（$\Delta E_{00} \le 0.56$）。真正的物理边界仅出现在 **$475\text{–}498\,\text{nm}$ 青蓝霓虹**与 **$605\text{–}630\,\text{nm}$ 橙红窄带 LED**，会产生 $14.5^\circ\text{–}26.3^\circ$ 的窄带色相扭曲。因此，Espresso 色彩管线坚持 **ACES 2.0 场景线性直通 + 原厂 3D LUT**，无需盲目堆叠高阶静态多项式拟合。
 
 ---
 
@@ -170,3 +181,16 @@ $$\nu(\mathbf{S}_1, \mathbf{S}_2) = \frac{1}{3}\operatorname{tr}\!\left(\mathbf{
 
 4. **后续演进建议**  
    如需进一步消除上述 iPhone 14 Pro Max 反演数据的代际误差，后续可直接提取当前真机（如 **iPhone 17 Pro / 18 Pro Max**）拍摄的 ProRAW DNG `ColorMatrix1/2` 元数据，或通过标准 ColorChecker SG 实拍对比验证，将本套四维分析框架延伸为针对具体机型的持续回归测试基线。
+
+---
+
+## 6. 常见问题（FAQ）
+
+### iPhone ProRAW 套用富士或电影机原厂 LUT 时，传感器同色异谱色差有多大？
+在 D65、D50、钨丝灯、荧光灯与白光 LED 等 6 种宽带照明条件下，iPhone 14 Pro Max 与 Fujifilm GFX 100 / X-T4 的光谱子空间重合度高达 Vora $\nu = 0.981$，ColorChecker 24 色卡平均 CIEDE2000 色差仅 **$0.29\text{–}0.43$**（ISO 17321 SMI = 98），远低于人眼可分辨阈值（JND $\approx 1.0\text{–}2.0$）。
+
+### 哪些极端光源会触发明显的跨相机同色异谱色偏？
+在半高宽 $15\,\text{nm}$ 的窄带单色 LED 下，传感器滤色片差异会被放大：$475\text{–}498\,\text{nm}$ 青蓝霓虹波段相对 Sony A7S III 色相偏转可达 **$+26.3^\circ$**（相对 Fuji GFX 100 为 **$+14.5^\circ$**）；$605\text{–}630\,\text{nm}$ 橙红 LED 波段相对三款专业相机均会出现 **$+17.8^\circ \sim +19.9^\circ$** 的色相偏移。
+
+### 为什么 Espresso 选择 ACES 2.0 场景线性转换，而不是引入 6 项 RPCC 多项式拟合？
+在宽带基准误差已低至 $\Delta E_{00} \approx 0.3\text{–}0.4$ 时，基于有限色卡样本引入高阶非线性多项式不仅收益极微，反而可能过拟合特定光源或引发肤色线性度与高光外推伪影。保持纯净 ACES 2.0 场景线性域直通与精确色域转换更加稳健。

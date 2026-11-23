@@ -11,11 +11,22 @@ coverImage: "/images/blog/metamerism_fig1_ssf_vora.png"
 coverAlt: "Normalized Spectral Sensitivity (SSF) & Vora-Trussell Subspace Measure"
 coverSpec: "FIG 01 · SSF & VORA-TRUSSELL SUBSPACE · 400–700nm"
 featured: true
+faqs:
+  - q: "How large is sensor metamerism when applying Fujifilm or cinema LUTs to iPhone ProRAW?"
+    a: "Across six standard broadband illuminants (including D65, D50, tungsten, fluorescent, and white LED), iPhone 14 Pro Max achieves a Vora–Trussell subspace overlap of ν = 0.981 with Fujifilm GFX 100 / X-T4 and a 24-patch mean CIEDE2000 residual of only 0.29–0.43 (ISO 17321 SMI = 98)—well below human JND (≈ 1.0–2.0)."
+  - q: "Which extreme lighting conditions trigger noticeable cross-camera hue shifts?"
+    a: "Under monochromatic 15 nm FWHM narrowband LEDs, small CFA slope differences amplify into large hue twists: +26.3° vs. Sony A7S III (+14.5° vs. Fujifilm GFX 100) in the 475–498 nm cyan-blue neon band, and +17.8° to +19.9° across all three reference cameras in the 605–630 nm orange-red LED band."
+  - q: "Why does Espresso use an ACES 2.0 scene-referred linear pipeline instead of 6-term RPCC fitting?"
+    a: "When baseline linear error is already ΔE₀₀ ≈ 0.3–0.4, fitting higher-order polynomials on limited color patches offers negligible benefit while risking illuminant overfitting, skin-tone non-linearity, and highlight extrapolation artifacts. Clean ACES 2.0 linear transforms are far more robust."
 ---
 
 > **Context**: Espresso Color Pipeline (iPhone Pro RAW / ProRAW → Native Cinema / Film LUTs)  
 > **Colorimetric Benchmarks**: CIE 1931 2° Standard Observer, CIEDE2000 ($\Delta E_{00}$), ISO 17321 SMI, Vora–Trussell Subspace Measure  
 > **Core Question**: When a mobile sensor (iPhone Pro) feeds native film/cinema LUTs calibrated for Fujifilm, Sony, or ARRI cameras, how large is the cross-camera metamerism caused by hardware color filter array (CFA) differences?
+
+## TL;DR: Key Takeaways
+
+Under standard broadband lighting such as D65 daylight, hardware CFA metamerism between iPhone Pro and Fujifilm GFX 100 / X-T4 averages only **$\Delta E_{00} = 0.29\text{–}0.43$ (ISO SMI = 98, Vora $\nu = 0.981$)**—well below human perceptibility, with near-zero skin-tone drift ($\Delta E_{00} \le 0.56$). Noticeable physical divergence is confined to **$475\text{–}498\,\text{nm}$ cyan-blue neon** and **$605\text{–}630\,\text{nm}$ orange-red narrowband LEDs** ($+14.5^\circ\text{–}26.3^\circ$ hue twist). Accordingly, Espresso prioritizes a **clean ACES 2.0 scene-referred linear pipeline + native 3D LUTs** over static higher-order polynomial fitting.
 
 ---
 
@@ -168,3 +179,16 @@ Synthesizing all four orthogonal colorimetric experiments yields clear, evidence
 
 4. **Future Evolution**  
    To eliminate generational offset from the ICCP 2023 iPhone 14 Pro Max inversion dataset, future work can directly extract `ColorMatrix1/2` metadata from live ProRAW DNG captures on current flagships (**iPhone 17 Pro / 18 Pro Max**) and validate against ColorChecker SG reference shoots, turning this four-dimensional suite into an ongoing per-device regression baseline.
+
+---
+
+## 6. Frequently Asked Questions (FAQ)
+
+### How large is sensor metamerism when applying Fujifilm or cinema LUTs to iPhone ProRAW?
+Across six standard broadband illuminants (including D65, D50, tungsten, fluorescent, and white LED), iPhone 14 Pro Max achieves a Vora–Trussell subspace overlap of $\nu = 0.981$ with Fujifilm GFX 100 / X-T4 and a 24-patch mean CIEDE2000 residual of only **$0.29\text{–}0.43$** (ISO 17321 SMI = 98)—well below human JND ($\approx 1.0\text{–}2.0$).
+
+### Which extreme lighting conditions trigger noticeable cross-camera hue shifts?
+Under monochromatic $15\,\text{nm}$ FWHM narrowband LEDs, small CFA slope differences amplify into large hue twists: **$+26.3^\circ$** vs. Sony A7S III (**$+14.5^\circ$** vs. Fujifilm GFX 100) in the $475\text{–}498\,\text{nm}$ cyan-blue neon band, and **$+17.8^\circ \sim +19.9^\circ$** across all three reference cameras in the $605\text{–}630\,\text{nm}$ orange-red LED band.
+
+### Why does Espresso use an ACES 2.0 scene-referred linear pipeline instead of 6-term RPCC fitting?
+When baseline linear error is already $\Delta E_{00} \approx 0.3\text{–}0.4$, fitting higher-order polynomials on limited color patches offers negligible benefit while risking illuminant overfitting, skin-tone non-linearity, and highlight extrapolation artifacts. Clean ACES 2.0 linear transforms are far more robust.

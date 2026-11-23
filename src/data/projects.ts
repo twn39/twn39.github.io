@@ -316,6 +316,11 @@ export const ESPRESSO_PROJECTS: EspressoProject[] = [
   },
 ];
 
+export interface AppFaqItem {
+  q: string;
+  a: string;
+}
+
 export interface EspressoClosedProject {
   slug: string;
   name: string;
@@ -349,6 +354,7 @@ export interface EspressoClosedProject {
       tagline: string;
       summary: string;
       highlights: string[];
+      faqs: AppFaqItem[];
     };
     en: {
       displayName: string;
@@ -357,6 +363,7 @@ export interface EspressoClosedProject {
       tagline: string;
       summary: string;
       highlights: string[];
+      faqs: AppFaqItem[];
     };
   };
 }
@@ -403,6 +410,16 @@ export const CLOSED_SOURCE_PROJECTS: EspressoClosedProject[] = [
           '自研无 UI 依赖色彩数学核心包 EspressoCore（支持单帧 Bayer RAW 与 Apple ProRAW 线性解码）',
           '集成 CoreML ANE 2x 神经超分（PiperSR-2x）、相机控制扩展（Camera Control）与暗房画框排印引擎',
         ],
+        faqs: [
+          {
+            q: 'Espresso 支持哪些平台与 RAW 格式？',
+            a: 'Espresso 为原生 iOS 应用，底层 EspressoCore 支持单帧 Bayer CFA RAW 与 Apple ProRAW 的场景线性解码。',
+          },
+          {
+            q: '实时胶片色彩模拟管线是如何工作的？',
+            a: '采用 Bradford / CAT16 色适应、OETF 曲线与 Metal 3D .cube LUT 实时取景渲染，成片阶段由后台 Actor 隔离的 Metal Compute 着色器与 CoreML ANE PiperSR-2x 2x 超分协同完成。',
+          },
+        ],
       },
       en: {
         displayName: 'Espresso — True Color Film Cam',
@@ -415,6 +432,16 @@ export const CLOSED_SOURCE_PROJECTS: EspressoClosedProject[] = [
           'Dual GPU architecture: MTKView live render pass + actor-isolated Metal compute darkroom pipeline',
           'Headless EspressoCore color-science engine with scene-referred Bayer CFA & Apple ProRAW strategies',
           'CoreML ANE PiperSR-2x neural super-resolution, iOS Camera Control widget & EXIF border typography',
+        ],
+        faqs: [
+          {
+            q: 'Which platforms and RAW formats does Espresso support?',
+            a: 'Espresso is a native iOS application whose EspressoCore engine decodes both single-frame Bayer CFA RAW and Apple ProRAW in scene-referred linear space.',
+          },
+          {
+            q: 'How does the real-time film simulation pipeline work?',
+            a: 'It pairs a 60fps MTKView Metal 3D .cube LUT viewfinder with Bradford/CAT16 chromatic adaptation, an actor-isolated Metal compute darkroom pipeline, and CoreML ANE PiperSR-2x super-resolution.',
+          },
         ],
       },
     },
@@ -460,6 +487,16 @@ export const CLOSED_SOURCE_PROJECTS: EspressoClosedProject[] = [
           '内嵌自研 cjkfts5 中日韩分词器与 Keyset 游标分页，海量手账札记毫秒级全文检索',
           '基于 CloudKit CKSyncEngine 的软删除墓碑（Tombstone LWW）多端同步与 App Group 小组件快照',
         ],
+        faqs: [
+          {
+            q: '方寸的数据如何存储与多端同步？',
+            a: '采用本地优先的 GRDB 7 SQLite WAL 存储与三阶段 Saga 落盘流水线，并通过 Apple CloudKit CKSyncEngine（Tombstone LWW）在你的设备间同步。',
+          },
+          {
+            q: '邮票齿孔裁切会破坏原始照片吗？',
+            a: '不会。应用采用原图与归一化裁切坐标分离的无损存档设计，支持任意分辨率下程序化重建三档邮票锯齿边缘，并内嵌 cjkfts5 分词器支持毫秒级检索。',
+          },
+        ],
       },
       en: {
         displayName: 'Fangcun — Stamp Camera',
@@ -472,6 +509,16 @@ export const CLOSED_SOURCE_PROJECTS: EspressoClosedProject[] = [
           'Three-phase Saga capture pipeline over GRDB 7 SQLite WAL guarantees crash-safe photo persistence',
           'Embedded custom cjkfts5 SQLite tokenizer + keyset pagination for instant CJK full-text search',
           'CloudKit CKSyncEngine tombstone LWW multi-device sync paired with lock-free App Group WidgetKit snapshots',
+        ],
+        faqs: [
+          {
+            q: 'How does Fangcun store and sync stamp albums?',
+            a: 'Fangcun is local-first on GRDB 7 SQLite WAL with a three-phase Saga persistence pipeline, syncing across your Apple devices via CloudKit CKSyncEngine (tombstone LWW).',
+          },
+          {
+            q: 'Do procedural stamp perforations modify the original photo?',
+            a: 'No. Normalized crop coordinates are stored separately from the original image, allowing non-destructive UIBezierPath perforation rendering alongside instant cjkfts5 full-text search.',
+          },
         ],
       },
     },
@@ -517,6 +564,16 @@ export const CLOSED_SOURCE_PROJECTS: EspressoClosedProject[] = [
           '基于 ScreenCaptureKit 的高帧率 Retina 窗口捕获与自适应特征点长截图无缝拼接（ImageMerge）',
           '集成 Apple Vision 离线文字识别、智能视觉问答/翻译以及原生矢量标注编辑器',
         ],
+        faqs: [
+          {
+            q: 'Cappuccino 支持哪些 macOS 版本与安装渠道？',
+            a: '支持 macOS 15+，可通过 Mac App Store 直接安装，或通过 Homebrew Cask（brew install --cask twn39/apps/cappuccino）获取。',
+          },
+          {
+            q: '截屏、OCR 与滚动长截图采用什么原生技术实现？',
+            a: '采用 100% 纯代码 AppKit 与 Swift 6 完整严格并发检查，基于 ScreenCaptureKit 捕获高帧率 Retina 窗口，结合自适应特征点拼接与端侧 Apple Vision 离线 OCR。',
+          },
+        ],
       },
       en: {
         displayName: 'Cappuccino — Smart Screen & AI',
@@ -529,6 +586,16 @@ export const CLOSED_SOURCE_PROJECTS: EspressoClosedProject[] = [
           'Complete actor-isolated pipeline with deterministic autoreleasepool scoping for minimal menu-bar RSS',
           'High-DPI ScreenCaptureKit window/region capture paired with seamless scrolling image stitching',
           'On-device Apple Vision OCR, AI visual translation, floating pin windows & universal macOS binary',
+        ],
+        faqs: [
+          {
+            q: 'What macOS versions and install methods does Cappuccino support?',
+            a: 'Cappuccino targets macOS 15+ as a universal binary via the Mac App Store or Homebrew Cask (brew install --cask twn39/apps/cappuccino).',
+          },
+          {
+            q: 'How are capture, scroll-stitching, and OCR implemented?',
+            a: 'Built in 100% programmatic AppKit under complete Swift 6 strict concurrency checking, combining ScreenCaptureKit capture, adaptive scrolling stitch, and on-device Apple Vision OCR.',
+          },
         ],
       },
     },
@@ -574,6 +641,16 @@ export const CLOSED_SOURCE_PROJECTS: EspressoClosedProject[] = [
           '通过 SwiftTexMath 实现出版级 LaTeX 数学公式实时排版，搭配专属三角/双曲/微积分快捷键盘',
           '内置基于 Swift Charts 的自适应缩放函数曲线绘制引擎与高容错语法安全求值器',
         ],
+        faqs: [
+          {
+            q: 'SymMath 支持哪些平台与符号代数内核？',
+            a: 'SymMath 原生支持 iOS 与 macOS，底层通过 Swift 5.9+ 原生 C++ 互操作直接封装 SymEngineKit（CAS），无中间胶水层。',
+          },
+          {
+            q: '支持哪些符号计算与可视化能力？',
+            a: '支持精确根式与三角恒等化简、多元偏导微积分、多项式精确求根、稠密矩阵运算，并结合 SwiftTexMath（Latin Modern LaTeX）与 Swift Charts 进行公式排版和自适应函数曲线绘图。',
+          },
+        ],
       },
       en: {
         displayName: 'SymMath — Symbolic Calculator',
@@ -586,6 +663,16 @@ export const CLOSED_SOURCE_PROJECTS: EspressoClosedProject[] = [
           'Uses native Swift C++ interoperability (.interoperabilityMode(.Cxx)) over the C++ symengine CAS core',
           'Publication-grade live LaTeX rendering via SwiftTexMath paired with a custom mathematical ribbon keyboard',
           'Interactive auto-scaling function curve plotter powered by Swift Charts plus snapshot-tested UI stability',
+        ],
+        faqs: [
+          {
+            q: 'Which platforms and CAS engine does SymMath use?',
+            a: 'SymMath runs natively on iOS and macOS, bridging directly to the C++ SymEngine CAS core via Swift C++ interoperability (.interoperabilityMode(.Cxx)).',
+          },
+          {
+            q: 'What symbolic math and plotting features are included?',
+            a: 'It handles exact radical and trigonometric simplification, partial derivatives, polynomial roots, and matrix operations alongside live Latin Modern LaTeX rendering (SwiftTexMath) and Swift Charts function plotting.',
+          },
         ],
       },
     },
@@ -647,7 +734,7 @@ export function resolveProjectMeta(slug: string, lang: Lang): UnifiedProjectMeta
       version: closedProj.version,
       badgeText: closedProj.i18n[lang].accessTier,
       tagline: closedProj.i18n[lang].tagline,
-      href: `${localizePath('/closed-source/', lang)}#${closedProj.slug}`,
+      href: localizePath(`/apps/${closedProj.slug}/`, lang),
       appStoreUrl: closedProj.appStoreUrl[lang],
     };
   }

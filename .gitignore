@@ -52,3 +52,4 @@ wheels/
 venv/
 ENV/
 env/
+AGENTS.md

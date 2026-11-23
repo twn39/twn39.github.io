@@ -24,6 +24,9 @@ export const GET: APIRoute = async ({ site }) => {
     `## Machine-Readable Endpoints`,
     ``,
     `- [Full Knowledge Corpus (llms-full.txt)](${origin}/llms-full.txt): Complete plain-text Markdown bundle of all repositories and bilingual technical essays in a single fetch.`,
+    `- [Open Source Matrix Markdown](${origin}/en/projects.md): Clean Markdown specification of all open-source repositories (中文版: ${origin}/projects.md).`,
+    `- [Closed-Source Apps Markdown](${origin}/en/closed-source.md): Clean Markdown overview of all Apple App Store applications (中文版: ${origin}/closed-source.md).`,
+    `- [XML Sitemap](${origin}/sitemap-index.xml): Bilingual URL index with hreflang alternates and lastmod timestamps.`,
     `- [RSS 2.0 Feed](${origin}/rss.xml): Syndicated updates for new architecture essays.`,
     `- [Chinese Home](${origin}/): Default Chinese edition.`,
     `- [English Home](${origin}/en/): Complete English mirror edition.`,
@@ -31,10 +34,10 @@ export const GET: APIRoute = async ({ site }) => {
     `## Open Source GitHub Repositories`,
     ``,
     ...ESPRESSO_PROJECTS.map((proj) => {
-      const linked = zhPosts.filter((p) => p.data.project === proj.slug);
+      const linked = enPosts.filter((p) => p.data.project === proj.slug);
       const linkedNote =
         linked.length > 0
-          ? ` | Linked Essay (.md): ${origin}/en/blog/${linked[0].data.translationSlug}.md`
+          ? ` | Linked Essays (.md): ${linked.map((p) => `${origin}/en/blog/${p.data.translationSlug}.md`).join(', ')}`
           : '';
       return `- [${proj.repo} (${proj.version}, ${proj.primaryLang}, ★ ${proj.stars})](${proj.repoUrl}): ${proj.i18n.en.tagline} — ${proj.i18n.zh.tagline}${linkedNote}`;
     }),
@@ -42,12 +45,12 @@ export const GET: APIRoute = async ({ site }) => {
     `## Closed-Source Apps — Apple App Store`,
     ``,
     ...CLOSED_SOURCE_PROJECTS.map((proj) => {
-      const linked = zhPosts.filter((p) => p.data.project === proj.slug);
+      const linked = enPosts.filter((p) => p.data.project === proj.slug);
       const linkedNote =
         linked.length > 0
-          ? ` | Public Architecture Essay (.md): ${origin}/en/blog/${linked[0].data.translationSlug}.md`
+          ? ` | Public Architecture Essays (.md): ${linked.map((p) => `${origin}/en/blog/${p.data.translationSlug}.md`).join(', ')}`
           : '';
-      return `- [${proj.i18n.en.displayName} (${proj.version}, ${proj.deliveryModel})](${proj.appStoreUrl.en}): ${proj.i18n.en.tagline} — ${proj.i18n.zh.tagline}${linkedNote}`;
+      return `- [${proj.i18n.en.displayName} (${proj.version}, ${proj.deliveryModel})](${origin}/en/apps/${proj.slug}.md): ${proj.i18n.en.tagline} — ${proj.i18n.zh.tagline} | HTML: ${origin}/en/apps/${proj.slug}/ | App Store: ${proj.appStoreUrl.en}${linkedNote}`;
     }),
     ``,
     `## Technical Blog Essays — English (Clean Markdown Endpoints)`,

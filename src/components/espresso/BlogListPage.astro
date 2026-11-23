@@ -4,6 +4,7 @@ import BlueprintLayout from '../../layouts/BlueprintLayout.astro';
 import BlogCard from './BlogCard.astro';
 import { CLOSED_SOURCE_PROJECTS, ESPRESSO_PROJECTS } from '../../data/projects';
 import { useTranslations, type Lang } from '../../i18n/ui';
+import { buildBlogListJsonLd } from '../../lib/seo';
 
 interface Props {
   lang: Lang;
@@ -16,6 +17,17 @@ const posts = (await getCollection('blog', (entry) => entry.data.lang === lang))
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 
+const siteOrigin = Astro.site?.origin || 'https://twn39.github.io';
+const canonicalUrl = new URL(Astro.url.pathname, siteOrigin).toString();
+const jsonLd = buildBlogListJsonLd(
+  siteOrigin,
+  lang,
+  t('blog.title'),
+  t('blog.subtitle'),
+  canonicalUrl,
+  posts
+);
+
 const filterableProjects = [
   ...ESPRESSO_PROJECTS.map((p) => ({ slug: p.slug, name: p.name, color: p.primaryLangColor })),
   ...CLOSED_SOURCE_PROJECTS.map((p) => ({ slug: p.slug, name: p.name, color: p.primaryLangColor })),
@@ -26,6 +38,7 @@ const filterableProjects = [
   lang={lang}
   title={t('blog.title')}
   description={t('blog.subtitle')}
+  jsonLd={jsonLd}
   maxWidth="5xl"
 >
   <!-- Header & Project Filter Tabs -->

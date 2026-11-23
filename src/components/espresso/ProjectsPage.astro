@@ -5,7 +5,8 @@ import DaiBlueprintGrid from '../dai/DaiBlueprintGrid.astro';
 import DaiCommandBlock from '../dai/DaiCommandBlock.astro';
 import ProjectCard from './ProjectCard.astro';
 import { ESPRESSO_PROJECTS } from '../../data/projects';
-import { useTranslations, type Lang } from '../../i18n/ui';
+import { localizePath, useTranslations, type Lang } from '../../i18n/ui';
+import { buildOpenSourceProjectsJsonLd } from '../../lib/seo';
 
 interface Props {
   lang: Lang;
@@ -13,6 +14,17 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+const siteOrigin = Astro.site?.origin || 'https://twn39.github.io';
+const canonicalUrl = new URL(Astro.url.pathname, siteOrigin).toString();
+const rawMarkdownUrl = localizePath('/projects.md', lang);
+const jsonLd = buildOpenSourceProjectsJsonLd(
+  siteOrigin,
+  lang,
+  t('projects.title'),
+  t('projects.subtitle'),
+  canonicalUrl,
+  ESPRESSO_PROJECTS
+);
 
 const posts = (await getCollection('blog', (entry) => entry.data.lang === lang)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -35,12 +47,22 @@ const uniqueLangs = Array.from(new Set(ESPRESSO_PROJECTS.map((p) => p.primaryLan
   lang={lang}
   title={t('projects.title')}
   description={t('projects.subtitle')}
+  rawMarkdownUrl={rawMarkdownUrl}
+  jsonLd={jsonLd}
   maxWidth="5xl"
 >
   <!-- Page Header -->
   <section class="screen-line-bottom px-6 sm:px-8 py-10 bg-dot-grid">
-    <div class="font-mono text-[11px] uppercase tracking-widest text-espresso-600 dark:text-espresso-400 mb-2">
-      GITHUB.COM/TWN39 · {ESPRESSO_PROJECTS.length} FEATURED REPOSITORIES
+    <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+      <div class="font-mono text-[11px] uppercase tracking-widest text-espresso-600 dark:text-espresso-400">
+        GITHUB.COM/TWN39 · {ESPRESSO_PROJECTS.length} FEATURED REPOSITORIES
+      </div>
+      <a
+        href={rawMarkdownUrl}
+        class="px-2.5 py-1 rounded border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 font-mono text-[11px] text-zinc-500 hover:text-espresso-500 transition-colors"
+      >
+        {t('blog.raw_md')} ↗
+      </a>
     </div>
     <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">{t('projects.title')}</h1>
     <p class="mt-2.5 text-sm text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">

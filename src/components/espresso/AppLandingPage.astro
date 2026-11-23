@@ -1,0 +1,289 @@
+---
+import { getCollection } from 'astro:content';
+import BlueprintLayout from '../../layouts/BlueprintLayout.astro';
+import DaiBlueprintGrid from '../dai/DaiBlueprintGrid.astro';
+import BlogCard from './BlogCard.astro';
+import type { EspressoClosedProject } from '../../data/projects';
+import { localizePath, useTranslations, type Lang } from '../../i18n/ui';
+import { buildAppLandingJsonLd } from '../../lib/seo';
+
+interface Props {
+  app: EspressoClosedProject;
+  lang: Lang;
+}
+
+const { app, lang } = Astro.props;
+const t = useTranslations(lang);
+const info = app.i18n[lang];
+
+const relatedPosts = (
+  await getCollection('blog', (entry) => entry.data.lang === lang && entry.data.project === app.slug)
+).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const siteOrigin = Astro.site?.origin || 'https://twn39.github.io';
+const canonicalUrl = new URL(localizePath(`/apps/${app.slug}/`, lang), siteOrigin).toString();
+const rawMarkdownUrl = localizePath(`/apps/${app.slug}.md`, lang);
+const storeHref = app.appStoreUrl[lang];
+const storeBtnLabel =
+  app.deliveryModel === 'macOS'
+    ? t('closed.mac_appstore_download')
+    : t('closed.appstore_download');
+
+// Apple Smart App Banner is supported on iOS / iPadOS Safari only
+const smartBannerAppId = app.deliveryModel === 'macOS' ? undefined : app.appStoreId;
+const jsonLd = buildAppLandingJsonLd(siteOrigin, lang, app, canonicalUrl);
+---
+
+<BlueprintLayout
+  lang={lang}
+  title={info.displayName}
+  description={info.tagline}
+  rawMarkdownUrl={rawMarkdownUrl}
+  image={app.iconPath}
+  imageAlt={info.displayName}
+  appleAppId={smartBannerAppId}
+  appleAppArgument={smartBannerAppId ? canonicalUrl : undefined}
+  jsonLd={jsonLd}
+  maxWidth="5xl"
+>
+  <!-- Top Breadcrumb -->
+  <div class="screen-line-bottom px-5 sm:px-8 py-3 bg-zinc-50/70 dark:bg-zinc-900/30 flex flex-wrap items-center justify-between gap-3 font-mono text-xs">
+    <a
+      href={localizePath('/closed-source/', lang)}
+      class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
+    >
+      ← {t('apps.back_to_list')}
+    </a>
+    <div class="flex items-center gap-3">
+      <span class="text-[11px] text-zinc-400">
+        {app.codeName} · {app.version}
+      </span>
+      <a
+        href={rawMarkdownUrl}
+        class="px-2.5 py-1 rounded border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-[11px] text-zinc-500 hover:text-espresso-500 transition-colors"
+      >
+        {t('blog.raw_md')} ↗
+      </a>
+    </div>
+  </div>
+
+  <!-- Product Hero -->
+  <header class="screen-line-bottom px-6 sm:px-8 py-10 bg-dot-grid">
+    <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-6">
+      <div class="flex items-start gap-4 sm:gap-5 min-w-0">
+        <img
+          src={app.iconPath}
+          alt={info.displayName}
+          width="72"
+          height="72"
+          class="w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-[16px] border border-edge shadow-xs shrink-0 object-cover bg-zinc-100 dark:bg-zinc-900"
+        />
+        <div class="min-w-0">
+          <div class="flex flex-wrap items-center gap-2 font-mono text-[11px] text-espresso-600 dark:text-espresso-400">
+            <span>{info.category}</span>
+            <span class="text-zinc-300 dark:text-zinc-700">·</span>
+            <span class="text-zinc-500 dark:text-zinc-400">{info.accessTier}</span>
+          </div>
+          <h1 class="mt-1.5 text-2xl sm:text-3xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50">
+            {info.displayName}
+          </h1>
+          <p class="mt-2.5 text-sm sm:text-base font-medium text-zinc-700 dark:text-zinc-300 max-w-2xl leading-relaxed">
+            {info.tagline}
+          </p>
+        </div>
+      </div>
+
+      <div class="shrink-0 flex flex-col gap-2.5 sm:min-w-[230px]">
+        <a
+          href={storeHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="px-4 py-2.5 rounded-lg bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 hover:opacity-90 transition-opacity flex items-center justify-between gap-3 shadow-xs"
+        >
+          <div class="flex items-center gap-2.5">
+            <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.96 6.32c.67-.81 1.12-1.94 1-3.07-.96.04-2.13.64-2.82 1.45-.61.7-.1.85-.99 3.01 1.08.08 2.14-.58 2.81-1.39Z" />
+            </svg>
+            <div class="text-left leading-tight">
+              <div class="text-[10px] opacity-75 font-mono">
+                {lang === 'zh' ? 'Apple 官方商店' : 'Available on'}
+              </div>
+              <div class="text-xs sm:text-[13px] font-semibold tracking-tight">
+                {storeBtnLabel}
+              </div>
+            </div>
+          </div>
+          <span class="font-mono text-xs opacity-75">↗</span>
+        </a>
+
+        {app.brewCmd && (
+          <div class="px-3 py-2 rounded-md border border-edge bg-zinc-950 text-zinc-200 font-mono text-[11px] overflow-x-auto">
+            <code class="whitespace-nowrap">
+              <span class="text-espresso-400">$</span> {app.brewCmd}
+            </code>
+          </div>
+        )}
+      </div>
+    </div>
+  </header>
+
+  <!-- Overview & Architecture Spec -->
+  <DaiBlueprintGrid
+    title={t('apps.overview')}
+    specCode={app.deliveryModel}
+    handNote={app.bundleId}
+    columns="1"
+  >
+    <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-edge">
+      <div class="lg:col-span-7 p-6 space-y-5">
+        <p class="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          {info.summary}
+        </p>
+
+        <ul class="space-y-2 border-t border-edge pt-4">
+          {info.highlights.map((hl) => (
+            <li class="flex items-start gap-2.5 text-xs sm:text-[13px] text-zinc-600 dark:text-zinc-300 leading-relaxed">
+              <span class="font-mono text-espresso-500 mt-0.5">›</span>
+              <span>{hl}</span>
+            </li>
+          ))}
+        </ul>
+
+        <!-- Implementation Stack Bar -->
+        <div class="pt-2">
+          <div class="h-1.5 w-full rounded-full overflow-hidden flex bg-zinc-100 dark:bg-zinc-900">
+            {app.languages.map((l) => (
+              <span style={`width: ${l.percent}%; background-color: ${l.color};`} title={`${l.name} ${l.percent}%`} />
+            ))}
+          </div>
+          <div class="mt-2 flex flex-wrap items-center gap-3 font-mono text-[10px] text-zinc-500 dark:text-zinc-400">
+            {app.languages.map((l) => (
+              <span class="inline-flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full" style={`background-color: ${l.color};`} />
+                {l.name} <span class="opacity-65">{l.percent}%</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5 p-6 bg-zinc-50/40 dark:bg-zinc-900/20 space-y-4">
+        <div class="font-mono text-[10px] uppercase tracking-widest text-zinc-400">
+          {t('closed.arch_spec')}
+        </div>
+
+        <div class="rounded-lg border border-edge bg-white dark:bg-zinc-950 divide-y divide-edge">
+          {app.specs.map((spec) => (
+            <div class="px-3.5 py-2.5 flex flex-col gap-0.5">
+              <span class="font-mono text-[10px] text-zinc-400">
+                {lang === 'zh' ? spec.labelZh : spec.labelEn}
+              </span>
+              <span class="font-mono text-xs font-medium text-zinc-800 dark:text-zinc-200">
+                {spec.value}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 pt-2 font-mono text-xs">
+          <div>
+            <div class="text-[10px] text-zinc-400">{t('closed.delivery')}</div>
+            <div class="font-semibold mt-0.5 text-zinc-900 dark:text-zinc-100">{app.deliveryModel}</div>
+          </div>
+          <div>
+            <div class="text-[10px] text-zinc-400">{t('projects.latest')}</div>
+            <div class="font-semibold mt-0.5 text-zinc-900 dark:text-zinc-100">{app.version}</div>
+          </div>
+          <div class="col-span-2">
+            <div class="text-[10px] text-zinc-400">{t('closed.sla')}</div>
+            <div class="font-semibold mt-0.5 text-zinc-800 dark:text-zinc-200">{app.bundleId}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </DaiBlueprintGrid>
+
+  <!-- Public Architecture Essays -->
+  {relatedPosts.length > 0 && (
+    <DaiBlueprintGrid
+      title={t('closed.related_posts')}
+      specCode={`${relatedPosts.length} ESSAY${relatedPosts.length > 1 ? 'S' : ''}`}
+      columns="1"
+    >
+      <div class="divide-y divide-edge">
+        {relatedPosts.map((post) => (
+          <BlogCard
+            slug={post.data.translationSlug}
+            title={post.data.title}
+            description={post.data.description}
+            pubDate={post.data.pubDate}
+            readingTime={post.data.readingTime}
+            projectSlug={post.data.project}
+            tags={post.data.tags}
+            coverImage={post.data.coverImage}
+            coverAlt={post.data.coverAlt}
+            lang={lang}
+          />
+        ))}
+      </div>
+    </DaiBlueprintGrid>
+  )}
+
+  <!-- FAQ (Matches FAQPage JSON-LD) -->
+  {info.faqs.length > 0 && (
+    <section id="faq" class="scroll-mt-16">
+      <DaiBlueprintGrid
+        title={t('apps.faq')}
+        specCode={`${info.faqs.length} Q&A`}
+        columns="1"
+      >
+        <div class="divide-y divide-edge">
+          {info.faqs.map((item) => (
+            <div class="p-6 space-y-1.5">
+              <h2 class="text-sm sm:text-base font-semibold text-zinc-950 dark:text-zinc-50">
+                {item.q}
+              </h2>
+              <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                {item.a}
+              </p>
+            </div>
+          ))}
+        </div>
+      </DaiBlueprintGrid>
+    </section>
+  )}
+
+  <!-- Support & Privacy Anchors for App Store Connect -->
+  <section id="support" class="scroll-mt-16">
+    <DaiBlueprintGrid
+      title={t('apps.support')}
+      specCode="APP STORE URL"
+      columns="1"
+      showHatchBottom={false}
+    >
+      <div id="privacy" class="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">
+          {t('apps.support_desc')}
+        </p>
+        <div class="flex flex-wrap items-center gap-2.5 shrink-0 font-mono text-xs">
+          <a
+            href="https://github.com/twn39"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-3 py-1.5 rounded-md border border-edge bg-white dark:bg-zinc-950 text-zinc-700 dark:text-zinc-200 hover:border-espresso-500 transition-colors"
+          >
+            GitHub (@twn39) ↗
+          </a>
+          <a
+            href={storeHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-3 py-1.5 rounded-md border border-edge bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-200 hover:border-espresso-500 transition-colors"
+          >
+            App Store ↗
+          </a>
+        </div>
+      </div>
+    </DaiBlueprintGrid>
+  </section>
+</BlueprintLayout>

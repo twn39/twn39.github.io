@@ -27,7 +27,7 @@ const searchItems = [
     title: p.name,
     subtitle: p.i18n[lang].tagline,
     tags: `${p.primaryLang} ${p.deliveryModel} ${p.codeName}`,
-    href: `${localizePath('/closed-source/', lang)}#${p.slug}`,
+    href: localizePath(`/apps/${p.slug}/`, lang),
   })),
   ...posts.map((post) => ({
     type: lang === 'zh' ? '技术长文' : 'Essay',

@@ -3,7 +3,7 @@ import BlueprintLayout from '../layouts/BlueprintLayout.astro';
 import DaiBlockNotFound01 from '../components/dai/blocks/DaiBlockNotFound01.astro';
 ---
 
-<BlueprintLayout title="404 Not Found" maxWidth="5xl">
+<BlueprintLayout title="404 Not Found" noindex={true} maxWidth="5xl">
   <DaiBlockNotFound01
     errorCode="404 — BYTE NOT FOUND"
     backHref="/"

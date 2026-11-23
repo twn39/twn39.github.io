@@ -4,7 +4,8 @@ import BlueprintLayout from '../../layouts/BlueprintLayout.astro';
 import DaiBlueprintGrid from '../dai/DaiBlueprintGrid.astro';
 import ClosedProjectCard from './ClosedProjectCard.astro';
 import { CLOSED_SOURCE_PROJECTS } from '../../data/projects';
-import { useTranslations, type Lang } from '../../i18n/ui';
+import { localizePath, useTranslations, type Lang } from '../../i18n/ui';
+import { buildClosedSourceProjectsJsonLd } from '../../lib/seo';
 
 interface Props {
   lang: Lang;
@@ -12,6 +13,17 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+const siteOrigin = Astro.site?.origin || 'https://twn39.github.io';
+const canonicalUrl = new URL(Astro.url.pathname, siteOrigin).toString();
+const rawMarkdownUrl = localizePath('/closed-source.md', lang);
+const jsonLd = buildClosedSourceProjectsJsonLd(
+  siteOrigin,
+  lang,
+  t('closed.title'),
+  t('closed.subtitle'),
+  canonicalUrl,
+  CLOSED_SOURCE_PROJECTS
+);
 
 const posts = (await getCollection('blog', (entry) => entry.data.lang === lang)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -34,12 +46,22 @@ const deliveryModels = Array.from(new Set(CLOSED_SOURCE_PROJECTS.map((p) => p.de
   lang={lang}
   title={t('closed.title')}
   description={t('closed.subtitle')}
+  rawMarkdownUrl={rawMarkdownUrl}
+  jsonLd={jsonLd}
   maxWidth="5xl"
 >
   <!-- Page Header -->
   <section class="screen-line-bottom px-6 sm:px-8 py-10 bg-dot-grid">
-    <div class="font-mono text-[11px] uppercase tracking-widest text-espresso-600 dark:text-espresso-400 mb-2">
-      APPLE APP STORE · {CLOSED_SOURCE_PROJECTS.length} NATIVE APPLICATIONS
+    <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+      <div class="font-mono text-[11px] uppercase tracking-widest text-espresso-600 dark:text-espresso-400">
+        APPLE APP STORE · {CLOSED_SOURCE_PROJECTS.length} NATIVE APPLICATIONS
+      </div>
+      <a
+        href={rawMarkdownUrl}
+        class="px-2.5 py-1 rounded border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 font-mono text-[11px] text-zinc-500 hover:text-espresso-500 transition-colors"
+      >
+        {t('blog.raw_md')} ↗
+      </a>
     </div>
     <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">{t('closed.title')}</h1>
     <p class="mt-2.5 text-sm text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">
@@ -158,6 +180,14 @@ const deliveryModels = Array.from(new Set(CLOSED_SOURCE_PROJECTS.map((p) => p.de
                       </div>
                     </div>
                     <span class="font-mono text-xs opacity-75">↗</span>
+                  </a>
+
+                  <a
+                    href={localizePath(`/apps/${project.slug}/`, lang)}
+                    class="w-full h-9 px-3.5 rounded-md border border-edge bg-white dark:bg-zinc-950 text-xs font-mono text-zinc-700 dark:text-zinc-200 hover:border-espresso-500/60 hover:text-espresso-600 dark:hover:text-espresso-400 transition-colors inline-flex items-center justify-between"
+                  >
+                    <span>{t('apps.view_detail').replace(/\s*→$/, '')}</span>
+                    <span>→</span>
                   </a>
 
                   {project.brewCmd && (

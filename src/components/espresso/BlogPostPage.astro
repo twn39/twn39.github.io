@@ -5,6 +5,7 @@ import DaiTocMinimap from '../dai/DaiTocMinimap.astro';
 import DaiLightbox from '../dai/DaiLightbox.astro';
 import { resolveProjectMeta } from '../../data/projects';
 import { formatDate, localizePath, useTranslations, type Lang } from '../../i18n/ui';
+import { buildBlogPostJsonLd } from '../../lib/seo';
 
 interface Props {
   post: CollectionEntry<'blog'>;
@@ -39,22 +40,9 @@ const llmMarkdownPayload = [
   post.body ?? '',
 ].join('\n');
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'TechArticle',
-  headline: post.data.title,
-  description: post.data.description,
-  datePublished: post.data.pubDate.toISOString(),
-  dateModified: (post.data.updatedDate || post.data.pubDate).toISOString(),
-  inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
-  url: canonicalUrl,
-  keywords: post.data.tags.join(', '),
-  author: {
-    '@type': 'Person',
-    name: 'Tang Weinan (twn39)',
-    url: 'https://github.com/twn39',
-  },
-};
+const publishedTime = post.data.pubDate.toISOString();
+const modifiedTime = (post.data.updatedDate || post.data.pubDate).toISOString();
+const jsonLd = buildBlogPostJsonLd(siteOrigin, lang, post, canonicalUrl);
 ---
 
 <BlueprintLayout
@@ -64,6 +52,11 @@ const jsonLd = {
   alternatePath={alternatePath}
   rawMarkdownUrl={rawMarkdownUrl}
   ogType="article"
+  image={post.data.coverImage}
+  imageAlt={post.data.coverAlt}
+  publishedTime={publishedTime}
+  modifiedTime={modifiedTime}
+  tags={post.data.tags}
   jsonLd={jsonLd}
   maxWidth="5xl"
 >

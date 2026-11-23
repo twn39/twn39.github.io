@@ -1,0 +1,15 @@
+---
+import AppLandingPage from '../../components/espresso/AppLandingPage.astro';
+import { CLOSED_SOURCE_PROJECTS } from '../../data/projects';
+
+export function getStaticPaths() {
+  return CLOSED_SOURCE_PROJECTS.map((app) => ({
+    params: { slug: app.slug },
+    props: { app },
+  }));
+}
+
+const { app } = Astro.props;
+---
+
+<AppLandingPage app={app} lang="zh" />

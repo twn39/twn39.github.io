@@ -9,6 +9,7 @@ import ClosedProjectCard from './ClosedProjectCard.astro';
 import BlogCard from './BlogCard.astro';
 import { CLOSED_SOURCE_PROJECTS, ESPRESSO_PROJECTS } from '../../data/projects';
 import { localizePath, useTranslations, type Lang } from '../../i18n/ui';
+import { buildHomeJsonLd } from '../../lib/seo';
 
 interface Props {
   lang: Lang;
@@ -16,6 +17,10 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+const siteOrigin = Astro.site?.origin || 'https://twn39.github.io';
+const canonicalUrl = new URL(Astro.url.pathname, siteOrigin).toString();
+const homeTitle = `${t('site.name')} · ${t('site.subtitle')}`;
+const jsonLd = buildHomeJsonLd(siteOrigin, lang, homeTitle, t('site.description'), canonicalUrl);
 
 const posts = (await getCollection('blog', (entry) => entry.data.lang === lang)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -32,7 +37,7 @@ function getPostsForProject(projectSlug: string) {
 }
 ---
 
-<BlueprintLayout lang={lang} maxWidth="5xl">
+<BlueprintLayout lang={lang} jsonLd={jsonLd} maxWidth="5xl">
   <!-- 1. Top Subtitle Bar -->
   <div class="screen-line-bottom px-5 sm:px-6 py-2.5 bg-zinc-50/65 dark:bg-zinc-900/35 flex items-center justify-between gap-3 text-xs text-zinc-500 dark:text-zinc-400">
     <span class="truncate">{t('site.tagline')}</span>
