@@ -1,0 +1,67 @@
+{
+  "name": "@twn39/tex2math",
+  "type": "module",
+  "collaborators": [
+    "twn39 <twn39@163.com>"
+  ],
+  "description": "Blazing fast LaTeX → MathML (2.x): borrowed AST, structured errors, MathML Core-friendly output, MathSink streaming, MathML 4 intent.",
+  "version": "2.5.0",
+  "license": "LGPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/twn39/tex2math"
+  },
+  "files": [
+    "tex2math.js",
+    "tex2math_bg.wasm",
+    "tex2math.d.ts",
+    "tex2math_bg.wasm.d.ts",
+    "nodejs/package.json",
+    "nodejs/index.mjs",
+    "nodejs/index.d.mts",
+    "nodejs/tex2math.js",
+    "nodejs/tex2math.d.ts",
+    "nodejs/tex2math_bg.wasm",
+    "nodejs/tex2math_bg.wasm.d.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "main": "./nodejs/tex2math.js",
+  "types": "./tex2math.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ],
+  "keywords": [
+    "latex",
+    "mathml",
+    "math",
+    "parser",
+    "winnow"
+  ],
+  "module": "./tex2math.js",
+  "exports": {
+    ".": {
+      "node": {
+        "types": "./nodejs/index.d.mts",
+        "import": "./nodejs/index.mjs",
+        "require": "./nodejs/tex2math.js",
+        "default": "./nodejs/tex2math.js"
+      },
+      "types": "./tex2math.d.ts",
+      "default": "./tex2math.js"
+    },
+    "./web": {
+      "types": "./tex2math.d.ts",
+      "default": "./tex2math.js"
+    },
+    "./nodejs": {
+      "types": "./nodejs/index.d.mts",
+      "import": "./nodejs/index.mjs",
+      "require": "./nodejs/tex2math.js",
+      "default": "./nodejs/tex2math.js"
+    }
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}

@@ -18,9 +18,8 @@
     "@astrojs/markdown-remark": "^7.3.10",
     "@astrojs/sitemap": "^3.7.6",
     "@tailwindcss/vite": "^4.3.5",
+    "@twn39/tex2math": "link:vendor/tex2math",
     "astro": "^7.4.12",
-    "katex": "^0.19.1",
-    "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0",
     "tailwindcss": "^4.3.5"
   },

@@ -77,14 +77,14 @@ const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
     </div>
 
     <!-- Full Textual Section Links -->
-    <nav class="space-y-1 text-xs min-h-24 flex-1 max-h-[52vh] lg:max-h-none overflow-y-auto pr-1">
+    <nav class="space-y-1 text-[12.5px] min-h-24 flex-1 max-h-[52vh] lg:max-h-none overflow-y-auto pr-1">
       {filtered.map((h, idx) => (
         <a
           href={`#${h.slug}`}
           data-toc-link={h.slug}
           class:list={[
-            'block py-1.5 border-l-2 transition-colors leading-snug',
-            h.depth === 3 ? 'pl-5 text-[11.5px]' : 'pl-3 font-medium',
+            'block py-1.5 border-l-2 transition-colors leading-[1.45] text-pretty',
+            h.depth === 3 ? 'pl-5 text-[12px]' : 'pl-3 font-medium',
             idx === 0
               ? 'border-espresso-500 text-zinc-950 dark:text-zinc-50'
               : 'border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700',

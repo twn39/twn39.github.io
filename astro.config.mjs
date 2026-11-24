@@ -5,7 +5,7 @@ import { unified } from '@astrojs/markdown-remark';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
+import rehypeTex2math from './src/lib/rehype-tex2math.mjs';
 import rehypeFigureCaption from './src/lib/rehype-figure-caption.mjs';
 
 const SITE = 'https://twn39.github.io';
@@ -90,7 +90,7 @@ export default defineConfig({
   markdown: {
     processor: unified({
       remarkPlugins: [remarkMath],
-      rehypePlugins: [rehypeKatex, rehypeFigureCaption],
+      rehypePlugins: [rehypeTex2math, rehypeFigureCaption],
     }),
     shikiConfig: {
       themes: {

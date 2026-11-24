@@ -58,10 +58,10 @@ const jsonLd = buildBlogPostJsonLd(siteOrigin, lang, post, canonicalUrl);
   modifiedTime={modifiedTime}
   tags={post.data.tags}
   jsonLd={jsonLd}
-  maxWidth="5xl"
+  maxWidth="7xl"
 >
   <!-- Top Breadcrumb & AI Action Strip -->
-  <div class="screen-line-bottom px-5 sm:px-8 py-3 bg-zinc-50/70 dark:bg-zinc-900/30 flex flex-wrap items-center justify-between gap-3 font-mono text-xs">
+  <div class="screen-line-bottom px-6 sm:px-10 lg:px-12 py-3 bg-zinc-50/70 dark:bg-zinc-900/30 flex flex-wrap items-center justify-between gap-3 font-mono text-xs">
     <div class="flex items-center gap-2 text-zinc-500 dark:text-zinc-400">
       <a href={localizePath('/blog/', lang)} class="hover:text-zinc-900 dark:hover:text-white transition-colors">
         ← {t('blog.back_to_list')}
@@ -104,8 +104,8 @@ const jsonLd = buildBlogPostJsonLd(siteOrigin, lang, post, canonicalUrl);
   <template id="llm-markdown-template">{llmMarkdownPayload}</template>
 
   <!-- Article Hero Header -->
-  <header class="screen-line-bottom px-5 sm:px-8 py-9 sm:py-11 bg-dot-grid">
-    <div class="flex flex-wrap items-center gap-2.5 font-mono text-xs text-zinc-500 dark:text-zinc-400 mb-3">
+  <header class="screen-line-bottom px-6 sm:px-10 lg:px-12 py-10 sm:py-12 bg-dot-grid">
+    <div class="flex flex-wrap items-center gap-2.5 font-mono text-xs text-zinc-500 dark:text-zinc-400 mb-3.5 tabular-nums">
       <time datetime={post.data.pubDate.toISOString()}>
         {t('blog.published')} {formatDate(post.data.pubDate, lang)}
       </time>
@@ -119,11 +119,11 @@ const jsonLd = buildBlogPostJsonLd(siteOrigin, lang, post, canonicalUrl);
       <span>{post.data.readingTime} {t('blog.read_time')}</span>
     </div>
 
-    <h1 class="text-2xl sm:text-3xl md:text-[2rem] font-bold tracking-tight text-zinc-950 dark:text-zinc-50 leading-[1.28] max-w-3xl">
+    <h1 class="text-2xl sm:text-3xl lg:text-[2.15rem] font-bold tracking-tight text-zinc-950 dark:text-zinc-50 leading-[1.28] max-w-5xl text-balance">
       {post.data.title}
     </h1>
 
-    <p class="mt-3.5 text-sm sm:text-base text-zinc-600 dark:text-zinc-400 max-w-3xl leading-relaxed">
+    <p class="mt-4 text-[15px] sm:text-base text-zinc-600 dark:text-zinc-400 max-w-4xl leading-[1.7] text-pretty">
       {post.data.description}
     </p>
 
@@ -137,9 +137,9 @@ const jsonLd = buildBlogPostJsonLd(siteOrigin, lang, post, canonicalUrl);
   </header>
 
   <!-- Main Two-Column Reading Grid + Sticky TOC Minimap -->
-  <div class="screen-line-bottom grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-edge">
+  <div class="screen-line-bottom grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_300px] xl:grid-cols-[minmax(0,1fr)_340px] divide-y lg:divide-y-0 lg:divide-x divide-edge">
     <!-- Left Column: Illustrated Essay Content -->
-    <div class="lg:col-span-8 px-5 sm:px-8 py-8 min-w-0">
+    <div class="px-6 sm:px-10 lg:px-14 py-9 sm:py-10 min-w-0">
       <!-- Mobile Collapsible TOC -->
       <DaiTocMinimap headings={headings} lang={lang} mode="mobile" />
 
@@ -195,7 +195,7 @@ const jsonLd = buildBlogPostJsonLd(siteOrigin, lang, post, canonicalUrl);
     </div>
 
     <!-- Right Rail: Sticky TOC Minimap + Linked GitHub Repository Card -->
-    <div class="lg:col-span-4 p-5 sm:p-6 bg-zinc-50/30 dark:bg-zinc-950">
+    <div class="p-6 sm:p-7 bg-zinc-50/35 dark:bg-zinc-950">
       <div class="lg:sticky lg:top-20 flex flex-col gap-6 lg:max-h-[calc(100vh-6.5rem)] lg:overflow-y-auto">
         <DaiTocMinimap headings={headings} lang={lang} mode="desktop" />
 
