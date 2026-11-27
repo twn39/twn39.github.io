@@ -413,8 +413,10 @@ html.dark .espresso-prose blockquote {
 }
 
 .espresso-prose math mtext {
-  font-family: var(--font-sans);
-  font-size: 0.9em;
+  font-family: "Latin Modern Roman", "STIX Two Text", "STIX Two Math", "Cambria Math", "Times New Roman", "Songti SC", "Noto Serif CJK SC", serif;
+  font-size: 1em;
+  font-style: normal;
+  letter-spacing: 0;
 }
 
 .espresso-prose .math-display {
